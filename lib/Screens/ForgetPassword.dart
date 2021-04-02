@@ -1,4 +1,4 @@
-import 'package:ashmool/main.dart';
+import 'package:ashmall/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

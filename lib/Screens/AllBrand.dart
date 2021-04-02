@@ -1,12 +1,14 @@
-import 'package:ashmool/GlobalFunction.dart';
-import 'package:ashmool/Model/SubCategoryModel.dart';
-import 'package:ashmool/Services/CategoryServices.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
-import 'package:ashmool/main.dart';
+import 'package:ashmall/Model/SubCategoryModel.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Services/CategoryServices.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../GlobalFunction.dart';
+import '../main.dart';
 import 'GetAllProduct.dart';
 
 class Bran extends StatefulWidget{
@@ -40,7 +42,7 @@ class _state extends State<Bran>{
     return SafeArea(child: Scaffold(
         body: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height*.02,),
+           /* SizedBox(height: MediaQuery.of(context).size.height*.02,),
             Container(
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width*.03,
@@ -112,7 +114,8 @@ class _state extends State<Bran>{
                   Icon(Icons.menu)
                 ],
               ),
-            ),
+            ),*/
+            CustomAppBar(DemoLocalizations.of(context).title["brand"]),
             SizedBox(height: MediaQuery.of(context).size.height*.015,),
             subCategories.length==null?
             Expanded(

@@ -1,11 +1,11 @@
-import 'package:ashmool/Model/ProductModel.dart';
-import 'package:ashmool/Model/SearchModel.dart';
-import 'package:ashmool/Screens/GetAllProduct.dart';
-import 'package:ashmool/Screens/ProductDetails.dart';
-import 'package:ashmool/Screens/SearchSubCategory.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
-import 'package:ashmool/Services/ProductServices.dart';
-import 'package:ashmool/main.dart';
+import 'package:ashmall/Model/ProductModel.dart';
+import 'package:ashmall/Model/SearchModel.dart';
+import 'package:ashmall/Screens/GetAllProduct.dart';
+import 'package:ashmall/Screens/ProductDetails.dart';
+import 'package:ashmall/Screens/SearchSubCategory.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/ProductServices.dart';
+import 'package:ashmall/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +27,7 @@ class _state extends State<Search>{
   Widget build(BuildContext context) {
    return SafeArea(
      child: Scaffold(
+       resizeToAvoidBottomInset: false,
        body:  Container(
              padding: EdgeInsets.only(
                left: MediaQuery.of(context).size.width*.03,
@@ -220,7 +221,7 @@ class _state extends State<Search>{
                     else if(data2[index].type==3)
                         Navigator.push(context, GlobalFunction.route(AllProduct(data2[index].id,data2[index].name,"category")));
                     else
-                        Navigator.push(context, GlobalFunction.route(ProductDetails(data2[index].id,)));
+                        Navigator.push(context, GlobalFunction.route(ProductDetails(data2[index].id,data2[index].name)));
                      },
                      child: Container(
                        decoration: BoxDecoration(

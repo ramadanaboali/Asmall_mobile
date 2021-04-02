@@ -1,5 +1,6 @@
-import 'package:ashmool/Screens/CustomAppBar.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _state extends State<Favourite>{
         body: Container(
           child: Column(
             children: [
-              CustomAppBar("Wish List"),
+              CustomAppBar(DemoLocalizations.of(context).title["wishlist"],),
               SizedBox(height: MediaQuery
                   .of(context)
                   .size
@@ -50,7 +51,7 @@ class _state extends State<Favourite>{
                       children: [
                         Image.asset("images/star.png",color: Colors.black26),
                         SizedBox(height: MediaQuery.of(context).size.height*.035,),
-                        Text("No Items In Favourite",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black26),),
+                        Text(DemoLocalizations.of(context).title["NoItemsInFavourite"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black26),),
                         SizedBox(height: MediaQuery.of(context).size.height*.035,),
                         GestureDetector(
                             onTap: (){
@@ -67,7 +68,7 @@ class _state extends State<Favourite>{
                                   borderRadius: BorderRadius.all(Radius.circular(20)),
                                   //  border: Border.all(width: 1.0,color: Colors.black26)
                                 ),
-                                child: Text("Shopping Now",style: TextStyle(fontSize: 12),),
+                                child: Text(DemoLocalizations.of(context).title["ShppingNow"],style: TextStyle(fontSize: 12),),
                               )
 
                           ),

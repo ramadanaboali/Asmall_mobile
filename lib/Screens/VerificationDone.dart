@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ashmool/Screens/CustomAppBar.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

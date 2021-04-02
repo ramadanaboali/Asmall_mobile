@@ -1,47 +1,66 @@
-import 'package:ashmool/DbHelper.dart';
-import 'package:ashmool/GlobalFunction.dart';
-import 'package:ashmool/Model/CartModelLocal.dart';
-import 'package:ashmool/Model/FavouriteLocalModel.dart';
-import 'package:ashmool/Model/OneProductModel.dart';
-import 'package:ashmool/Model/ProductRateModel.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
-import 'package:ashmool/Services/ProductServices.dart';
-import 'package:ashmool/main.dart';
+import 'package:ashmall/DbHelper.dart';
+import 'package:ashmall/GlobalFunction.dart';
+import 'package:ashmall/Model/CartModelLocal.dart';
+import 'package:ashmall/Model/FavouriteLocalModel.dart';
+import 'package:ashmall/Model/OneProductModel.dart';
+import 'package:ashmall/Model/ProductRateModel.dart';
+import 'package:ashmall/Model/ProductSpecificationModel.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Screens/Reviews.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/ProductServices.dart';
+import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:toast/toast.dart';
-
 import 'CustRate.dart';
 import 'ProductQuestion.dart';
 
 class ProductDetails extends StatefulWidget{
   var id;
-  ProductDetails(var id){
+  var name;
+  ProductDetails(var id,var name){
     this.id=id;
+    this.name=name;
   }
   @override
   State<StatefulWidget> createState() {
-return _state(this.id);
+return _state(this.id,this.name);
   }
 }
 class  _state extends State<ProductDetails>{
+  final formKey=GlobalKey<FormState>();
+  TextEditingController comment=new TextEditingController();
   var id;
+  double rate=0.0;
+  var name;
   DbHelper dbHelper=new DbHelper();
-  _state(var id){
+  _state(var id,var name){
     this.id=id;
+    this.name=name;
   }
   ProductServices productServices=new ProductServices();
   Map<String,dynamic>data;
   List<String>Images=[];
-  List<ProductRateDetail>rate=[];
+  List<ProductSpecifiction>Specification=[];
+  var token;
+  var user_id;
+  var lang;
   loadData() async {
-    data=await productServices.getProductDetails("en", this.id);
-    rate=await productServices.getProductRate("en", this.id);
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    data=await productServices.getProductDetails(prefs.getString("lang"), this.id);
+    Specification=await productServices.GesProductSpefication(prefs.getString("lang"), this.id);
     setState(() {
+      lang=prefs.getString("lang");
+      user_id=prefs.getString("id");
+      token=prefs.getString("token");
     });
-    print(rate.length);
-   // print(data);
+
+    print(Specification);
     print("wwwwwwwwwwwwwwwwwww");
   }
   home h=new home();
@@ -56,10 +75,11 @@ class  _state extends State<ProductDetails>{
   Widget build(BuildContext context) {
    return SafeArea(
      child: Scaffold(
+       resizeToAvoidBottomInset: false,
      body: data!=null?Container(
        child:  Column(
            children: [
-             SizedBox(height: MediaQuery.of(context).size.height*.02,),
+             /*SizedBox(height: MediaQuery.of(context).size.height*.02,),
              Container(
                padding: EdgeInsets.only(
                    left: MediaQuery.of(context).size.width*.03,
@@ -105,7 +125,7 @@ class  _state extends State<ProductDetails>{
                              borderRadius: BorderRadius.circular(30),
                              borderSide: BorderSide(color: Colors.red)
                          ),
-                         hintText:'Search',
+                         hintText:DemoLocalizations.of(context).title["Search"],
                          hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
                          suffixIcon:Container(
                              margin: EdgeInsets.all(5),
@@ -131,7 +151,8 @@ class  _state extends State<ProductDetails>{
                    Icon(Icons.menu)
                  ],
                ),
-             ),
+             ),*/
+             CustomAppBar(this.name),
              SizedBox(height: MediaQuery.of(context).size.height*.015,),
              Container(
                height: MediaQuery.of(context).size.height*.3,
@@ -225,7 +246,7 @@ class  _state extends State<ProductDetails>{
                              },
                              child: Container(
                                  padding: EdgeInsets.all(5),
-                                 child: Icon(Icons.add_shopping_cart)),
+                                 child: Icon(Icons.add_shopping_cart,color: Color(h.mainColor),)),
                            ),
                            SizedBox(width: 10,),
                            GestureDetector(
@@ -268,21 +289,34 @@ class  _state extends State<ProductDetails>{
                            SizedBox(width: 10,),
                            GestureDetector(
                              onTap: (){
-                               Navigator.push(context, GlobalFunction.route(ProductQuestion()));
+                               Navigator.push(context, GlobalFunction.route(ProductQuestion(data["id"],this.name)));
                              },
                              child: Container(
                                  padding: EdgeInsets.all(5),
-                                 child: Icon(Icons.question_answer)),
+                                 child: Icon(Icons.question_answer,color: Color(h.mainColor),)),
+                           ),
+                           SizedBox(width: 10,),
+                           GestureDetector(
+                             onTap: (){
+                               Navigator.push(context, GlobalFunction.route(Reviews(data["id"],this.name)));
+                             },
+                             child: Container(
+                                 padding: EdgeInsets.all(5),
+                                 child: Icon(Icons.rate_review,color: Color(h.mainColor),)),
                            ),
                          ],
                        ),
-                       CustomRate(data["rate"],15)
+                       GestureDetector(
+                           onTap: (){
+                             user_id==null?print("0000"):SetRate(context,data["id"]);
+                           },
+                           child: CustomRate(data["rate"],15))
                      ],
                    )
                  ],
                ),
              ),
-             SizedBox(height: MediaQuery.of(context).size.height*.01,),
+        /*     SizedBox(height: MediaQuery.of(context).size.height*.01,),
              Container(
                width: MediaQuery.of(context).size.width*.9,
                padding: EdgeInsets.only(
@@ -295,71 +329,77 @@ class  _state extends State<ProductDetails>{
                  borderRadius: BorderRadius.all(Radius.circular(10)),
                  color: Color(h.mainColor)
                ),
-               child: Text("Reviews",style: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white),),
-             ),
-             SizedBox(height: MediaQuery.of(context).size.height*.01,),
-            rate.length==0? Expanded(child: Center(child: Text("No Reviews"),),):
+               child: Text(DemoLocalizations.of(context).title["Reviews"],style: TextStyle(fontSize:16,fontWeight: FontWeight.bold,color: Colors.white),),
+             ),*/
+             SizedBox(height: MediaQuery.of(context).size.height*.005,),
+            Container(height: 1,width: MediaQuery.of(context).size.width,color: Colors.black38,),
+             SizedBox(height: MediaQuery.of(context).size.height*.005,),
+            data["productSpeceficationDtos"].length==0? Container(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width*.065),
+              child: Column(
+                children: [
+                  SizedBox(height: 15,),
+                  Image.asset("images/logo.png",
+                      width:MediaQuery.of(context).size.width*.5
+                  ),
+                  SizedBox(height: 15,),
+                  Text("No Specidication For This Product",style: TextStyle(color: Colors.black54,fontSize: 12,fontWeight: FontWeight.bold),)
+                ],
+              )
+            ):
             Expanded(
-               child: ListView.builder(
-                   padding: EdgeInsets.only(
-                     left: MediaQuery.of(context).size.width*.05,
-                     right: MediaQuery.of(context).size.width*.05,
-                   ),
-                   itemCount: rate.length,itemBuilder: (context,index){
-                 return Container(
-                   width: MediaQuery.of(context).size.width*.9,
-                 margin: EdgeInsets.only(bottom:index==rate.length-1?MediaQuery.of(context).size.height*.05:MediaQuery.of(context).size.height*.01,),
-                   padding: EdgeInsets.only(
-                       top: MediaQuery.of(context).size.height*.015,
-                       bottom: MediaQuery.of(context).size.height*.015,
-                       left:12,
-                       right: 12
-                   ),
-                   decoration: BoxDecoration(
-                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                       border: Border.all(color: Colors.black12,width: 1),
-                     color: Colors.black12.withOpacity(.05)
-                   ),
-                   child: Column(
-                     children: [
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
-                           Row(
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                              CircleAvatar(
-                                minRadius: 13,
-                                maxRadius: 14,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.all(Radius.circular(1000)),
-                                    child: rate[index].userPhoto==null?Icon(Icons.person,):Image.network(GlobalVariable.URl+rate[index].userPhoto)),
-                              ),
-                              SizedBox(width: 5,),
-                              Container(
-                                  width: MediaQuery.of(context).size.width*.55,
-                                  child: Text(rate[index].userName,maxLines: 1,))
-                             ],
-                           ),
-                            CustomRate(rate[index].rateNum,12)
-                         ],
+               child: Container(
+                 width: MediaQuery.of(context).size.width*.9,
+                 padding: EdgeInsets.only(
+                   top: 7
+                 ),
+
+                 child: ListView.builder(
+                     padding: EdgeInsets.only(
+                       //left: MediaQuery.of(context).size.width*.05,
+                      // right: MediaQuery.of(context).size.width*.05,
+                     ),
+                     itemCount: Specification.length,itemBuilder: (context,index){
+                   return Container(
+                       decoration: BoxDecoration(
+                           borderRadius: BorderRadius.all(Radius.circular(10)),
+                           border: Border.all(color: Colors.black12,width: 1),
+                           color: Colors.black12.withOpacity(.05)
                        ),
-                       SizedBox(height: 8,),
-                       Container(
-                         width: MediaQuery.of(context).size.width*.75,
-                         child: Text(rate[index].comment,
-                         maxLines: 3,textAlign: TextAlign.center,style: TextStyle(fontSize: 12),),
-                       ),
-                       SizedBox(height: 8,),
-                     ],
-                   ),
-                 );
-               }),
+                     width: MediaQuery.of(context).size.width,
+                   margin: EdgeInsets.only(bottom:MediaQuery.of(context).size.height*.01,),
+                     padding: EdgeInsets.only(
+                         top: MediaQuery.of(context).size.height*.01,
+                         bottom: MediaQuery.of(context).size.height*.01,
+                         left:12,
+                         right: 12
+                     ),
+
+                     child: Column(
+                       children: [
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           children: [
+                             Text(Specification[index].speceficationKey),
+                             Text(Specification[index].value)
+                           ],
+                         ),
+                        /* SizedBox(height: 5,),
+                         Container(
+                           height: 1,
+                           width: MediaQuery.of(context).size.width,
+                           color: Colors.black12,
+                         )*/
+                       ],
+                     )
+                   );
+                 }),
+               ),
              )
-             
+
            ],
          ),
-       
+
      ):Center(child: CircularProgressIndicator(),),
      ),
    );
@@ -381,5 +421,117 @@ class  _state extends State<ProductDetails>{
     } else {
       return 0;
     }
+  }
+  SetRate(BuildContext context,var ProductId) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          child:  Container(
+            padding: EdgeInsets.only(
+                left: 10,
+                right: 10
+            ),
+            height: 170.0,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black12,width: 2.0)
+            ),
+            child: Stack(children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center
+                ,crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                 Form(
+                   key: formKey,
+                   child: Column(
+                     children: [
+                       Container(
+                         width: MediaQuery.of(context).size.width*.8,
+                         decoration: BoxDecoration(
+                           /* borderRadius:BorderRadius.all(Radius.circular(30)),
+                                  color: Colors.white,*/
+                         ),
+                         child: TextFormField(
+                           keyboardType: TextInputType.text,
+                           validator: (value){
+                             if(value.isEmpty){
+                               return "Enter comment";
+                             }
+                             return null;
+                           },
+                           //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
+                           decoration: InputDecoration(
+                             errorStyle: TextStyle(fontSize: 11),
+                             contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
+                             hintText:"Enter Comment",
+                             hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
+
+                             suffixIconConstraints: BoxConstraints(
+                                 maxHeight: 50,
+                                 minHeight: 30,
+                                 maxWidth: 70,
+                                 minWidth: 50
+                             ) ,
+                           ),
+                           controller: comment,
+                         ),
+                       ),
+                     ],
+                   ),
+                 ),
+                  SizedBox(height: 15,),
+                  SmoothStarRating(
+                    rating:rate,
+                      isReadOnly: false,
+                    size: 30,
+                    filledIconData: Icons.star,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    onRated: (val){
+                      setState(() {
+                        rate=val;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10,),
+                  GestureDetector(
+                    child: Container(
+                      decoration:BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color:Colors.blue
+                      ),
+                      height: MediaQuery.of(context).size.height*.045,
+                      width: MediaQuery.of(context).size.width*.5,
+                      alignment: Alignment.center,
+                      child:   Text( "تاكيد",style: TextStyle(color:Colors.white,fontSize: 10),),
+                    ),
+                    onTap: ()async{
+                      if(formKey.currentState.validate()){
+                        Map<String,dynamic>responce=await productServices.SetRate(lang, token, comment.text, int.parse(rate.floor().toString()), ProductId, user_id);
+                        Navigator.pop(context);
+                        setState(() {
+                          comment.text="";
+                          rate=0.0;
+                        });
+                        if(responce["status"]==200){
+                          Toast.show(
+                              "Your Comment Has Been Added", context,
+                              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                        }
+                        else{
+                          Toast.show(
+                              "You Have Add Comment Before", context,
+                              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                        }
+                      }
+                    },
+                  ),
+                  SizedBox(height: 8,),
+                ],
+              ),
+
+
+            ],),
+          ),
+        ));
   }
 }

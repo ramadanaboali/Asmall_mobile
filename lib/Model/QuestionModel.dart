@@ -32,7 +32,7 @@ class QuestionModel {
   };
 }
 
-class QuestionDetail{
+class QuestionDetail {
   QuestionDetail({
     this.questionDto,
     this.answerDtos,
@@ -62,6 +62,9 @@ class AnswerDto {
     this.userName,
     this.userPhoto,
     this.isDeleted,
+    this.createdAt,
+    this.creationDate,
+    this.creationTime,
   });
 
   String id;
@@ -69,9 +72,12 @@ class AnswerDto {
   String questionQuestionText;
   String questionId;
   String userId;
-  UserName userName;
-  UserPhoto userPhoto;
+  String  userName;
+  String userPhoto;
   bool isDeleted;
+  DateTime createdAt;
+  String creationDate;
+  String creationTime;
 
   factory AnswerDto.fromJson(Map<String, dynamic> json) => AnswerDto(
     id: json["id"],
@@ -79,9 +85,12 @@ class AnswerDto {
     questionQuestionText: json["questionQuestionText"],
     questionId: json["questionId"],
     userId: json["userId"],
-    userName: userNameValues.map[json["userName"]],
-    userPhoto: userPhotoValues.map[json["userPhoto"]],
+    userName: json["userName"],
+    userPhoto: json["userPhoto"],
     isDeleted: json["isDeleted"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    creationDate:json["creationDate"],
+    creationTime: json["creationTime"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -93,8 +102,18 @@ class AnswerDto {
     "userName": userNameValues.reverse[userName],
     "userPhoto": userPhotoValues.reverse[userPhoto],
     "isDeleted": isDeleted,
+    "createdAt": createdAt.toIso8601String(),
+    "creationDate": creationDateValues.reverse[creationDate],
+    "creationTime": creationTime,
   };
 }
+
+enum CreationDate { THE_20210307, THE_20210222 }
+
+final creationDateValues = EnumValues({
+  "2021/02/22": CreationDate.THE_20210222,
+  "2021/03/07": CreationDate.THE_20210307
+});
 
 enum UserName { MUHAMMAD_RAYAN, ISLAM_ALI, ALI_HASSAN }
 
@@ -122,6 +141,9 @@ class QuestionDto {
     this.userName,
     this.userPhoto,
     this.isDeleted,
+    this.createdAt,
+    this.creationDate,
+    this.creationTime,
   });
 
   String id;
@@ -129,9 +151,12 @@ class QuestionDto {
   String productId;
   String productNameEn;
   String userId;
-  UserName userName;
-  UserPhoto userPhoto;
+  String userName;
+  String  userPhoto;
   bool isDeleted;
+  DateTime createdAt;
+  String creationDate;
+  String creationTime;
 
   factory QuestionDto.fromJson(Map<String, dynamic> json) => QuestionDto(
     id: json["id"],
@@ -139,9 +164,12 @@ class QuestionDto {
     productId: json["productId"],
     productNameEn: json["productNameEn"],
     userId: json["userId"],
-    userName: userNameValues.map[json["userName"]],
-    userPhoto: userPhotoValues.map[json["userPhoto"]],
+    userName: json["userName"],
+    userPhoto: json["userPhoto"],
     isDeleted: json["isDeleted"],
+    createdAt: DateTime.parse(json["createdAt"]),
+    creationDate:json["creationDate"],
+    creationTime: json["creationTime"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -153,6 +181,9 @@ class QuestionDto {
     "userName": userNameValues.reverse[userName],
     "userPhoto": userPhotoValues.reverse[userPhoto],
     "isDeleted": isDeleted,
+    "createdAt": createdAt.toIso8601String(),
+    "creationDate": creationDateValues.reverse[creationDate],
+    "creationTime": creationTime,
   };
 }
 

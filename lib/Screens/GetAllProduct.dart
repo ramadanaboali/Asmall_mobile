@@ -1,5 +1,6 @@
-import 'package:ashmall//GlobalFunction.dart';
+import 'package:ashmall/GlobalFunction.dart';
 import 'package:ashmall/Model/ProductModel.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Screens/CustomText.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/Services/ProductServices.dart';
@@ -61,7 +62,7 @@ class _state extends State <AllProduct>{
        body: Container(
          child: Column(
            children: [
-             SizedBox(height: MediaQuery.of(context).size.height*.02,),
+             /*SizedBox(height: MediaQuery.of(context).size.height*.02,),
              Container(
                padding: EdgeInsets.only(
                    left: MediaQuery.of(context).size.width*.03,
@@ -133,7 +134,8 @@ class _state extends State <AllProduct>{
                    Icon(Icons.menu)
                  ],
                ),
-             ),
+             ),*/
+             CustomAppBar(this.name),
              SizedBox(height: MediaQuery.of(context).size.height*.02,),
              Container(
                  width: MediaQuery.of(context).size.width*.9,
@@ -163,7 +165,7 @@ class _state extends State <AllProduct>{
                  return GestureDetector(
                    onTap: (){
                      print("sssssssss");
-                     Navigator.push(context, GlobalFunction.route(ProductDetails(data[index].id)));
+                     Navigator.push(context, GlobalFunction.route(ProductDetails(data[index].id,data[index].name)));
                    },
                    child: Container(
                      margin: EdgeInsets.only(

@@ -1,6 +1,8 @@
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'CustomAppBar.dart';
 import '../main.dart';
 
@@ -13,6 +15,19 @@ class Notifications extends StatefulWidget{
 }
 class _state extends State <Notifications>{
   home h=new home();
+  var lang;
+  loadData()async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    setState(() {
+      lang=prefs.getString("lang");
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
@@ -27,7 +42,6 @@ class _state extends State <Notifications>{
                 padding: EdgeInsets.only(
                   left: 10,
                   right: 20,
-
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,8 +51,8 @@ class _state extends State <Notifications>{
                         onTap: (){
                           Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                         },
-                        child: Icon(Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
-                    Text("Notifications",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
+                        child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                    Text(DemoLocalizations.of(context).title["Notifications"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                     GestureDetector(
                         onTap: (){
                         //  Navigator.pushNamedAndRemoveUntil(context, "/notification", (route) => false);
@@ -101,7 +115,7 @@ class _state extends State <Notifications>{
                                           color: Color(h.mainColor)
                                       ),
                                       padding: EdgeInsets.all(5),
-                                      child: Icon(Icons.adb_outlined,color: Colors.white,size: 18,),
+                                      child: Icon(Icons.notifications_none_outlined,color: Colors.white,size: 18,),
                                     ),
                                     SizedBox(width: 10,),
                                     Column(

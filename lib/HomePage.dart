@@ -1,5 +1,6 @@
-import 'file:///D:/projects/ashmool/lib/Screens/Cart.dart';
-import 'file:///D:/projects/ashmool/lib/Screens/MainPage.dart';
+import 'Screens/Profile.dart';
+import 'file:///D:/projects/ashmall/lib/Screens/Cart.dart';
+import 'file:///D:/projects/ashmall/lib/Screens/MainPage.dart';
 import 'package:flutter/material.dart';
 import 'Screens/Login.dart';
 import 'Screens/Notifications.dart';
@@ -25,7 +26,7 @@ class _State extends State<HomePage> {
     MainPage(),
     Notifications(),
     Cart(),
-    Login(),
+    Profile(),
   ];
   @override
   void initState() {
@@ -54,7 +55,18 @@ class _State extends State<HomePage> {
           },
           items: [
             BottomNavigationBarItem(
-                icon:Icon(Icons.home,size: 30,),
+                icon:Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(1000)),
+                    color: _currentIndex==0?Color(h.mainColor):Colors.black54
+                  ),
+                  padding: EdgeInsets.all(3),
+                  child: ClipRRect(
+                    child: Image.asset("images/logo.png",color: Colors.white,),
+                  ),
+                ),
                 title:  Text("",style: TextStyle(fontSize: 0),)),
             BottomNavigationBarItem(
                 icon:  Icon(Icons.notifications,size: 30,),

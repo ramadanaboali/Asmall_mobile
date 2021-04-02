@@ -1,8 +1,10 @@
-import 'package:ashmool/Model/CategoryModel.dart';
-import 'package:ashmool/Model/SubCategoryModel.dart';
-import 'package:ashmool/Services/CategoryServices.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
-import 'package:ashmool/main.dart';
+import 'package:ashmall/Model/CategoryModel.dart';
+import 'package:ashmall/Model/SubCategoryModel.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Services/CategoryServices.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +25,7 @@ List <CategoryDetail>Category=[];
 CategoryServices categoryServices=new CategoryServices();
 loadData()async{
   SharedPreferences prefs=await SharedPreferences.getInstance();
-  Category=await categoryServices.getAllCategory("ar",prefs.getString("token"));
+  Category=await categoryServices.getAllCategory(prefs.getString("lang"),prefs.getString("token"));
   getSubCat(Category[0].id);
   setState(() {
     SelectedCategory==Category[0].id;
@@ -32,10 +34,10 @@ loadData()async{
   print("sssssssssssssssssssssssss");
 }
 TextEditingController searchKey=new TextEditingController();
-List<SubCategoryDetail>subCategories;
+List<SubCategoryDetail>subCategories=[];
 getSubCat(String id)async{
   SharedPreferences prefs=await SharedPreferences.getInstance();
-  subCategories=await categoryServices.getSubCategory("en", id,);
+  subCategories=await categoryServices.getSubCategory(prefs.getString("lang"), id,);
   setState(() {
   });
 }
@@ -52,7 +54,7 @@ getSubCat(String id)async{
        body: Category.length>0?Container(
          child: Column(
            children: [
-             SizedBox(height: MediaQuery.of(context).size.height*.02,),
+        /*     SizedBox(height: MediaQuery.of(context).size.height*.02,),
              Container(
                padding: EdgeInsets.only(
                    left: MediaQuery.of(context).size.width*.03,
@@ -124,7 +126,8 @@ getSubCat(String id)async{
                    Icon(Icons.menu)
                  ],
                ),
-             ),
+             ),*/
+             CustomAppBar(DemoLocalizations.of(context).title["category"]),
              SizedBox(height: MediaQuery.of(context).size.height*.015,),
              Expanded(
                child: Row(

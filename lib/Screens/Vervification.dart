@@ -1,9 +1,9 @@
-import 'package:ashmool/Screens/CustomAppBar.dart';
-import 'package:ashmool/Services/UserServices.dart';
+import 'package:ashmall/Services/UserServices.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../main.dart';
+import 'CustomAppBar.dart';
 
 class verification extends StatefulWidget {
   String email;

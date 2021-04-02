@@ -1,13 +1,20 @@
-import 'package:ashmool/Screens/CustomAppBar.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
+import 'package:ashmall/Screens/ChooseAddress.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Screens/Orders.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/ProductServices.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 import '../DbHelper.dart';
+import '../GlobalFunction.dart';
 import '../Model/CartModelLocal.dart';
 import '../main.dart';
+import 'Login.dart';
 
 
 class Cart extends StatefulWidget {
@@ -19,15 +26,22 @@ class Cart extends StatefulWidget {
 class _state extends State<Cart> {
   home h=new home();
   int counter=1;
+  ProductServices productServices =new ProductServices();
 
   int totalquantity=0;
   double allPrice=0.0;
   List dataLocal=[];
   DbHelper db=new DbHelper();
+  String address_id;
+  String user_id;
+  var lang;
   loadData() async {
+    SharedPreferences prefs=await SharedPreferences.getInstance();
     dataLocal=await db.allProduct();
-
     setState(() {
+      user_id=prefs.getString("id");
+      address_id=prefs.getString("address_id");
+      lang=prefs.getString("lang");
     });
     print(dataLocal.length.toString());
     print("ssssssssssssssssssssss");
@@ -63,8 +77,8 @@ class _state extends State<Cart> {
                       onTap: (){
                         Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                       },
-                      child: Icon(Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
-                  Text("Shooping Cart",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
+                      child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                  Text(DemoLocalizations.of(context).title["ShoopingCart"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                   GestureDetector(
                       onTap: (){
                         Navigator.pushNamedAndRemoveUntil(context, "/notification", (route) => false);
@@ -85,9 +99,13 @@ class _state extends State<Cart> {
                           padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.15),child: Center(
                         child: Column(
                           children: [
-                            Image.asset("images/icon/cart.png",color: Colors.black26),
+                            ClipRRect(
+                                borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                child: Image.asset("images/logo.png",color: Color(h.mainColor),
+                                height: MediaQuery.of(context).size.height*.25,
+                                )),
                             SizedBox(height: MediaQuery.of(context).size.height*.035,),
-                            Text("No Items In Your Cart",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black26),),
+                            Text(DemoLocalizations.of(context).title["NoItemsInYourCart"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black26),),
                             SizedBox(height: MediaQuery.of(context).size.height*.035,),
                             GestureDetector(
                               onTap: (){
@@ -104,7 +122,7 @@ class _state extends State<Cart> {
                                       borderRadius: BorderRadius.all(Radius.circular(20)),
                                       //  border: Border.all(width: 1.0,color: Colors.black26)
                                     ),
-                                    child: Text("Shpping Now",style: TextStyle(fontSize: 12),),
+                                    child: Text(DemoLocalizations.of(context).title["ShppingNow"],style: TextStyle(fontSize: 12),),
                                   )
 
                               ),
@@ -292,7 +310,7 @@ class _state extends State<Cart> {
                                                     ],
                                                   ),
                                                 ),
-                                                SizedBox(height:  MediaQuery.of(context).size.height*.005,),
+                                                SizedBox(height:  MediaQuery.of(context).size.height*.01,),
 
                                               ],
                                             ),
@@ -322,7 +340,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("تفاصيل الفاتورة ",style: TextStyle(fontSize: 12,color:Colors.black),)                      ],
+                      Text("Bill Details",style: TextStyle(fontSize: 12,color:Colors.black),)                      ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height*.005,),
                   Divider(color: Colors.black26,height: 1,),
@@ -330,7 +348,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("مجموع الطلبات ",style: TextStyle(fontSize: 12,color:Colors.black),),
+                      Text("Total Orders",style: TextStyle(fontSize: 12,color:Colors.black),),
                       Text(allPrice.toString(),style: TextStyle(fontSize: 12,color:Colors.black),)
                     ],
                   ),
@@ -340,7 +358,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("اجمالي الكمية ",style: TextStyle(fontSize: 12,color:Colors.black),),
+                      Text("Total Quantity",style: TextStyle(fontSize: 12,color:Colors.black),),
                       Text(totalquantity.toString(),style: TextStyle(fontSize: 12,color:Colors.black),)
                     ],
                   ),
@@ -350,26 +368,15 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("الضريبة 15% ",style: TextStyle(fontSize: 12,color:Colors.black),),
-                      Text(((allPrice*15)/100).toString(),style: TextStyle(fontSize: 12,color:Colors.black),)
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height*.005,),
-                  Divider(color: Colors.black26,height: 1,),
-                  SizedBox(height: MediaQuery.of(context).size.height*.005,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("الاجمالي ",style: TextStyle(fontSize: 12,color: Color(h.mainColor),),),
-                      Text((allPrice+(allPrice*15)/100).toString(),style: TextStyle(fontSize: 12,color: Color(h.mainColor)),)
+                      Text("Total ",style: TextStyle(fontSize: 12,color: Color(h.mainColor),),),
+                      Text((allPrice).toString(),style: TextStyle(fontSize: 12,color: Color(h.mainColor)),)
                     ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height*.02,),
                   GestureDetector(
                     child: Container(
                       margin: EdgeInsets.only(
-                        //right:  MediaQuery.of(context).size.width*.2,
-                        //left:  MediaQuery.of(context).size.width*.2
+                       bottom: 10
                       ),
                       decoration:BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
@@ -382,28 +389,45 @@ class _state extends State<Cart> {
                         left: MediaQuery.of(context).size.width*.07,
                         right: MediaQuery.of(context).size.width*.07,
                       ),
-                      child: Text("متابعة الشراء",style: TextStyle(color:Colors.white,fontSize: 14),),
+                      child: Text("Continue to purchase",style: TextStyle(color:Colors.white,fontSize: 14),),
 
                     ),
-                    onTap: (){
-                     // Navigator.push(context, GlobalFunction.routeBottomLeft(ConfirmOrder()));
-                      /*   Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MainCreateOrderPageUI()),
-                          );*/
-//                          if(totalquantity==0){
-//                            Toast.show(
-//                                "برجاء شراء منتج علي الاقل", context,
-//                                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-//                          }
-//                          else{
-//                            //MainCreateOrderPageUI
-//                            Navigator.push(
-//                              context,
-//                              MaterialPageRoute(builder: (context) => MainCreateOrderPageUI()),
-//                            );
-//                            Navigator.pushNamed(context, '/ConfirmOrder2');
-//                          }
+                    onTap: ()async{
+                      SharedPreferences prefs=await SharedPreferences.getInstance();
+                        loadData();
+                        if(user_id!=null){
+                          if(address_id!=null){
+
+                            List Items=new List();
+                            List<Map<String,dynamic>>list2=[];
+                            for(int i=0;i<dataLocal.length;i++){
+                              CartMedelLocal c=new CartMedelLocal.fromMap(dataLocal[i]);
+                              AddOrderDetail a=new AddOrderDetail(ProductId:c.id, Quantity:int.parse(c.quantity.toString()));
+                              Map<String,dynamic>asd={"ProductId":c.id,"Quantity":c.quantity};
+                              Items.add(a.toJson());
+                              list2.add(asd);
+                            }
+                            print(Items);
+                            // Map<String, dynamic> result = Map.fromIterable(Items, key: (v) => v.ProductId.toString(), value: (v) => v.Quantity.toString());
+                            Map<String,dynamic>data=await productServices.addOrders(lang, prefs.getString("id"), allPrice, prefs.getString("address_id"), Items);
+                           if(data["status"]==200){
+                             Toast.show(
+                                 "${data["message"]}", context,
+                                 duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                                Navigator.push(context, GlobalFunction.route(Orders()));
+                                int i=await db.deleteCart();
+                                setState(() {
+                                });
+                            }
+                          }
+                          else{
+                            Navigator.push(context, GlobalFunction.route(ChooseAddress()));
+                          }
+                        }
+                        else{
+                          Navigator.push(context, GlobalFunction.route(Login()));
+                        }
+
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height*.01,),
@@ -425,15 +449,17 @@ class _state extends State<Cart> {
     //totalquantity=0;
     //allPrice=0.0;
     List product=await db.allProduct();
-    // home.c=product.length;
     for(int i=0;i<product.length;i++){
       CartMedelLocal c=new CartMedelLocal.fromMap(product[i]);
-      totalquantity+=int.parse(c.quantity.toString());
-      allPrice+=double.parse(c.totalPrice.toString());
+      totalquantity=totalquantity+int.parse(c.quantity.toString());
+      allPrice=allPrice+double.parse((c.price*c.quantity).toString());
+      print(totalquantity);
+      print("qqqqqqqqqqqqqqqq");
       setState(() {
-
       });
     }
+    print(totalquantity);
+    print("00000000000000000000000");
   }
   updateTotal(int q,double p){
     totalquantity+=q;
@@ -494,6 +520,7 @@ class _state extends State<Cart> {
                             child:   Text("تـأكيد",style: TextStyle(color:Colors.white,fontSize: 8),),
                           ),
                           onTap: () async {
+
                             setState(() {
                               db.delete(id);
                             });

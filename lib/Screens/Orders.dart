@@ -1,6 +1,10 @@
+import 'package:ashmall/Model/OrdersModel.dart';
+import 'package:ashmall/Services/ProductServices.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../GlobalFunction.dart';
 import '../HomePage.dart';
 import '../main.dart';
@@ -13,19 +17,33 @@ class Orders extends StatefulWidget{
   }
 }
 class _state extends State<Orders>{
-  List<String>Category=["Pending","InWay","Delivered","Canceled"];
+  List<String>Category=["InProcess","OnGoing","Delivered","Rejected"];
+  List<OrdersDetail>data;
+  ProductServices productServices=new ProductServices();
+  var lang;
+  loadData(String Status)async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    data=await productServices.getAllOrders(prefs.getString("lang"), prefs.getString("id"),Status);
+    setState(() {
+      lang=prefs.getString("lang");
+    });
+    print(data.length);
+    print("sssssssssssssss");
+  }
   String SelectedCategory;
   home h=new home();
   int index=0;
-  List<String>data=["","",""];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     SelectedCategory=Category[0];
+    loadData(Category[0]);
   }
   @override
   Widget build(BuildContext context) {
+    List<String>Category1=[DemoLocalizations.of(context).title["InProcess"],DemoLocalizations.of(context).title["OnGoing"],
+      DemoLocalizations.of(context).title["Delivered"],DemoLocalizations.of(context).title["Rejected"]];
     List<Widget>content=[
       Expanded(child: ListView.builder(
           padding: EdgeInsets.only(
@@ -89,44 +107,69 @@ class _state extends State<Orders>{
           ),
         );
       })),
-
     ];
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
     return SafeArea(child: Scaffold(
-
       body: Container(
           child: Column(
             children: [
-              CustomAppBar("Orders"),
+              Container(
+                height: MediaQuery.of(context).size.height*.07,
+                width: MediaQuery.of(context).size.width,
+                color: Color(h.mainColor),
+                padding: EdgeInsets.only(
+                  left: 10,
+                  right: 20,
+
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                        Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
+                        },
+                        child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                    Text(DemoLocalizations.of(context).title["Orders"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
+                    GestureDetector(
+                        onTap: (){
+                         // Navigator.pop(context);
+                        },
+                        child: Icon(Icons.notifications,color: Colors.white,size: 25,))
+                  ],
+                ),
+              ),
               SizedBox(height: MediaQuery.of(context).size.height*.03,),
               Container(
                 height: 37,
                 child: ListView.builder(
-                    padding: EdgeInsets.zero,
+                    padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width*.05,
+                      right: MediaQuery.of(context).size.width*.05,
+                    ),
                     scrollDirection: Axis.horizontal,
                     itemCount: Category.length,
                     itemBuilder: (context,index)
                     {
                       return GestureDetector(
                         onTap: (){
+                          loadData(Category[index]);
                           setState(() {
                             SelectedCategory=Category[index];
                           });
                         },
                         child: Container(
-                            padding: EdgeInsets.only(
-                                left:MediaQuery.of(context).size.width*.05
-                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                    width: 80,
+                                    width: 100,
                                     alignment: Alignment.center,
-                                    child: Text(Category[index],style: TextStyle(color: SelectedCategory==Category[index]?Color(h.mainColor):Colors.black54,fontSize: 14),)),
-                                SizedBox(height: 4,),
+                                    child: Text(Category1[index],maxLines:1,style: TextStyle(color: SelectedCategory==Category[index]?Color(h.mainColor):Colors.black54,fontSize: 14),)),
+                                SizedBox(height: 7,),
                                 SelectedCategory==Category[index]?  Container(height:2,color: Color(h.mainColor),
-                                  width: 80,
+                                  width: 100,
                                 ):SizedBox()
 
                               ],
@@ -135,14 +178,52 @@ class _state extends State<Orders>{
                     }
                 ),
               ),
-              SelectedCategory==Category[0]?
-              Expanded(child: ListView.builder(
-                  padding: EdgeInsets.only(
+            data==null?Expanded(
+              child: Container(
+                  padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.1),child: Center(
+                child: CircularProgressIndicator(),
+              )),
+            ): data.length==0? Expanded(
+               child: Container(
+                   padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.1),child: Center(
+                 child: Column(
+                   children: [
+                     Image.asset("images/orders.png",color: Colors.black38,
+                       height: MediaQuery.of(context).size.height*.25,
+                     ),
+                     SizedBox(height: MediaQuery.of(context).size.height*.035,),
+                     Text(DemoLocalizations.of(context).title["noOrders"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54),),
+                     SizedBox(height: MediaQuery.of(context).size.height*.035,),
+                     GestureDetector(
+                       onTap: (){
+                         Navigator.push(context, GlobalFunction.route(HomePage(4)));
+                       },
+                       child: DottedBorder(
+                           color: Color(h.mainColor),
+                           strokeWidth: 1.5,
+                           child: Container(
+                             width: MediaQuery.of(context).size.width*.6,
+                             height: MediaQuery.of(context).size.height*.06,
+                             alignment: Alignment.center,
+                             decoration: BoxDecoration(
+                               borderRadius: BorderRadius.all(Radius.circular(20)),
+                               //  border: Border.all(width: 1.0,color: Colors.black26)
+                             ),
+                             child: Text(DemoLocalizations.of(context).title["ShppingNow"],style: TextStyle(fontSize: 12),),
+                           )
+
+                       ),
+                     )
+                   ],
+                 ),
+               )),
+             ):Expanded(child: ListView.builder(
+                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height*.0,
-                      bottom: MediaQuery.of(context).size.height*.04
+                       bottom: MediaQuery.of(context).size.height*.04
                   ),
-                  itemCount: 4,itemBuilder: (context,index){
-                return   Container(
+                  itemCount: data.length,itemBuilder: (context,index){
+                 return   Container(
                   margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*.03,right:  MediaQuery.of(context).size.width*.04,left:  MediaQuery.of(context).size.width*.04,),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -172,7 +253,7 @@ class _state extends State<Orders>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                              Text(" Order Number ${index+1}",style: TextStyle(height: .8,fontSize: 16,fontWeight: FontWeight.bold),),
+                              Text(data[index].orderDate.toString().substring(0,10),style: TextStyle(height: .8,fontSize: 16,fontWeight: FontWeight.bold),),
                               SizedBox(height: MediaQuery.of(context).size.height*.01,),
                               Container(
                                 width:MediaQuery.of(context).size.width*.9,
@@ -183,10 +264,10 @@ class _state extends State<Orders>{
                                   left: MediaQuery.of(context).size.width*.05,
                                 ),
                                 child: ListView.builder(
-                                    itemCount: data.length,
+                                    itemCount: data[index].orderItems.length,
                                     primary: false,
                                     shrinkWrap: true,
-                                    itemBuilder: (context,index){
+                                    itemBuilder: (context,i){
                                       return Column(
                                         children: [
                                           Container(
@@ -196,10 +277,10 @@ class _state extends State<Orders>{
                                               children: [
                                                 Row(
                                                   children: [
-                                                    Text("1 ",style: TextStyle(fontSize: 12,color: Colors.black54)),
+                                                    Text(data[index].orderItems[i].quantity.toString(),style: TextStyle(fontSize: 12,color: Colors.black54)),
                                                     Icon(Icons.clear,size: 17,color: Colors.black54),
                                                     SizedBox(width: 5,),
-                                                    Text(" Product Name ",style: TextStyle(fontSize: 12,color: Colors.black54)),
+                                                    Text(data[index].orderItems[i].productName,style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                                                   ],
                                                 ),
@@ -210,11 +291,11 @@ class _state extends State<Orders>{
                                                       Icon(Icons.edit_rounded,size: 17,color: Colors.black54),
                                                     ],
                                                   ),*/
-                                                Text("80 LE",style: TextStyle(fontSize: 12,color: Colors.black54),),
+                                                Text(data[index].orderItems[i].price.toString(),style: TextStyle(fontSize: 12,color: Colors.black54),),
                                               ],
                                             ),
                                           ),
-                                          index==data.length-1?Column(
+                                          i==data[index].orderItems.length-1?Column(
                                             children: [
                                               Divider(color: Colors.black38,thickness: 1,),
                                               Container(
@@ -230,7 +311,7 @@ class _state extends State<Orders>{
                                                       Icon(Icons.edit_rounded,size: 17,color: Colors.black54),
                                                     ],
                                                   ),*/
-                                                    Text("80 LE",style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),),
+                                                    Text(data[index].totalPrice.toString(),style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),),
                                                   ],
                                                 ),
                                               )
@@ -248,41 +329,7 @@ class _state extends State<Orders>{
 
                 ),
                 );
-              })):Expanded(
-                child: Container(
-                    padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.1),child: Center(
-                  child: Column(
-                    children: [
-                      Image.asset("images/orders.png",color: Colors.black26,
-                        height: MediaQuery.of(context).size.height*.3,
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height*.035,),
-                      Text("No Orders ",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black26),),
-                      SizedBox(height: MediaQuery.of(context).size.height*.035,),
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, GlobalFunction.route(HomePage(4)));
-                        },
-                        child: DottedBorder(
-                            color: Colors.black26,
-                            strokeWidth: 1.5,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width*.6,
-                              height: MediaQuery.of(context).size.height*.06,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(20)),
-                                //  border: Border.all(width: 1.0,color: Colors.black26)
-                              ),
-                              child: Text("shopping Now ",style: TextStyle(fontSize: 12),),
-                            )
-
-                        ),
-                      )
-                    ],
-                  ),
-                )),
-              )
+              }))
             ],
           ),
         ),

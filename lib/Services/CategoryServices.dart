@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:ashmool/Model/CategoryModel.dart';
-import 'package:ashmool/Model/SubCategoryModel.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
+import 'package:ashmall/Model/CategoryModel.dart';
+import 'package:ashmall/Model/SubCategoryModel.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:http/http.dart' as http;
 
 class CategoryServices{

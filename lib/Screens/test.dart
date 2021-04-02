@@ -1,8 +1,8 @@
-import 'package:ashmool/Model/ProductModel.dart';
-import 'package:ashmool/Screens/CustRate.dart';
-import 'package:ashmool/Services/GlobalVarible.dart';
-import 'package:ashmool/Services/ProductServices.dart';
-import 'package:ashmool/main.dart';
+import 'package:ashmall/Model/ProductModel.dart';
+import 'package:ashmall/Screens/CustRate.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/ProductServices.dart';
+import 'package:ashmall/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

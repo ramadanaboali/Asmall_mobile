@@ -1,6 +1,7 @@
-import 'file:///D:/projects/ashmool/lib/Screens/CustomAppBar.dart';
-import 'package:ashmool/Services/UserServices.dart';
-import 'package:ashmool/main.dart';
+import 'file:///D:/projects/ashmall/lib/Screens/CustomAppBar.dart';
+import 'package:ashmall/Services/UserServices.dart';
+import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,14 +15,29 @@ class Login extends StatefulWidget{
 }
 class _state extends State<Login>{
   home h=new home();
-  final formKey=GlobalKey<FormState>();
+
   UserServices userServices=new UserServices();
   bool passVisibility=true;
+  final formKey=GlobalKey<FormState>();
   TextEditingController username=new TextEditingController();
   TextEditingController password=new TextEditingController();
+  var lang;
+  loadData()async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    setState(() {
+      lang=prefs.getString("lang");
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
+      resizeToAvoidBottomPadding: false,
       /*appBar: AppBar(
         backgroundColor: Colors.black26,
         title: Text("Login",style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold),),
@@ -35,7 +51,33 @@ class _state extends State<Login>{
       body:  Container(
           child: Column(
             children: [
-              CustomAppBar("Login"),
+              Container(
+                height: MediaQuery.of(context).size.height*.07,
+                width: MediaQuery.of(context).size.width,
+                color: Color(h.mainColor),
+                padding: EdgeInsets.only(
+                  left: 10,
+                  right: 20,
+
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                    Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
+                    GestureDetector(
+                        onTap: (){
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.notifications,color: Color(h.mainColor),size: 25,))
+                  ],
+                ),
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Form(
@@ -66,7 +108,7 @@ class _state extends State<Login>{
                                     keyboardType: TextInputType.text,
                                     validator: (value){
                                       if(value.isEmpty){
-                                        return 'Enter Your Email';
+                                        return DemoLocalizations.of(context).title['EnterYourEmail'];
                                       }
                                       return null;
                                     },
@@ -74,7 +116,7 @@ class _state extends State<Login>{
                                     decoration: InputDecoration(
                                       errorStyle: TextStyle(fontSize: 11),
                                       contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                      hintText:'Email' ,
+                                      hintText:DemoLocalizations.of(context).title['Email'] ,
                                       hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
 
                                       suffixIconConstraints: BoxConstraints(
@@ -105,7 +147,7 @@ class _state extends State<Login>{
                                   child: TextFormField(
                                     validator: (value){
                                       if(value.isEmpty){
-                                        return 'Enter Your Password';
+                                        return DemoLocalizations.of(context).title['EnterYourPassword'];
                                       }
                                       return null;
                                     },
@@ -115,7 +157,7 @@ class _state extends State<Login>{
                                     decoration: InputDecoration(
                                       errorStyle: TextStyle(fontSize: 11),
                                       contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                      hintText:'Password' ,
+                                      hintText:DemoLocalizations.of(context).title['Password'] ,
                                       suffixIcon:InkWell(
                                         child: Icon(passVisibility?Icons.visibility:Icons.visibility_off,color: Colors.black38,),
                                         onTap: (){
@@ -141,7 +183,7 @@ class _state extends State<Login>{
                           SizedBox(height: 35,),
                           GestureDetector(
                             onTap: () async {
-                              setData("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdWhhbW1hZEVsUmF5YW5BY2Nlc3NUb2tlbiIsImp0aSI6ImRjMGMxMzNlLTJkMjUtNDNiNS1hMmRmLWQ2ZjE1Y2VhYzJhYiIsImlhdCI6IjMvMTMvMjAyMSA0OjI5OjA3IFBNIiwiSWQiOiJjZWJmMmFkNy1hMTc1LTRlODQtYjUwYS03NDBlZWVmYTNjZGYiLCJVc2VyTmFtZSI6Ik11aGFtbWFkIFJheWFuIiwiRW1haWwiOiJlbHJpYW55MjAxN0BnbWFpbC5jb20iLCJleHAiOjE2MTU3MzkzNDcsImlzcyI6Ik11aGFtbWFkRWxSYXlhblNlcnZpY2UiLCJhdWQiOiJNdWhhbW1hZEVsUmF5YW5DbGllbnQifQ.KeKFXpyzWQYchOCw1oZ9EOYvPZMGjl9eVPsgXN5XHhs");
+
                               if(formKey.currentState.validate()){
                                 Map<String,dynamic>data=await userServices.login("en",username.text.trim().toString(), password.text.trim().toString());
                                 if(data["status"]==200){
@@ -150,7 +192,7 @@ class _state extends State<Login>{
                                   Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                                 }else{
                                   Toast.show(
-                                      "ddddddddddddddddd/*${data["message"]}*/", context,
+                                      "${data["message"]}", context,
                                       duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
                                 }
                               }
@@ -163,7 +205,7 @@ class _state extends State<Login>{
                               height: MediaQuery.of(context).size.height*.065,
                               width: MediaQuery.of(context).size.width*.9,
                               alignment: Alignment.center,
-                              child:   Text("Login",style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
+                              child:   Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
                             ),),
                           SizedBox(height: 15,),
                          Container(
@@ -171,7 +213,7 @@ class _state extends State<Login>{
                            child: Row(
                              mainAxisAlignment: MainAxisAlignment.start,
                              children: [
-                             GestureDetector(onTap: (){Navigator.pushNamed(context, "/ForgetPassword");},child: Text("Forget Password",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54)))
+                             GestureDetector(onTap: (){Navigator.pushNamed(context, "/ForgetPassword");},child: Text(DemoLocalizations.of(context).title["ForgetPassword"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54)))
                            ],),
                          )
                         ],
@@ -185,8 +227,8 @@ class _state extends State<Login>{
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Dont Have ACount?"),
-                    GestureDetector(onTap: (){Navigator.pushNamed(context, "/Register");},child: Text(" Sign Up",style: TextStyle(color: Color(h.mainColor),fontWeight: FontWeight.bold),))
+                    Text(DemoLocalizations.of(context).title["DontHaveACount"]+"?"),
+                    GestureDetector(onTap: (){Navigator.pushNamed(context, "/Register");},child: Text(DemoLocalizations.of(context).title["SignUp"],style: TextStyle(color: Color(h.mainColor),fontWeight: FontWeight.bold),))
                   ],
                 ),
               ),

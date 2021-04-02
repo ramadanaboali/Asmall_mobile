@@ -1,8 +1,10 @@
 import 'package:ashmall/GlobalFunction.dart';
 import 'package:ashmall/Model/SubCategoryModel.dart';
+import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Services/CategoryServices.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,7 +42,7 @@ class _state extends State<SubCategory>{
     return SafeArea(child: Scaffold(
         body: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height*.02,),
+            /*SizedBox(height: MediaQuery.of(context).size.height*.02,),
             Container(
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width*.03,
@@ -111,7 +113,8 @@ class _state extends State<SubCategory>{
                   Icon(Icons.menu)
                 ],
               ),
-            ),
+            ),*/
+            CustomAppBar(DemoLocalizations.of(context).title["subcategory"]),
             SizedBox(height: MediaQuery.of(context).size.height*.015,),
             subCategories.length==null?
             Expanded(

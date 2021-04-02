@@ -48,7 +48,10 @@ class DbHelper{
     //db.rawQuery('select * from courses');
     return db.query('product');
   }
-
+  Future<int> deleteCart() async{
+    Database db = await createDatabase();
+    return db.delete('product');
+  }
   Future<int> delete(String id) async{
     Database db = await createDatabase();
     return db.delete('product', where: 'id = ?', whereArgs: [id]);

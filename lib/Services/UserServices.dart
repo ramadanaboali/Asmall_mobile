@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:ashmool/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:http/http.dart' as http;
 
 class UserServices{
   String baseURL=GlobalVariable.URl;
 
-  Future<Map<String,dynamic>>login(var lang,var email,var password)async{
+  Future<Map<String,dynamic>>login(String lang,String email,String password)async{
     String url=baseURL+"api/people/login";
     print(url);
     var body={
@@ -20,6 +20,58 @@ class UserServices{
     print(header);
     try{
       final responce=await http.post(url,body:json.encode(body),headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if(responce.body.isNotEmpty)
+      {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
+  Future<Map<String,dynamic>>resetPassword(String lang,String email,String password)async{
+    String url=baseURL+"api/people/reset";
+    print(url);
+    var body={
+      "newPassword" : password,
+      "confirmPassword" : password,
+      "Email":email
+    };
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try{
+      final responce=await http.post(url,body:json.encode(body),headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if(responce.body.isNotEmpty)
+      {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Map<String,dynamic>>getUserInfo(String lang,String id,String token)async{
+    String url=baseURL+"api/home/get-profile?id=$id";
+    print(url);
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang,
+      "Authorization":"Bearer $token"
+    };
+    print(header);
+    try{
+      final responce=await http.get(url,headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
       if(responce.body.isNotEmpty)
