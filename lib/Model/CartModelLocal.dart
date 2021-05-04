@@ -7,6 +7,8 @@ class CartMedelLocal{
   double _price;
   double _totalPrice;
   int _quantity;
+  String _ColorId;
+  String _ProductSizeId;
   CartMedelLocal(dynamic obj){
     _id = obj['id'];
     _name = obj["name"];
@@ -15,6 +17,8 @@ class CartMedelLocal{
     _totalPrice=obj["totalPrice"];
     _quantity = obj["quantity"];
     _description=obj["description"];
+    _ColorId=obj["ColorId"];
+    _ProductSizeId=obj["ProductSizeId"];
   }
   CartMedelLocal.fromMap(Map<String,dynamic> data){
     _id = data['id'];
@@ -24,8 +28,10 @@ class CartMedelLocal{
     _price = data['price'];
     _totalPrice = data['totalPrice'];
     _quantity = data['quantity'];
+    _ColorId=data["ColorId"];
+    _ProductSizeId=data["ProductSizeId"];
   }
-  Map<String, dynamic> toMap() => {'id' : _id,'name' : _name,'img' : _img,"description":_description,'price' : _price,'totalPrice' : _totalPrice,'quantity' : _quantity};
+  Map<String, dynamic> toMap() => {'id' : _id,'name' : _name,'img' : _img,"description":_description,'price' : _price,'totalPrice' : _totalPrice,'quantity' : _quantity,"ColorId":_ColorId,"ProductSizeId":_ProductSizeId};
 
   String get id => _id;
   String get name => _name;
@@ -34,4 +40,6 @@ class CartMedelLocal{
   double get price => _price;
   double get totalPrice => _totalPrice;
   int get quantity => _quantity;
+  String get ColorId =>_ColorId;
+  String get ProductSizeId =>_ProductSizeId;
 }

@@ -9,6 +9,7 @@ import 'package:ashmall/Services/ProductServices.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'CustRate.dart';
+import 'CustomSearchAppBar.dart';
 
 
 class Reviews extends StatefulWidget{
@@ -129,9 +130,22 @@ class _state extends State<Reviews>{
                  ],
                ),
              ),*/
-             CustomAppBar(this.name),
-             SizedBox(height: MediaQuery.of(context).size.height*.015,),
-             rate==null?Expanded(child: Center(child: CircularProgressIndicator())):rate.length==0? Expanded(child: Center(child: Text(DemoLocalizations.of(context).title["noReviews"]),),):
+             CustomSearchAppBar(),
+             rate==null?Expanded(child: Center(child: CircularProgressIndicator())):rate.length==0?
+             Expanded(
+               child: Center(
+                 child: Column(
+                   children: [
+                     SizedBox(height: MediaQuery.of(context).size.height*.2,),
+                     Image.asset("images/logo.png",
+                       height: MediaQuery.of(context).size.height*.2,
+                     ),
+                     SizedBox(height: 15,),
+                     Text(DemoLocalizations.of(context).title["noReviews"])
+                   ],
+                 ),
+               ),
+             ):
              Expanded(
                child: ListView.builder(
                    padding: EdgeInsets.only(
@@ -166,7 +180,7 @@ class _state extends State<Reviews>{
                                  maxRadius: 14,
                                  child: ClipRRect(
                                      borderRadius: BorderRadius.all(Radius.circular(1000)),
-                                     child: rate[index].userPhoto==null?Icon(Icons.person,):Image.network(GlobalVariable.URl+rate[index].userPhoto)),
+                                     child: rate[index].userPhoto==null?Icon(Icons.person,):Image.network(GlobalVariable.URl+rate[index].userPhoto,fit: BoxFit.fill,)),
                                ),
                                SizedBox(width: 5,),
                                Container(
@@ -178,10 +192,17 @@ class _state extends State<Reviews>{
                          ],
                        ),
                        SizedBox(height: 8,),
-                       Container(
-                         width: MediaQuery.of(context).size.width*.75,
-                         child: Text(rate[index].comment,
-                           maxLines: 3,textAlign: TextAlign.center,style: TextStyle(fontSize: 12),),
+                       Row(
+                         children: [
+                           Container(
+                             width:rate[index].photo==null? MediaQuery.of(context).size.width*.6:MediaQuery.of(context).size.width*.8,
+                             child: Text(rate[index].comment,
+                               maxLines: 3,textAlign: TextAlign.start,style: TextStyle(fontSize: 12),),
+                           ),
+                           rate[index].photo==null? Image.network(GlobalVariable.URL2+rate[index].photo,
+                           width: MediaQuery.of(context).size.width*.22,
+                           ):SizedBox()
+                         ],
                        ),
                        SizedBox(height: 8,),
                      ],

@@ -4,12 +4,12 @@ import 'package:ashmall/Screens/ChangePassword.dart';
 import 'package:ashmall/Screens/Login.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/Services/UserServices.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import '../GlobalFunction.dart';
@@ -38,6 +38,7 @@ class _state extends State<Profile>{
   String image;
   Map<String,dynamic>data;
   loadData() async {
+    print("ssssssssssssssss");
     SharedPreferences prefs=await SharedPreferences.getInstance();
     setState(() {
       user_id=prefs.getString("id");
@@ -48,8 +49,10 @@ class _state extends State<Profile>{
         name.text=data["data"]["name"];
         email.text=data["data"]["email"];
         phone.text=data["data"]["phone"];
-        image=GlobalVariable.URl+data["data"]["photo"];
+        image="http://"+data["data"]["photo"];
       });
+      print(image);
+      print("sssssssssssssssssssssssssssssssssssssssssss");
     }
   }
   @override
@@ -84,7 +87,7 @@ class _state extends State<Profile>{
                     children: [
                       GestureDetector(
                           onTap: (){
-                            Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
+                            Navigator.pushNamedAndRemoveUntil(context, "/MainProfile", (route) => false);
                           },
                           child: Icon(Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
                       Text("Profile",style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
@@ -104,6 +107,10 @@ class _state extends State<Profile>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
+                          onTap: (){
+                            pickImage(context);
+                            loadData();
+                          },
                           child: Stack(
                             children: [
                               Container(
@@ -176,6 +183,9 @@ class _state extends State<Profile>{
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     onFieldSubmitted: (value){
+                      if(value.isNotEmpty){
+                        userServices.editProfile(user_id, name.text, email.text, phone.text);
+                      }
                       FocusScope.of(context).requestFocus(emailNode);
                     },
                     validator: (value){
@@ -240,6 +250,9 @@ class _state extends State<Profile>{
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     onFieldSubmitted: (value){
+                      if(value.isNotEmpty){
+                        userServices.editProfile(user_id, name.text, email.text, phone.text);
+                      }
                       FocusScope.of(context).requestFocus(phoneNode);
                     },
                     validator: (value){
@@ -304,6 +317,9 @@ class _state extends State<Profile>{
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     onFieldSubmitted: (value){
+                      if(value.isNotEmpty){
+                        userServices.editProfile(user_id, name.text, email.text, phone.text);
+                      }
                       FocusScope.of(context).requestFocus(emailNode);
                     },
                     validator: (value){
@@ -361,60 +377,15 @@ class _state extends State<Profile>{
     );
   }
   File selectedImage;
-  pickImage( ) async {
+  pickImage(BuildContext context ) async {
     var profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       selectedImage = profileImage;
     });
+  UserServices.updateAvatar(selectedImage, context, user_id);
 
   }
-  sendImagePick(File fileImage,BuildContext context)async
-  {
-    if (fileImage != null) {
-      try {
-        SharedPreferences sharedPreferences = await SharedPreferences
-            .getInstance();
-        Dio dio = Dio();
 
-        ///we used uri.encode to enable upload  image with arabic name
-        // var url =Uri.encodeFull(createPath('user/editProfileImage'));
-        var url = "${GlobalVariable.URl}ar/doctor/uploadCertificates";
-        print(url);
-        String fileName = basename(fileImage.path);
-        // print('${fileName},,,,fileName');
-        //print('${pathImage.path},,,,imagePath.path');
-
-        FormData formData = FormData.fromMap({
-          "file": await MultipartFile.fromFile(
-              fileImage.path, filename: fileName
-              , contentType: MediaType('image', fileName
-              .split('.')
-              .last)),
-          "doctor_id": int.parse(this.user_id)/*int.parse(sharedPreferences.getString('UserID'))*/,
-        });
-        print(formData.fields);
-        print("ssssssssssssssssss");
-        Response response = await dio.post(url, data: formData);
-        print('${response.data},,,,,,,,fields');
-        if (response.statusCode == 200) {
-          Map<String, dynamic>map = response.data;
-          Toast.show(
-              map['Data'], context,
-              duration: Toast.LENGTH_SHORT,
-              gravity: Toast.BOTTOM);
-
-        }
-        else {
-          return null;
-        }
-      }
-      catch (e) {
-        print('${e}imageuploaderror');
-      }
-    }
-    else {
-      pickImage();
-    }}
   setData(var key,var value) async {
     SharedPreferences prefs=await SharedPreferences.getInstance();
     prefs.setString(key, value);

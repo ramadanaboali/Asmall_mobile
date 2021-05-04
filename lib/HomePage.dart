@@ -1,3 +1,4 @@
+import 'Screens/MainProfile.dart';
 import 'Screens/Profile.dart';
 import 'file:///D:/projects/ashmall/lib/Screens/Cart.dart';
 import 'file:///D:/projects/ashmall/lib/Screens/MainPage.dart';
@@ -26,7 +27,7 @@ class _State extends State<HomePage> {
     MainPage(),
     Notifications(),
     Cart(),
-    Profile(),
+    MainProfile(),
   ];
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _State extends State<HomePage> {
           },
           items: [
             BottomNavigationBarItem(
-                icon:Container(
+                icon:_currentIndex==0?Container(
                   height: 40,
                   width: 40,
                   decoration: BoxDecoration(
@@ -66,7 +67,7 @@ class _State extends State<HomePage> {
                   child: ClipRRect(
                     child: Image.asset("images/logo.png",color: Colors.white,),
                   ),
-                ),
+                ):Icon(Icons.home_outlined,size: 33,),
                 title:  Text("",style: TextStyle(fontSize: 0),)),
             BottomNavigationBarItem(
                 icon:  Icon(Icons.notifications,size: 30,),

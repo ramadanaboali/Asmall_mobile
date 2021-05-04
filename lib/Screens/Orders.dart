@@ -130,7 +130,7 @@ class _state extends State<Orders>{
                         onTap: (){
                         Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                         },
-                        child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                        child: Icon(ParentPage.language=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
                     Text(DemoLocalizations.of(context).title["Orders"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                     GestureDetector(
                         onTap: (){
@@ -140,10 +140,12 @@ class _state extends State<Orders>{
                   ],
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*.03,),
+              SizedBox(height: MediaQuery.of(context).size.height*.015,),
               Container(
-                height: 37,
+                height: MediaQuery.of(context).size.height*.055,
                 child: ListView.builder(
+                  shrinkWrap: true,
+                    primary: false,
                     padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width*.05,
                       right: MediaQuery.of(context).size.width*.05,
@@ -166,7 +168,7 @@ class _state extends State<Orders>{
                                 Container(
                                     width: 100,
                                     alignment: Alignment.center,
-                                    child: Text(Category1[index],maxLines:1,style: TextStyle(color: SelectedCategory==Category[index]?Color(h.mainColor):Colors.black54,fontSize: 14),)),
+                                    child: Text(Category1[index],maxLines:1,style: TextStyle(height: 1.5,color: SelectedCategory==Category[index]?Color(h.mainColor):Colors.black54,fontSize: 16,fontWeight: FontWeight.bold),)),
                                 SizedBox(height: 7,),
                                 SelectedCategory==Category[index]?  Container(height:2,color: Color(h.mainColor),
                                   width: 100,
@@ -183,7 +185,8 @@ class _state extends State<Orders>{
                   padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.1),child: Center(
                 child: CircularProgressIndicator(),
               )),
-            ): data.length==0? Expanded(
+            ): data.length==0?
+            Expanded(
                child: Container(
                    padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.1),child: Center(
                  child: Column(

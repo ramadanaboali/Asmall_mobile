@@ -45,7 +45,7 @@ class verificationState extends State<verification> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomPadding: false,
+       // resizeToAvoidBottomPadding: false,
 
         body:  Container(
             child: Column(

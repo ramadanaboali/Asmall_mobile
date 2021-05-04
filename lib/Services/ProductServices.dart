@@ -1,15 +1,22 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:ashmall/Model/BanarModel.dart';
 import 'package:ashmall/Model/OneProductModel.dart';
 import 'package:ashmall/Model/OrdersModel.dart';
+import 'package:ashmall/Model/Product2Model.dart';
 import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Model/ProductRateModel.dart';
 import 'package:ashmall/Model/ProductSpecificationModel.dart';
 import 'package:ashmall/Model/QuestionModel.dart';
 import 'package:ashmall/Model/SearchModel.dart';
-
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
+import 'package:dio/dio.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class ProductServices{
   String baseURL=GlobalVariable.URl;
@@ -117,6 +124,50 @@ class ProductServices{
       if(response.statusCode==200 && response.body!=null)
       {
         return json.decode(utf8.decode(response.bodyBytes))["product"];
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ProductColorModel>>getProductColor(String lang,var product_id)async
+  {
+    var url="${baseURL}api/products/get-product-details?poductId=$product_id";
+    print(url);
+    var header={
+      "lang":lang
+      //  "Authorization":"Bearer $token"
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["colorDtos"];
+        return slideritems.map((e) => ProductColorModel.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ProductSizeModel>>getProductSize(String lang,var product_id)async
+  {
+    var url="${baseURL}api/products/get-product-details?poductId=$product_id";
+    print(url);
+    var header={
+      "lang":lang
+      //  "Authorization":"Bearer $token"
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["productSizeDtos"];
+        return slideritems.map((e) => ProductSizeModel.fromJson(e)).toList();
       }
     }
     catch(e)
@@ -282,8 +333,32 @@ class ProductServices{
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {
-        List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["productSpeceficationDtos"];
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["productSpeceficationVMs"];
         return slideritems.map((e) => ProductSpecifiction.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<BanarDetail>>getBanar(String lang)async
+  {
+    var url="${baseURL}api/advertisements/get-advertisements";
+    print(url);
+
+    var header={
+      "lang":lang
+      //  "Authorization":"Bearer $token"
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["advertisements"];
+        return slideritems.map((e) => BanarDetail.fromJson(e)).toList();
       }
     }
     catch(e)
@@ -354,6 +429,25 @@ class ProductServices{
       print('$e,,,,error search doctors');
     }
   }
+  Future<Map<String,dynamic>>getSetting(String lang)async{
+    String url=baseURL+"api/settings/get-settings";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try{
+      final responce=await http.get(url,headers: header);
+      if(responce.body.isNotEmpty)
+      {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
   Future<Map<String,dynamic>>SetRate(String lang,String token,String Comment,int RateNum,String ProductId,String UserId)async
   {
     var url="${baseURL}api/products/set-product-rate";
@@ -387,13 +481,64 @@ class ProductServices{
       print('$e,,,,error search doctors');
     }
   }
+  static SetRateServices(File fileImage,BuildContext context,var user_id,var Comment,var RateNum,var ProductId)async
+  {
+    if (fileImage != null) {
+      try {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        Dio dio = Dio();
+        ///we used uri.encode to enable upload  image with arabic name
+        // var url =Uri.encodeFull(createPath('user/editProfileImage'));
+        var url = "${GlobalVariable.URl}/api/products/set-product-rate";
+        print(url);
+        String fileName = basename(fileImage.path);
+        // print('${fileName},,,,fileName');
+        //print('${pathImage.path},,,,imagePath.path');
+
+        FormData formData = FormData.fromMap({
+          "File": await MultipartFile.fromFile(
+              fileImage.path, filename: fileName
+              , contentType: MediaType('image', fileName
+              .split('.')
+              .last)),
+          "UserId": user_id,
+          "RateNum":RateNum,
+          "ProductId":ProductId,
+          "Comment":Comment
+        });
+        print(formData.fields);
+        print("ssssssssssssssssss");
+        Response response = await dio.post(url, data: formData);
+        print('${response.data},,,,,,,,fields');
+        print("ddddddddddddddddd");
+        if (response.statusCode == 200) {
+          Toast.show(
+              "  تم اضافة التقيم الخاص بك ", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        }
+        else {
+          Toast.show(
+              " تم اضافة التقيم من قبل ", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          return null;
+        }
+      }
+      catch (e) {
+        print('${e}imageuploaderror');
+      }
+    }
+  }
 }
 class AddOrderDetail{
   String ProductId;
   int Quantity;
-  AddOrderDetail({this.ProductId,this.Quantity});
+  String ColorId;
+  String ProductSizeId;
+  AddOrderDetail({this.ProductId,this.Quantity,this.ColorId,this.ProductSizeId});
   Map<String, dynamic> toJson() => {
     "ProductId": ProductId,
     "Quantity": Quantity,
+    "ColorId":ColorId,
+    "ProductSizeId":ProductSizeId
   };
 }

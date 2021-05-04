@@ -1,11 +1,16 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:ashmall/DbHelper.dart';
 import 'package:ashmall/GlobalFunction.dart';
 import 'package:ashmall/Model/CartModelLocal.dart';
 import 'package:ashmall/Model/FavouriteLocalModel.dart';
 import 'package:ashmall/Model/OneProductModel.dart';
+import 'package:ashmall/Model/Product2Model.dart';
 import 'package:ashmall/Model/ProductRateModel.dart';
 import 'package:ashmall/Model/ProductSpecificationModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Screens/CustomSearchAppBar.dart';
 import 'package:ashmall/Screens/Reviews.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/Services/ProductServices.dart';
@@ -19,7 +24,9 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:toast/toast.dart';
 import 'CustRate.dart';
 import 'ProductQuestion.dart';
-
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
+import 'package:image_picker/image_picker.dart';
 class ProductDetails extends StatefulWidget{
   var id;
   var name;
@@ -50,20 +57,31 @@ class  _state extends State<ProductDetails>{
   var token;
   var user_id;
   var lang;
+  List<ProductColorModel>colorList=[];
+  List<ProductSizeModel>sizeList=[];
   loadData() async {
     SharedPreferences prefs=await SharedPreferences.getInstance();
     data=await productServices.getProductDetails(prefs.getString("lang"), this.id);
     Specification=await productServices.GesProductSpefication(prefs.getString("lang"), this.id);
+    colorList=await productServices.getProductColor(prefs.getString("lang"), this.id);
+    sizeList=await productServices.getProductSize(prefs.getString("lang"), this.id);
     setState(() {
       lang=prefs.getString("lang");
       user_id=prefs.getString("id");
       token=prefs.getString("token");
     });
-
-    print(Specification);
-    print("wwwwwwwwwwwwwwwwwww");
+    print(data);
+    print("sssssssssss");
   }
   home h=new home();
+  @override
+  void dispose() {
+    _chewieController.dispose();
+    _videoPlayerController1.dispose();
+    // TODO: implement dispose
+    super.dispose();
+
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -152,8 +170,9 @@ class  _state extends State<ProductDetails>{
                  ],
                ),
              ),*/
-             CustomAppBar(this.name),
-             SizedBox(height: MediaQuery.of(context).size.height*.015,),
+             /*CustomAppBar(this.name),*/
+             CustomSearchAppBar(),
+             //SizedBox(height: MediaQuery.of(context).size.height*.015,),
              Container(
                height: MediaQuery.of(context).size.height*.3,
                width: MediaQuery.of(context).size.width*.9 ,
@@ -218,6 +237,7 @@ class  _state extends State<ProductDetails>{
                            GestureDetector(
                              onTap: () async {
                                // Navigator.pushNamed(context, '/Cart');
+                             if(sizeList.length==0&&colorList.length==0){
                                CartMedelLocal p1=new CartMedelLocal({
                                  "id":data["id"].toString(),
                                  "name":data["name"],
@@ -225,24 +245,36 @@ class  _state extends State<ProductDetails>{
                                  "description":data["description"],
                                  "price":double.parse(data["offerPrice"].toString()),
                                  "totalPrice":double.parse(data["offerPrice"].toString()),
-                                 "quantity":1
+                                 "quantity":1,
+                                 "ColorId":null,
+                                 "ProductSizeId":null
                                });
                                try
                                {
                                  await dbHelper.addToCart(p1);
-                                 Toast.show(
-                                     "Product has Been Added To Shopping Cart", context,
-                                     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-                                 Navigator.pop(context);
+                                 addProductDialog(context,"Product has Been Added To Shopping Cart", Container(
+                                   padding: EdgeInsets.only(top: 13),
+                                   child: Icon(Icons.check_circle,size: 50,color: Color(h.mainColor),),
+                                 ),);
+                                 Timer(Duration(seconds: 2), (){
+                                   Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                                   // Phoenix.rebirth(context);
+                                 });
                                }
                                catch(e)
                                {
-                                 print('${e},,,,,,errorro addd');
-                                 Toast.show(
-                                     "Product Has Been Added Before", context,
-                                     duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-                                 Navigator.pushNamed(context, '/Cart');
+                                 addProductDialog(context,"Product Has Been Added Before ", Container(
+                                   padding: EdgeInsets.only(top: 13),
+                                   child: Icon(Icons.error,size: 50,color: Color(h.mainColor),),
+                                 ),);
+                                 Timer(Duration(seconds: 2), (){
+                                   Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                                   // Phoenix.rebirth(context);
+                                 });
                                }
+                             }else{
+                               ProductDetail(colorList, sizeList, data["imagesPaths"][0], data["name"]);
+                             }
                              },
                              child: Container(
                                  padding: EdgeInsets.all(5),
@@ -304,6 +336,23 @@ class  _state extends State<ProductDetails>{
                                  padding: EdgeInsets.all(5),
                                  child: Icon(Icons.rate_review,color: Color(h.mainColor),)),
                            ),
+                           SizedBox(width: 10,),
+                           data["video"]!=null?
+                           GestureDetector(
+                             onTap: (){
+                               print(GlobalVariable.URL2+data["video"]);
+                               showVideoItem(GlobalVariable.URL2+data["video"]);
+                             },
+                             child: Container(
+                               height: 22,
+                               width: 25,
+                               decoration: BoxDecoration(
+                                   borderRadius: BorderRadius.circular(5),
+                                   color: Color(h.mainColor)
+                               ),
+                               child: Icon(Icons.play_arrow,color: Colors.white,size: 15,),
+                             ),
+                           ):SizedBox(),
                          ],
                        ),
                        GestureDetector(
@@ -334,7 +383,7 @@ class  _state extends State<ProductDetails>{
              SizedBox(height: MediaQuery.of(context).size.height*.005,),
             Container(height: 1,width: MediaQuery.of(context).size.width,color: Colors.black38,),
              SizedBox(height: MediaQuery.of(context).size.height*.005,),
-            data["productSpeceficationDtos"].length==0? Container(
+            data["productSpeceficationVMs"].length==0? Container(
               padding: EdgeInsets.all(MediaQuery.of(context).size.width*.065),
               child: Column(
                 children: [
@@ -431,7 +480,7 @@ class  _state extends State<ProductDetails>{
                 left: 10,
                 right: 10
             ),
-            height: 170.0,
+            height: MediaQuery.of(context).size.height*.35,
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.black12,width: 2.0)
             ),
@@ -475,6 +524,34 @@ class  _state extends State<ProductDetails>{
                            controller: comment,
                          ),
                        ),
+                       SizedBox(height: 10,),
+                       GestureDetector(
+                         onTap: (){
+                           pickImage(context);
+                         },
+                         child: Column(
+                           children: [
+                             Container(
+                               height: MediaQuery.of(context).size.height*.06,
+                               width: MediaQuery.of(context).size.width,
+                               decoration: BoxDecoration(
+                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                               ),
+                               padding: EdgeInsets.only(
+                                 top: MediaQuery.of(context).size.height*.015,
+                                 bottom: MediaQuery.of(context).size.height*.015,
+                               ),
+                               child: Text(selectedImage==null?"Choose File":selectedImage.path.substring(0,50),style: TextStyle(fontSize: 12,color: Colors.black38),),
+                             ),
+                             Container(
+                               height: 1,
+                               width: MediaQuery.of(context).size.width,
+                               color: Colors.black38,
+                             )
+                           ],
+                         ),
+                       )
+
                      ],
                    ),
                  ),
@@ -506,6 +583,10 @@ class  _state extends State<ProductDetails>{
                     ),
                     onTap: ()async{
                       if(formKey.currentState.validate()){
+                        ProductServices.SetRateServices(selectedImage, context, user_id, comment.text, int.parse(rate.floor().toString()),  ProductId);
+
+                      }
+                      /*if(formKey.currentState.validate()){
                         Map<String,dynamic>responce=await productServices.SetRate(lang, token, comment.text, int.parse(rate.floor().toString()), ProductId, user_id);
                         Navigator.pop(context);
                         setState(() {
@@ -522,7 +603,7 @@ class  _state extends State<ProductDetails>{
                               "You Have Add Comment Before", context,
                               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
                         }
-                      }
+                      }*/
                     },
                   ),
                   SizedBox(height: 8,),
@@ -534,4 +615,349 @@ class  _state extends State<ProductDetails>{
           ),
         ));
   }
+  void ProductDetail(List<ProductColorModel>colors,List<ProductSizeModel>size,String image,String name) {
+    var SizeValue=sizeList[0].id;
+    var SelectedColor=colors[0].id;
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return  Container(
+                   // height: MediaQuery.of(context).size.height*.75,
+                    child: Container(
+                     // height: MediaQuery.of(context).size.height*.75,
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width*.05,
+                          right:  MediaQuery.of(context).size.width*.05
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              topLeft: Radius.circular(20)
+                          )),
+                      child: ListView(
+                        children:[
+                          SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                color: Colors.black12
+                            ),
+                            width: MediaQuery.of(context).size.width*.1,
+                            margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width*.37,
+                                right: MediaQuery.of(context).size.width*.37
+                            ),
+                            height: 5,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                    onTap: (){
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                        color: Color(h.mainColor)
+                                      ),
+                                        padding: EdgeInsets.all(2),
+                                        child: Icon(Icons.clear,size: 20,color: Colors.white,))),
+                              ],
+                            )
+                          ),
+                         /* SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: FadeInImage.assetNetwork(
+                              placeholder: "images/logo.png",
+                              image:image==null?"":GlobalVariable.URl+image,
+                              width: MediaQuery.of(context).size.width*.9,
+                              height: MediaQuery.of(context).size.height*.15,
+                              fit: BoxFit.cover,
+                            ),
+                          ),*/
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                Text(name,style: TextStyle(fontSize: 16,color: Colors.black54),),
+                                SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                Container(
+                                  height: MediaQuery.of(context).size.height*.1,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListView.builder(scrollDirection: Axis.horizontal,shrinkWrap: true,primary: false,itemCount: colorList.length,itemBuilder: (context,index){
+                                    return GestureDetector(
+                                      onTap: (){
+                                        setState((){
+                                          SelectedColor=colorList[index].id;
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                          border: Border.all(color: SelectedColor==colorList[index].id?Color(h.mainColor):Colors.white,width: 1),
+                                          color: Colors.white
+                                        ),
+                                        margin: EdgeInsets.all(3),
+                                      padding: EdgeInsets.all(3),
+                                      child:  Image.network(GlobalVariable.URl+colorList[index].imageColor,
+                                      height: MediaQuery.of(context).size.height*.1,
+                                      )
+                                      ),
+                                    );
+                                  }),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListView.builder(scrollDirection: Axis.vertical,shrinkWrap: true,primary: false,itemCount: sizeList.length,itemBuilder: (context,index){
+                                    return GestureDetector(
+                                      onTap: (){
+                                        setState((){
+                                          SizeValue=sizeList[index].id;
+                                        });
+                                      },
+                                      child: Container(
+                                          child: Row(
+                                            children: [
+                                              Radio(groupValue: SizeValue,value: sizeList[index].id,onChanged: (val){
+                                                setState((){
+                                                  SizeValue=sizeList[index].id;
+                                                });
+                                              },),
+                                              SizedBox(width: 8,),
+                                              Text(sizeList[index].sizeValue,style: TextStyle(color: Colors.black54,fontSize: 12),)
+                                            ],
+                                          )
+                                      ),
+                                    );
+                                  }),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: MediaQuery.of(context).size.height*.03,),
+                          GestureDetector(
+                            child: Container(
+                                margin: EdgeInsets.only(
+                                  //right:  MediaQuery.of(context).size.width*.2,
+                                  //left:  MediaQuery.of(context).size.width*.2
+                                ),
+                                decoration:BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Color(h.mainColor),
+                                ),
+                                height: MediaQuery.of(context).size.height*.06,
+                                width: MediaQuery.of(context).size.width*.8,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width*.07,
+                                  right: MediaQuery.of(context).size.width*.07,
+                                ),
+                                child:   Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Add To Cart ",style: TextStyle(color:Colors.white,fontSize: 13),),
+                                  ],
+                                )
+                            ),
+                            onTap: () async {
+                              print(data["id"].toString());
+                              CartMedelLocal p1=new CartMedelLocal({
+                                "id":data["id"],
+                                "name":data["name"],
+                                "img":data["imagesPaths"][0],
+                                "description":data["description"],
+                                "price":double.parse(data["offerPrice"].toString()),
+                                "totalPrice":double.parse(data["offerPrice"].toString()),
+                                "quantity":1,
+                                "ColorId":SelectedColor,
+                                "ProductSizeId":SizeValue
+                              });
+                              try
+                              {
+                                await dbHelper.addToCart(p1);
+                                print("en tyy");
+                                addProductDialog(context,"Product  Added To Shopping Cart", Container(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Icon(Icons.check_circle,size: 50,color: Color(h.mainColor),),
+                                ),);
+                                Timer(Duration(seconds: 2), (){
+                                  Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                                  // Phoenix.rebirth(context);
+                                });
+                              }
+                              catch(e)
+                              {
+                                print('${e},,,,,,errorro addd');
+                                addProductDialog(context,"Product Has Been Added Before ", Container(
+                                  padding: EdgeInsets.only(top: 13),
+                                  child: Icon(Icons.error,size: 50,color: Color(h.mainColor),),
+                                ),);
+                                Timer(Duration(seconds: 2), (){
+                                  Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                                  // Phoenix.rebirth(context);
+                                });
+                              }
+                            },
+                          ),
+                          SizedBox(height: 20,)
+                        ],
+                      ),
+                    ),
+
+
+                  );
+              });
+        });
+  }
+  VideoPlayerController _videoPlayerController1;
+  ChewieController _chewieController;
+  addProductDialog(BuildContext context,String message,Widget widgeticon) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          child:  Container(
+            padding: EdgeInsets.only(
+                left: 10,
+                right: 10
+            ),
+            height: 160.0,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(0)),
+                border: Border.all(color: Colors.black12,width: 2.0),
+                color: Colors.white
+            ),
+            child: Stack(children: <Widget>[
+              Column(
+                //mainAxisAlignment: MainAxisAlignment.center
+                // ,crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(alignment: Alignment.center,child: Column(
+                    children: [
+                      SizedBox(height: 5,),
+                      Container(
+
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                                  color: Colors.white
+                              ),
+                              // padding:EdgeInsets.all(2),
+                              child: Icon(Icons.clear,color: Colors.white,size: 14,),
+                            ),
+                           widgeticon,
+
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                    color: Color(h.mainColor)
+                                ),
+                                padding:EdgeInsets.all(2.5),
+                                child: Icon(Icons.clear,color: Colors.white,size: 20,),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 10,),
+                      Text("$message",style: TextStyle(color: Color(h.mainColor),fontSize: 14,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                      // Text("${title}",textAlign: TextAlign.center,)
+                    ],
+                  )),
+                ],
+              ),
+
+
+            ],),
+          ),
+        ));
+  }
+  showVideoItem(String videoPath) {
+    _videoPlayerController1 = VideoPlayerController.network(videoPath);
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController1,
+      autoPlay: true,
+      aspectRatio: 3 / 3,
+      looping: false,
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>  WillPopScope(
+        onWillPop: ()async{
+          _chewieController.pause();
+          //_videoPlayerController1.pause();
+          Navigator.of(context).pop();
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor:Colors.transparent ,
+          body: Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.2,
+                  bottom: MediaQuery.of(context).size.height * 0.2,
+                  right: MediaQuery.of(context).size.width*.05,
+                  left: MediaQuery.of(context).size.width*.05
+              ),
+              color: Colors.white,
+              child: Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width,
+                    child: Chewie(
+                      controller: _chewieController,
+                    ),
+                  ),
+                  Positioned(
+                      left: MediaQuery.of(context).size.width*.05,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            size: 30.0,
+                          ),
+                          onPressed: () {
+                            _chewieController.pause();
+                            // _chewieController.exitFullScreen();
+                            //_chewieController.dispose();
+                            Navigator.of(context).pop();
+
+                            //_videoPlayerController1.dispose();
+                          }))
+                ],
+              )),
+        ),
+      ),
+    );
+  }
+  File selectedImage;
+  pickImage(BuildContext context ) async {
+    var profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      selectedImage = profileImage;
+    });
+
+  }
+
 }

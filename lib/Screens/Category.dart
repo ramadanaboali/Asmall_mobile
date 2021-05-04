@@ -1,6 +1,8 @@
 import 'package:ashmall/Model/CategoryModel.dart';
 import 'package:ashmall/Model/SubCategoryModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Screens/CustomSearchAppBar.dart';
+import 'package:ashmall/Screens/LangSetting.dart';
 import 'package:ashmall/Services/CategoryServices.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/main.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../GlobalFunction.dart';
+import '../HomePage.dart';
 import 'GetAllProduct.dart';
 
 class Category extends StatefulWidget{
@@ -33,7 +36,7 @@ loadData()async{
   print(Category.length);
   print("sssssssssssssssssssssssss");
 }
-TextEditingController searchKey=new TextEditingController();
+
 List<SubCategoryDetail>subCategories=[];
 getSubCat(String id)async{
   SharedPreferences prefs=await SharedPreferences.getInstance();
@@ -54,81 +57,7 @@ getSubCat(String id)async{
        body: Category.length>0?Container(
          child: Column(
            children: [
-        /*     SizedBox(height: MediaQuery.of(context).size.height*.02,),
-             Container(
-               padding: EdgeInsets.only(
-                   left: MediaQuery.of(context).size.width*.03,
-                   right: MediaQuery.of(context).size.width*.03
-               ),
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   GestureDetector(child: Icon(Icons.arrow_back),onTap: (){Navigator.pop(context);},),
-                   Container(
-                     width: MediaQuery.of(context).size.width*.7,
-                     height: MediaQuery.of(context).size.height*.05,
-                     decoration: BoxDecoration(
-                       borderRadius:BorderRadius.all(Radius.circular(30)),
-                       color: Colors.white,
-                     ),
-                     child: TextFormField(
-                      enabled: false,
-                       onTap: (){
-                         Navigator.pushNamed(context, "/Search");
-                       },
-                       keyboardType: TextInputType.text,
-                       //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
-                       decoration: InputDecoration(
-                         contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                         disabledBorder: new OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(30),
-                             borderSide: BorderSide(color: Color(h.mainColor))
-                         ),
-                         enabledBorder: new OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(30),
-                             borderSide: BorderSide(color: Color(h.mainColor))
-                         ),
-                         focusedBorder:  new OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(30),
-                             borderSide: BorderSide(color: Color(h.mainColor))
-                         ),
-                         focusedErrorBorder:new OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(30),
-                             borderSide: BorderSide(color: Colors.red)
-                         ),
-                         errorBorder:new OutlineInputBorder(
-                             borderRadius: BorderRadius.circular(30),
-                             borderSide: BorderSide(color: Colors.red)
-                         ),
-                         hintText:'Search',
-                         hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
-                         suffixIcon:Container(
-                             margin: EdgeInsets.all(5),
-                             alignment: Alignment.center,
-                             padding: EdgeInsets.all(5),
-                             decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.all(Radius.circular(20)),
-                                 color: Color(h.redColor)
-                             ),
-                             child: Icon(Icons.search,color: Colors.white,size: 20,)),
-                         suffixIconConstraints: BoxConstraints(
-                             maxHeight: 50,
-                             minHeight: 30,
-                             maxWidth: 70,
-                             minWidth: 50
-                         ) ,
-                       ),
-                       controller: searchKey,
-                     ),
-                   ),
-                   SizedBox(width: MediaQuery.of(context).size.width*.03,),
-                   Icon(Icons.shopping_cart,size: 25,),
-                   Icon(Icons.menu)
-                 ],
-               ),
-             ),*/
-             CustomAppBar(DemoLocalizations.of(context).title["category"]),
-             SizedBox(height: MediaQuery.of(context).size.height*.015,),
+           CustomSearchAppBar(),
              Expanded(
                child: Row(
                  children: [
@@ -166,7 +95,7 @@ getSubCat(String id)async{
                                         child: Image.network(GlobalVariable.URl+Category[index].photo,fit: BoxFit.cover,height: MediaQuery.of(context).size.height*.065,
                                             width: MediaQuery.of(context).size.width*.25
                                         )),
-                                    SizedBox(height: 5,),
+                                    SizedBox(height: 1,),
                                     Text(Category[index].name,maxLines: 1,style: TextStyle(fontSize: 10,color: SelectedCategory==Category[index].id?Colors.white:Colors.black45),)
                                   ],
                                 ),
@@ -248,4 +177,5 @@ getSubCat(String id)async{
      ),
    );
   }
+
 }

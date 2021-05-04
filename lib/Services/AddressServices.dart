@@ -83,4 +83,23 @@ class AddressServices{
       print(e.toString());
     }
   }
+  Future<Map<String,dynamic>>getSetting(String lang)async{
+    String url=baseURL+"api/settings/get-settings";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try{
+      final responce=await http.get(url,headers: header);
+      if(responce.body.isNotEmpty)
+      {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
 }

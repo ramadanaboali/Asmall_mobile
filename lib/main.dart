@@ -1,4 +1,5 @@
 import 'package:ashmall/Screens/FirstLanguage.dart';
+import 'package:ashmall/Screens/Profile.dart';
 import 'package:ashmall/utils/app_LocalizationDeledate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -9,6 +10,7 @@ import 'ScopeModel/Base_View.dart';
 import 'ScopeModel/Locator_Service.dart';
 import 'Screens/Category.dart';
 import 'Screens/MainPage.dart';
+import 'Screens/MainProfile.dart';
 import 'Screens/ProductDetails.dart';
 import 'Screens/Search.dart';
 import 'Screens/Splash.dart';
@@ -53,7 +55,7 @@ class home extends StatelessWidget {
       locale: _State.lang==null?model.appLocal:Locale(_State.lang),
       theme:ThemeData(accentColor: Color(0xffff3185),
           primaryColor: Color(0xffff4747),
-          fontFamily: '29ltbukra'
+          fontFamily: 'Cairo'
       ),
       routes: <String,WidgetBuilder>{
        '/Search':(BuildContext context)=>new Search(),
@@ -62,8 +64,11 @@ class home extends StatelessWidget {
         '/Register':(BuildContext context)=>new Register(),
         '/FirstLanguage':(BuildContext context)=>new FirstLanguage(),
         '/ForgetPassword':(BuildContext context)=>new ForgetPassword(),
+        '/Profile':(BuildContext context)=>new Profile(),
         '/mainPage':(BuildContext context)=>new HomePage(0),
         '/notification':(BuildContext context)=>new HomePage(1),
+        '/Cart':(BuildContext context)=>new HomePage(2),
+        '/MainProfile':(BuildContext context)=>new MainProfile(),
       },
       home: Splash(),
 
@@ -72,6 +77,8 @@ class home extends StatelessWidget {
 }
 class ParentPage extends StatefulWidget {
   static int counter;
+  static String user_id;
+  static String language;
   @override
   _State createState() => _State();
 }
@@ -83,6 +90,8 @@ class _State extends State<ParentPage>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       lang=prefs.get('lang');
+      ParentPage.language=prefs.get('lang');
+      ParentPage.user_id=prefs.getString("id");
     });
   }
 

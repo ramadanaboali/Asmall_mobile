@@ -36,6 +36,9 @@ dependencies:
   path: ^1.6.4
   http_parser: ^3.1.4
   image_picker:
+  url_launcher: ^5.7.10
+  video_player:
+  chewie:
   smooth_star_rating:
   flutter_localizations:
     sdk: flutter
@@ -54,7 +57,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "images/logoApp.png"
+  image_path: "images/12.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -67,15 +70,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
-    - family: 29ltbukra
+    - family: Cairo
       fonts:
-        - asset: fonts/29ltbukraregular.ttf
-        - asset: fonts/29ltbukrabold.ttf
-        - asset: fonts/29ltbukrabolditalic.ttf
-        - asset: fonts/29ltbukralight.ttf
-    - family: 29lt_bukra_medium
-      fonts:
-        - asset: fonts/29lt_bukra_medium.ttf
+        - asset: fonts/Cairo-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   assets:

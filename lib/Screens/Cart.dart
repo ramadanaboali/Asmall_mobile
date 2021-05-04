@@ -403,9 +403,7 @@ class _state extends State<Cart> {
                             for(int i=0;i<dataLocal.length;i++){
                               CartMedelLocal c=new CartMedelLocal.fromMap(dataLocal[i]);
                               AddOrderDetail a=new AddOrderDetail(ProductId:c.id, Quantity:int.parse(c.quantity.toString()));
-                              Map<String,dynamic>asd={"ProductId":c.id,"Quantity":c.quantity};
                               Items.add(a.toJson());
-                              list2.add(asd);
                             }
                             print(Items);
                             // Map<String, dynamic> result = Map.fromIterable(Items, key: (v) => v.ProductId.toString(), value: (v) => v.Quantity.toString());

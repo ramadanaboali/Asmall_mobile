@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget{
   @override
@@ -22,10 +23,12 @@ class _state extends State<Login>{
   TextEditingController username=new TextEditingController();
   TextEditingController password=new TextEditingController();
   var lang;
+  var link;
   loadData()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     setState(() {
       lang=prefs.getString("lang");
+      link=prefs.getString("dashboardLink");
     });
   }
   @override
@@ -37,7 +40,7 @@ class _state extends State<Login>{
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
-      resizeToAvoidBottomPadding: false,
+    //  resizeToAvoidBottomPadding: false,
       /*appBar: AppBar(
         backgroundColor: Colors.black26,
         title: Text("Login",style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold),),
@@ -66,7 +69,7 @@ class _state extends State<Login>{
                   children: [
                     GestureDetector(
                         onTap: (){
-                          Navigator.pop(context);
+                          Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                         },
                         child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
                     Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
@@ -189,6 +192,9 @@ class _state extends State<Login>{
                                 if(data["status"]==200){
                                   setData("token",data["user"]["token"]);
                                   setData("id",data["user"]["id"]);
+                                  setState(() {
+                                    ParentPage.user_id=data["user"]["id"];
+                                  });
                                   Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                                 }else{
                                   Toast.show(
@@ -208,6 +214,24 @@ class _state extends State<Login>{
                               child:   Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
                             ),),
                           SizedBox(height: 15,),
+                          link==null?  SizedBox():
+                          GestureDetector(
+                            onTap: (){
+                              launchURL(link);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height*.065,
+                              decoration:BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(h.mainColor),
+                              ),
+                              padding: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              child:  Text(" تسجيل الدخول كبائع",style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700)),
+                            ),
+                          ),
+                          SizedBox(height: 15,),
                          Container(
                            width: MediaQuery.of(context).size.width*.9,
                            child: Row(
@@ -222,6 +246,7 @@ class _state extends State<Login>{
                   ),
                 ),
               ),
+              SizedBox(height: 5,),
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
@@ -245,4 +270,11 @@ class _state extends State<Login>{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }
+
+  launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }}
 }

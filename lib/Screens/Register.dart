@@ -1,3 +1,4 @@
+import 'package:ashmall/Model/CityModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Services/UserServices.dart';
 import 'package:ashmall/main.dart';
@@ -14,6 +15,7 @@ class Register extends StatefulWidget{
 }
 class _state extends State<Register>{
   home h=new home();
+  List<CityDetail>Cites=[];
   UserServices userServices =new UserServices();
   final formKey=GlobalKey<FormState>();
   bool passVisibility=true;
@@ -29,6 +31,20 @@ class _state extends State<Register>{
   FocusNode addressNade=new FocusNode();
   FocusNode passwordNade=new FocusNode();
   FocusNode confirmPasswordNade=new FocusNode();
+  loadData()async{
+    Cites=await userServices.GetCities();
+    setState(() {
+    });
+    print(Cites.length);
+    print("oooooooooooooooooooooooooooooooo");
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("Register");
+    loadData();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(

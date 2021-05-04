@@ -10,23 +10,23 @@ String productRateModelToJson(ProductRateModel data) => json.encode(data.toJson(
 
 class ProductRateModel {
   ProductRateModel({
-    this.productRateDetails,
+    this.productRateDetail,
     this.status,
     this.message,
   });
 
-  List<ProductRateDetail> productRateDetails;
+  List<ProductRateDetail> productRateDetail;
   int status;
   String message;
 
   factory ProductRateModel.fromJson(Map<String, dynamic> json) => ProductRateModel(
-    productRateDetails: List<ProductRateDetail>.from(json["ProductRateDetails"].map((x) => ProductRateDetail.fromJson(x))),
+    productRateDetail: List<ProductRateDetail>.from(json["ProductRateDetail"].map((x) => ProductRateDetail.fromJson(x))),
     status: json["status"],
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
-    "ProductRateDetails": List<dynamic>.from(productRateDetails.map((x) => x.toJson())),
+    "ProductRateDetail": List<dynamic>.from(productRateDetail.map((x) => x.toJson())),
     "status": status,
     "message": message,
   };
@@ -38,6 +38,7 @@ class ProductRateDetail {
     this.comment,
     this.rateNum,
     this.productId,
+    this.photo,
     this.userId,
     this.userName,
     this.userPhoto,
@@ -47,6 +48,7 @@ class ProductRateDetail {
   String comment;
   int rateNum;
   String productId;
+  String photo;
   String userId;
   String userName;
   String userPhoto;
@@ -56,6 +58,7 @@ class ProductRateDetail {
     comment: json["comment"],
     rateNum: json["rateNum"],
     productId: json["productId"],
+    photo: json["photo"],
     userId: json["userId"],
     userName: json["userName"],
     userPhoto: json["userPhoto"],
@@ -66,6 +69,7 @@ class ProductRateDetail {
     "comment": comment,
     "rateNum": rateNum,
     "productId": productId,
+    "photo": photo,
     "userId": userId,
     "userName": userName,
     "userPhoto": userPhoto,

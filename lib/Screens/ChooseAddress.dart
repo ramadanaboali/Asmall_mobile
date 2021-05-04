@@ -27,7 +27,8 @@ class _state extends State<ChooseAddress>{
   FocusNode addressNode=new FocusNode();
   FocusNode countryNode=new FocusNode();
   FocusNode cityNode=new FocusNode();
-  List <AddressDetail>addresses=[];
+  String payment="cash";
+  List <AddressDetail>addresses;
   AddressServices addressServices=new AddressServices();
   SetData(key,value)async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
@@ -61,7 +62,7 @@ class _state extends State<ChooseAddress>{
        child: SingleChildScrollView(
          child: Column(
            children: [
-             CustomAppBar(DemoLocalizations.of(context).title['ChooseAddress']),
+               CustomAppBar(DemoLocalizations.of(context).title['ChooseAddress']),
               Container(
                 padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width*.05,
@@ -73,18 +74,28 @@ class _state extends State<ChooseAddress>{
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height*.02,),
                     Container(
+                        height: MediaQuery.of(context).size.height*.05,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.black12,
+                      ),
+                      padding: EdgeInsets.only(left: 10,right: 10),
                       child:Row(
-
                         children: [
                           Text(DemoLocalizations.of(context).title['selectAddress'],style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
                         ],
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height*.02,),
-                    addresses.length==0? Container(
+                    addresses==null? Container(
                       height: MediaQuery.of(context).size.height*.25,
                       child: Center(
                         child: CircularProgressIndicator(),
+                      ),
+                    ):addresses.length==0?Container(
+                      height: MediaQuery.of(context).size.height*.25,
+                      child: Center(
+                        child: Text("No Addresses For You",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),),
                       ),
                     ):
                     Container(
@@ -113,7 +124,7 @@ class _state extends State<ChooseAddress>{
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(addresses[index].country+"-"+addresses[index].city,style: TextStyle(color:  SelectedAddress==addresses[index].id?Color(h.mainColor):Colors.black54,fontSize: 13,fontWeight: FontWeight.bold),),
+                                            Text(addresses[index].country==null?"":addresses[index].country+"-"+addresses[index].city,style: TextStyle(color:  SelectedAddress==addresses[index].id?Color(h.mainColor):Colors.black54,fontSize: 13,fontWeight: FontWeight.bold),),
                                             SizedBox(height: 2.5,),
                                             Text(addresses[index].address,style: TextStyle(color:  SelectedAddress==addresses[index].id?Color(h.mainColor):Colors.black54,fontSize: 12,),)
                                           ],
@@ -419,7 +430,6 @@ class _state extends State<ChooseAddress>{
                         ),
                       ),
                     ):SizedBox(),
-
                     formAddress?SizedBox(): Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -464,7 +474,51 @@ class _state extends State<ChooseAddress>{
                     )
                   ],
                 ),
-              )
+              ),
+             SizedBox(height: 15,),
+             Container(
+               height: MediaQuery.of(context).size.height*.05,
+               width: MediaQuery.of(context).size.width*.9,
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                 color: Colors.black12,
+               ),
+               padding: EdgeInsets.only(left: 10,right: 10),
+               child:Row(
+                 children: [
+                   Text("Select Payment Method",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
+                 ],
+               ),
+             ),
+             SizedBox(height: 10,),
+             Container(
+               width: MediaQuery.of(context).size.width*.9,
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                 border: Border.all(color: Colors.black12,width: 1)
+               ),
+               child: Column(
+                 children: [
+                   Row(
+                     children: [
+                       SizedBox(width: 10,),
+                       Radio(value: "cash",groupValue: payment,activeColor: Color(h.mainColor),),
+                       Text("Cash on Delivery")
+                     ],
+                   ),
+                   Row(
+                     children: [
+                       SizedBox(width: 10,),
+                       Radio(value: "credit",groupValue: payment,activeColor: Color(h.mainColor),),
+                       Text("By Credit Cart"),
+                       SizedBox(width: MediaQuery.of(context).size.width*.05,),
+                       Text("(Services not active now)",style: TextStyle(fontSize: 12,color: Color(h.mainColor)),)
+                     ],
+                   )
+                 ],
+               ),
+             )
+
            ],
 
          ),

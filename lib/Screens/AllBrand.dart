@@ -1,5 +1,6 @@
 import 'package:ashmall/Model/SubCategoryModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/Screens/CustomSearchAppBar.dart';
 import 'package:ashmall/Services/CategoryServices.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/utils/app_Localization.dart';
@@ -115,8 +116,9 @@ class _state extends State<Bran>{
                 ],
               ),
             ),*/
-            CustomAppBar(DemoLocalizations.of(context).title["brand"]),
-            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+            /*CustomAppBar(DemoLocalizations.of(context).title["brand"]),*/
+            CustomSearchAppBar(),
+           // SizedBox(height: MediaQuery.of(context).size.height*.015,),
             subCategories.length==null?
             Expanded(
               child: Container(
@@ -131,8 +133,8 @@ class _state extends State<Bran>{
                 :Expanded(child: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width*.05,
-                    right: MediaQuery.of(context).size.width*.05,
+                    left: MediaQuery.of(context).size.width*.02,
+                    right: MediaQuery.of(context).size.width*.02,
                     top: MediaQuery.of(context).size.height*.02
                 ),
                 width: MediaQuery.of(context).size.width,
@@ -147,8 +149,8 @@ class _state extends State<Bran>{
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
                         childAspectRatio: 1/1.25
                     ),
                     itemCount: subCategories.length,
@@ -176,7 +178,7 @@ class _state extends State<Bran>{
                               Container(
                                   height: 30,
                                   alignment: Alignment.center,
-                                  child: Text(subCategories[index].name,style: TextStyle(fontSize: 10,color: Colors.black87),maxLines: 2,textAlign: TextAlign.center,)),
+                                  child: Text(subCategories[index].name,style: TextStyle(fontSize: 12,color: Colors.black),maxLines: 2,textAlign: TextAlign.center,)),
                               SizedBox(height: 3,),
                             ],
                           ),

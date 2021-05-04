@@ -24,7 +24,9 @@ class DbHelper{
           "description TEXT,"
           "price REAL,"
           "totalPrice REAL,"
-          "quantity INTEGER"
+          "quantity INTEGER,"
+          "ColorId TEXT,"
+          "ProductSizeId TEXT"
           ")");
       db.execute("CREATE TABLE favorite ("
           "id TEXT PRIMARY KEY,"
@@ -32,7 +34,6 @@ class DbHelper{
           "description TEXT,"
           "img TEXT,"
           "price REAL"
-
           ")");
 
     });

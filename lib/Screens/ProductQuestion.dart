@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'CustomSearchAppBar.dart';
+
 class ProductQuestion extends StatefulWidget{
   String product_id;
   var name;
@@ -31,7 +33,7 @@ class _state extends State<ProductQuestion>{
   TextEditingController question=new TextEditingController();
   var SelectedQuestion;
   TextEditingController searchKey=new TextEditingController();
-  List<QuestionDetail>data=[];
+  List<QuestionDetail>data;
   ProductServices productServices=new ProductServices();
   var lang;
   var user_id;
@@ -58,82 +60,24 @@ class _state extends State<ProductQuestion>{
         body: Container(
           child: Column(
             children: [
-             /* SizedBox(height: MediaQuery.of(context).size.height*.02,),
-              Container(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width*.03,
-                    right: MediaQuery.of(context).size.width*.03
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(child: Icon(Icons.arrow_back),onTap: (){Navigator.pop(context);},),
-                    Container(
-                      width: MediaQuery.of(context).size.width*.7,
-                      height: MediaQuery.of(context).size.height*.05,
-                      decoration: BoxDecoration(
-                        borderRadius:BorderRadius.all(Radius.circular(30)),
-                        color: Colors.white,
+
+              CustomSearchAppBar(),
+              data==null?Expanded(child: Center(
+                child: CircularProgressIndicator(),
+              )):data.length==0? Expanded(
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height*.2,),
+                      Image.asset("images/logo.png",
+                      height: MediaQuery.of(context).size.height*.2,
                       ),
-                      child: TextFormField(
-                        enabled: false,
-                        onTap: (){
-                          Navigator.pushNamed(context, "/Search");
-                        },
-                        keyboardType: TextInputType.text,
-                        //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                          disabledBorder: new OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Color(h.mainColor))
-                          ),
-                          enabledBorder: new OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Color(h.mainColor))
-                          ),
-                          focusedBorder:  new OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Color(h.mainColor))
-                          ),
-                          focusedErrorBorder:new OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Colors.red)
-                          ),
-                          errorBorder:new OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Colors.red)
-                          ),
-                          hintText:'Search',
-                          hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
-                          suffixIcon:Container(
-                              margin: EdgeInsets.all(5),
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                  color: Color(h.redColor)
-                              ),
-                              child: Icon(Icons.search,color: Colors.white,size: 20,)),
-                          suffixIconConstraints: BoxConstraints(
-                              maxHeight: 50,
-                              minHeight: 30,
-                              maxWidth: 70,
-                              minWidth: 50
-                          ) ,
-                        ),
-                        controller: searchKey,
-                      ),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width*.03,),
-                    Icon(Icons.shopping_cart,size: 25,),
-                    Icon(Icons.menu)
-                  ],
+                      SizedBox(height: 15,),
+                      Text("لا يوجد اي اسئلة او اجابات لهذا المنتج")
+                    ],
+                  ),
                 ),
-              ),*/
-              CustomAppBar(this.name),
-              SizedBox(height: MediaQuery.of(context).size.height*.015,),
-              Expanded(
+              ): Expanded(
                 child: ListView.builder(
                     padding: EdgeInsets.only(top:MediaQuery.of(context).size.height*.01,
                     bottom :MediaQuery.of(context).size.height*.02,

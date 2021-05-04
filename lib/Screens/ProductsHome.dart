@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../GlobalFunction.dart';
 import 'CustRate.dart';
+import 'CustomSearchAppBar.dart';
 import 'CustomText.dart';
 import 'ProductDetails.dart';
 
@@ -35,8 +36,7 @@ class _state extends State<ProductsHome>{
        body: Container(
          child: Column(
            children: [
-             CustomAppBar(this.name),
-             SizedBox(height: MediaQuery.of(context).size.height*.015,),
+             CustomSearchAppBar(),
              Expanded(child: GridView.builder(
                padding: EdgeInsets.only(
                    left: MediaQuery.of(context).size.width*.05,

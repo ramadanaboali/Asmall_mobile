@@ -1,6 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:ashmall/Model/CityModel.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class UserServices{
   String baseURL=GlobalVariable.URl;
@@ -9,8 +17,8 @@ class UserServices{
     String url=baseURL+"api/people/login";
     print(url);
     var body={
-      "email" : email,
-      "password" : password,
+      "EMAIL" : email,
+      "PASSWORD" : password,
     };
     print(body);
     var header={
@@ -27,7 +35,6 @@ class UserServices{
         print(responce.body);
         return json.decode(responce.body);
       }
-
     }
     catch(e) {
       print(e.toString());
@@ -44,6 +51,34 @@ class UserServices{
     var header={
       "Content-Type":"application/json",
       "lang":lang
+    };
+    try{
+      final responce=await http.post(url,body:json.encode(body),headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if(responce.body.isNotEmpty)
+      {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
+  Future<Map<String,dynamic>>editProfile(var id,var name,var email,var phone)async{
+    String url=baseURL+"api/home/edit-profile";
+    print(url);
+    var body={
+        "Id":id,
+        "Name":name,
+        "Email":email,
+        "Phone":phone
+    };
+    var header={
+      "Content-Type":"application/json",
+      "lang":"en"
     };
     try{
       final responce=await http.post(url,body:json.encode(body),headers: header);
@@ -326,6 +361,69 @@ class UserServices{
       print(e.toString());
     }
   }*/
+  static updateAvatar(File fileImage,BuildContext context,var user_id)async
+  {
+    if (fileImage != null) {
+      try {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        Dio dio = Dio();
+        ///we used uri.encode to enable upload  image with arabic name
+        // var url =Uri.encodeFull(createPath('user/editProfileImage'));
+        var url = "${GlobalVariable.URl}/api/home/edit-profile-photo";
+        print(url);
+        String fileName = basename(fileImage.path);
+        // print('${fileName},,,,fileName');
+        //print('${pathImage.path},,,,imagePath.path');
+
+        FormData formData = FormData.fromMap({
+          "File": await MultipartFile.fromFile(
+              fileImage.path, filename: fileName
+              , contentType: MediaType('image', fileName
+              .split('.')
+              .last)),
+          "UserId": user_id,
+        });
+        print(formData.fields);
+        print("ssssssssssssssssss");
+        Response response = await dio.post(url, data: formData);
+        print('${response.data},,,,,,,,fields');
+        print("ddddddddddddddddd");
+        if (response.statusCode == 200) {
+          Toast.show(
+              "  تم تغير صورة الملف الشخصي ", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        }
+        else {
+          Toast.show(
+              " فشل في تغير صورة الملف الشخصي ", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          return null;
+        }
+      }
+      catch (e) {
+        print('${e}imageuploaderror');
+      }
+    }
+  }
+  Future<List<CityDetail>>GetCities()async
+  {
+    var url="${baseURL}api/Lookups/get-governorates";
+    print(url);
+    try
+    {
+      final response = await http.get(url);
+      print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
+        return slideritems.map((e) => CityDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
 
 
 }
