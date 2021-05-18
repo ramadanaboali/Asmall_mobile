@@ -1,4 +1,3 @@
-import 'file:///D:/projects/ashmall/lib/Screens/CustomAppBar.dart';
 import 'package:ashmall/Services/UserServices.dart';
 import 'package:ashmall/main.dart';
 import 'package:ashmall/utils/app_Localization.dart';
@@ -228,7 +227,7 @@ class _state extends State<Login>{
                               ),
                               padding: EdgeInsets.all(5),
                               alignment: Alignment.center,
-                              child:  Text(" تسجيل الدخول كبائع",style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700)),
+                              child:  Text(DemoLocalizations.of(context).title['vendorLogin'],style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700)),
                             ),
                           ),
                           SizedBox(height: 15,),

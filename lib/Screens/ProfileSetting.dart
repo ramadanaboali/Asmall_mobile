@@ -2,9 +2,11 @@ import 'package:ashmall/Screens/AboutApp.dart';
 import 'package:ashmall/Screens/CustomText.dart';
 import 'package:ashmall/Screens/PrivacyPolices.dart';
 import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../GlobalFunction.dart';
+import 'LangSetting.dart';
 import 'UsagePolices.dart';
 
 class ProfileSetting extends StatefulWidget{
@@ -21,7 +23,7 @@ class _state  extends State<ProfileSetting>{
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: CustomText.TitleText("الاعدادات"),
+          title: CustomText.TitleText(DemoLocalizations.of(context).title["setting"]),
         ),
          body: Container(
            color: Colors.black12,
@@ -52,8 +54,8 @@ class _state  extends State<ProfileSetting>{
                          onTap: (){
                            Navigator.pushNamed(context, "/Profile");
                          },
-                         child: CustomText.TitleText("- Profile")),
-                     CustomText.TitleText("- Shipping Address")
+                         child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["profile"]}")),
+                     CustomText.TitleText("- ${DemoLocalizations.of(context).title["addresses"]}")
                    ],
                  ),
                ),
@@ -77,18 +79,23 @@ class _state  extends State<ProfileSetting>{
                      Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
-                         CustomText.TitleText("- Currency"),
+                         CustomText.TitleText("- ${DemoLocalizations.of(context).title["currency"]}"),
                          CustomText.TitleText("LE"),
 
                        ],
                      ),
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         CustomText.TitleText("- Language"),
-                         CustomText.TitleText("EN"),
+                     GestureDetector(
+                       onTap: (){
+                         Navigator.push(context, GlobalFunction.route(LangSetting()));
+                       },
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
+                           CustomText.TitleText("- ${DemoLocalizations.of(context).title["language"]}"),
+                           CustomText.TitleText(ParentPage.language=="en"?"ENLISH":"العربية"),
 
-                       ],
+                         ],
+                       ),
                      ),
                    ],
                  ),
@@ -110,21 +117,21 @@ class _state  extends State<ProfileSetting>{
                 child: Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     CustomText.TitleText("- Rate Ashmall"),
+                     CustomText.TitleText("- ${DemoLocalizations.of(context).title["rateapp"]}"),
                      GestureDetector(
                          onTap: (){
                            Navigator.push(context, GlobalFunction.route(PrivacyPolices()));
                          },
-                         child: CustomText.TitleText("- Privacy Polices")),
+                         child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["privacyPolices"]}")),
                      GestureDetector(
                          onTap: (){
                            Navigator.push(context, GlobalFunction.route(UsagePolices()));
-                         },child: CustomText.TitleText("- Usage Polices")),
+                         },child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["usagepolices"]}")),
                      GestureDetector(
                          onTap: (){
                            Navigator.push(context, GlobalFunction.route(AboutApp()));
                          },
-                         child: CustomText.TitleText("- About App"))
+                         child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["aboutapp"]}"))
                    ],
                  ),
                ),

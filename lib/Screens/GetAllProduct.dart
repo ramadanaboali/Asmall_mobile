@@ -229,7 +229,7 @@ class _state extends State <AllProduct>{
                                  padding: EdgeInsets.only(
                                      left: 5,right: 5
                                  ),
-                                 child: CustomRate(data[index].rate,11),
+                                 child: CustomRate(data[index].rate.round(),11),
                                ),
                              ],
                            )

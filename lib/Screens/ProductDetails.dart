@@ -18,10 +18,12 @@ import 'package:ashmall/main.dart';
 import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:toast/toast.dart';
+import '../HomePage.dart';
 import 'CustRate.dart';
 import 'ProductQuestion.dart';
 import 'package:video_player/video_player.dart';
@@ -70,8 +72,11 @@ class  _state extends State<ProductDetails>{
       user_id=prefs.getString("id");
       token=prefs.getString("token");
     });
-    print(data);
-    print("sssssssssss");
+     if(prefs.getString("id")!=null){
+       print("9999999999999999999999999999999999999999999999999999999999999");
+       Map<String,dynamic>responce=await productServices.addWatch(lang, this.id, prefs.getString("id"));
+       print(responce.toString()+"rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+     }
   }
   home h=new home();
   @override
@@ -171,8 +176,143 @@ class  _state extends State<ProductDetails>{
                ),
              ),*/
              /*CustomAppBar(this.name),*/
-             CustomSearchAppBar(),
-             //SizedBox(height: MediaQuery.of(context).size.height*.015,),
+             Container(
+               child: Column(
+                 children: [
+                   SizedBox(height: MediaQuery.of(context).size.height*.02,),
+                   Container(
+                     padding: EdgeInsets.only(
+                         left: MediaQuery.of(context).size.width*.03,
+                         right: MediaQuery.of(context).size.width*.03
+                     ),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         GestureDetector(child: Icon(Icons.arrow_back),onTap: (){Navigator.pop(context);},),
+                         GestureDetector(
+                           onTap: (){
+                             Navigator.pushNamed(context, "/Search");
+                           },
+                           child: Container(
+                             width: MediaQuery.of(context).size.width*.57,
+                             height: MediaQuery.of(context).size.height*.05,
+                             decoration: BoxDecoration(
+                               borderRadius:BorderRadius.all(Radius.circular(30)),
+                               color: Colors.white,
+                             ),
+                             child: TextFormField(
+                               enabled: false,
+                               keyboardType: TextInputType.text,
+                               //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
+                               decoration: InputDecoration(
+                                 contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
+                                 disabledBorder: new OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(30),
+                                     borderSide: BorderSide(color: Color(h.mainColor))
+                                 ),
+                                 enabledBorder: new OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(30),
+                                     borderSide: BorderSide(color: Color(h.mainColor))
+                                 ),
+                                 focusedBorder:  new OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(30),
+                                     borderSide: BorderSide(color: Color(h.mainColor))
+                                 ),
+                                 focusedErrorBorder:new OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(30),
+                                     borderSide: BorderSide(color: Colors.red)
+                                 ),
+                                 errorBorder:new OutlineInputBorder(
+                                     borderRadius: BorderRadius.circular(30),
+                                     borderSide: BorderSide(color: Colors.red)
+                                 ),
+                                 hintText:'Search',
+                                 hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
+                                 suffixIcon:Container(
+                                     margin: EdgeInsets.all(5),
+                                     alignment: Alignment.center,
+                                     padding: EdgeInsets.all(5),
+                                     decoration: BoxDecoration(
+                                         borderRadius: BorderRadius.all(Radius.circular(20)),
+                                         color: Color(h.redColor)
+                                     ),
+                                     child: Icon(Icons.search,color: Colors.white,size: 20,)),
+                                 suffixIconConstraints: BoxConstraints(
+                                     maxHeight: 50,
+                                     minHeight: 30,
+                                     maxWidth: 70,
+                                     minWidth: 50
+                                 ) ,
+                               ),
+                               controller: searchKey,
+                             ),
+                           ),
+                         ),
+                         SizedBox(width: MediaQuery.of(context).size.width*.0,),
+                         GestureDetector(
+                           onTap: (){
+                             Navigator.push(context, GlobalFunction.routeBottom(HomePage(2)));
+                           },
+                           child: Container(
+                               padding: EdgeInsets.all(4),
+                               child: Icon(Icons.shopping_cart,size: 25,)),
+                         ),
+                         GestureDetector(
+                           onTap: (){
+                             CustomSearchAppBar.menu(context);
+                           },
+                           child: Container(
+                             padding: EdgeInsets.only(left: 15,right: 15,top: 5,bottom: 5),
+                             child: Column(
+                               children: [
+                                 Container(
+                                   height: 5,width: 5,
+                                   decoration: BoxDecoration(
+                                       borderRadius:BorderRadius.all(Radius.circular(100)),
+                                       color: Colors.black
+                                   ),
+                                 ),
+                                 SizedBox(height: 1,),
+                                 Container(
+                                   height: 5,width: 5,
+                                   decoration: BoxDecoration(
+                                       borderRadius:BorderRadius.all(Radius.circular(100)),
+                                       color: Colors.black
+                                   ),
+                                 ),
+                                 SizedBox(height: 1,),
+                                 Container(
+                                   height: 5,width: 5,
+                                   decoration: BoxDecoration(
+                                       borderRadius:BorderRadius.all(Radius.circular(100)),
+                                       color: Colors.black
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           ),
+                         ),
+                         GestureDetector(
+                           onTap: (){
+                             print("http://"+data["shareLink"]);
+                             print("******************************************************8");
+                             share("http://"+data["shareLink"]);
+                           },
+                           child: Container(
+                             padding: EdgeInsets.all(5),
+                             child: Icon(Icons.share_rounded),
+                           ),
+                         ),
+                         SizedBox(width: 2,)
+
+                       ],
+                     ),
+                   ),
+                   //CustomAppBar(DemoLocalizations.of(context).title["category"]),
+                   SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                 ],
+               ),
+             ),
              Container(
                height: MediaQuery.of(context).size.height*.3,
                width: MediaQuery.of(context).size.width*.9 ,
@@ -234,7 +374,7 @@ class  _state extends State<ProductDetails>{
                      children: [
                        Row(
                          children: [
-                           GestureDetector(
+                       /*    GestureDetector(
                              onTap: () async {
                                // Navigator.pushNamed(context, '/Cart');
                              if(sizeList.length==0&&colorList.length==0){
@@ -280,7 +420,7 @@ class  _state extends State<ProductDetails>{
                                  padding: EdgeInsets.all(5),
                                  child: Icon(Icons.add_shopping_cart,color: Color(h.mainColor),)),
                            ),
-                           SizedBox(width: 10,),
+                           SizedBox(width: 10,),*/
                            GestureDetector(
                              onTap: () async {
                                FavoriteModelLocal favoriteModel = FavoriteModelLocal({
@@ -359,7 +499,7 @@ class  _state extends State<ProductDetails>{
                            onTap: (){
                              user_id==null?print("0000"):SetRate(context,data["id"]);
                            },
-                           child: CustomRate(data["rate"],15))
+                           child: CustomRate(data["rate"].round(),15))
                      ],
                    )
                  ],
@@ -383,21 +523,22 @@ class  _state extends State<ProductDetails>{
              SizedBox(height: MediaQuery.of(context).size.height*.005,),
             Container(height: 1,width: MediaQuery.of(context).size.width,color: Colors.black38,),
              SizedBox(height: MediaQuery.of(context).size.height*.005,),
-            data["productSpeceficationVMs"].length==0? Container(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.width*.065),
-              child: Column(
-                children: [
-                  SizedBox(height: 15,),
-                  Image.asset("images/logo.png",
-                      width:MediaQuery.of(context).size.width*.5
-                  ),
-                  SizedBox(height: 15,),
-                  Text("No Specidication For This Product",style: TextStyle(color: Colors.black54,fontSize: 12,fontWeight: FontWeight.bold),)
-                ],
-              )
-            ):
+            data["productSpeceficationVMs"].length==0?
             Expanded(
-               child: Container(
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20,),
+                    Image.asset("images/logo.png",
+                        width:MediaQuery.of(context).size.width*.4
+                    ),
+                    SizedBox(height: 3,),
+                    Text("No Specidication For This Product",style: TextStyle(color: Colors.black54,fontSize: 12,fontWeight: FontWeight.bold),)
+                  ],
+                )
+              ),
+            )        :   Expanded(child: Container(
                  width: MediaQuery.of(context).size.width*.9,
                  padding: EdgeInsets.only(
                    top: 7
@@ -443,7 +584,82 @@ class  _state extends State<ProductDetails>{
                      )
                    );
                  }),
-               ),
+               ),),
+             Container(
+               height: MediaQuery.of(context).size.height*.08,
+               width: MediaQuery.of(context).size.width,
+              color: Color(h.mainColor),
+              padding: EdgeInsets.only(top: 1),
+              child: Row(
+                children: [
+                  Container(
+                    width:  MediaQuery.of(context).size.width*.2,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white,width: 1)
+                    ),
+                    alignment: Alignment.center,
+                    child:Text(DemoLocalizations.of(context).title["store"],style: TextStyle(color: Colors.white),),
+                  ),
+                  Container(
+                    width:  MediaQuery.of(context).size.width*.4,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white,width: 1)
+                    ),
+                    child:Text(DemoLocalizations.of(context).title["buynow"],style: TextStyle(color: Colors.white)),
+                  ),
+                  GestureDetector(
+                    onTap: ()async{
+                      if(sizeList.length==0&&colorList.length==0){
+                        CartMedelLocal p1=new CartMedelLocal({
+                          "id":data["id"].toString(),
+                          "name":data["name"],
+                          "img":data["imagesPaths"][0],
+                          "description":data["description"],
+                          "price":double.parse(data["offerPrice"].toString()),
+                          "totalPrice":double.parse(data["offerPrice"].toString()),
+                          "quantity":1,
+                          "ColorId":null,
+                          "ProductSizeId":null
+                        });
+                        try
+                        {
+                          await dbHelper.addToCart(p1);
+                       /*   addProductDialog(context,"Product has Been Added To Shopping Cart", Container(
+                            padding: EdgeInsets.only(top: 13),
+                            child: Icon(Icons.check_circle,size: 50,color: Color(h.mainColor),),
+                          ),);*/
+                          Timer(Duration(seconds: 2), (){
+                            Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                            // Phoenix.rebirth(context);
+                          });
+                        }
+                        catch(e)
+                        {
+                          addProductDialog(context,"Product Has Been Added Before ", Container(
+                            padding: EdgeInsets.only(top: 13),
+                            child: Icon(Icons.error,size: 50,color: Color(h.mainColor),),
+                          ),);
+                          Timer(Duration(seconds: 2), (){
+                            Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                            // Phoenix.rebirth(context);
+                          });
+                        }
+                      }else{
+                        ProductDetail(colorList, sizeList, data["imagesPaths"][0], data["name"]);
+                      }
+                    },
+                    child: Container(
+                      width:  MediaQuery.of(context).size.width*.4,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white,width: 1)
+                      ),
+                      child:Text(DemoLocalizations.of(context).title["addtocart"],style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
              )
 
            ],
@@ -551,7 +767,6 @@ class  _state extends State<ProductDetails>{
                            ],
                          ),
                        )
-
                      ],
                    ),
                  ),
@@ -764,7 +979,7 @@ class  _state extends State<ProductDetails>{
                                 child:   Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Add To Cart ",style: TextStyle(color:Colors.white,fontSize: 13),),
+                                    Text(DemoLocalizations.of(context).title["addtocart"],style: TextStyle(color:Colors.white,fontSize: 13),),
                                   ],
                                 )
                             ),
@@ -785,10 +1000,10 @@ class  _state extends State<ProductDetails>{
                               {
                                 await dbHelper.addToCart(p1);
                                 print("en tyy");
-                                addProductDialog(context,"Product  Added To Shopping Cart", Container(
+                            /*    addProductDialog(context,"Product  Added To Shopping Cart", Container(
                                   padding: EdgeInsets.only(top: 13),
                                   child: Icon(Icons.check_circle,size: 50,color: Color(h.mainColor),),
-                                ),);
+                                ),);*/
                                 Timer(Duration(seconds: 2), (){
                                   Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
                                   // Phoenix.rebirth(context);
@@ -959,5 +1174,12 @@ class  _state extends State<ProductDetails>{
     });
 
   }
-
+  Future<void> share(String url) async {
+    await FlutterShare.share(
+        title: 'Product Details',
+        text: '',
+        linkUrl: url,
+        chooserTitle: 'Product'
+    );
+  }
 }

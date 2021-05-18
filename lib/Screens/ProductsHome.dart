@@ -125,7 +125,7 @@ class _state extends State<ProductsHome>{
                                                  padding: EdgeInsets.only(
                                                    //left: 5,right: 5
                                                  ),
-                                                 child: CustomRate(data[index].rate,12),
+                                                 child: CustomRate(data[index].rate.round(),12),
                                                ),
                                              ],
                                            ),

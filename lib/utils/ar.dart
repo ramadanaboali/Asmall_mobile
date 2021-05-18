@@ -46,6 +46,32 @@ class AR {
     "Delivered":"تم التوصيل",
     "Rejected":"تم الرفض",
     "noOrders":"لا يوجد طلبات لديك",
-    "NoItemsInFavourite":"لا يوجد عناصر في المفضلة"
+    "NoItemsInFavourite":"لا يوجد عناصر في المفضلة",
+    "seeall":"مشاهدة الكل",
+    "inprocess":"في التجهيز",
+    "ongoing":"في الطريق",
+    "delivered":"تم التوصيل",
+    "rejected":"تم الرفض",
+    "logout":"تسجيل الخروج",
+    "lastWatched":"المشاهده مؤخرا",
+    "profile":"الملف الشخصي",
+    "addresses":"العناوين",
+    "currency":"العملة",
+    "language":"اللغة",
+    "rateapp":"قيم التطبيق",
+    "privacyPolices":"سياسة الخصوصية",
+    "usagepolices":"سياسة الاستخدام",
+    "aboutapp":"عن التطبيق",
+    "vendorLogin":"تسجيل الدخول كبائع",
+    "addtocart":"اضافة الي السلة",
+    "buynow":"شراء الان",
+    "store":"المخزن",
+    "billdetails":"تفاصيل الفاتورة",
+    "totalorders":"اجمالي الطلبات",
+    "totalquantity":"اجمالي الكميات",
+    "total":"الاجمالي",
+    "continuetopurchase":"متابعة الشراء"
+
+
   };
 }

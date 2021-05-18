@@ -38,6 +38,7 @@ dependencies:
   image_picker:
   url_launcher: ^5.7.10
   video_player:
+  flutter_share:
   chewie:
   smooth_star_rating:
   flutter_localizations:

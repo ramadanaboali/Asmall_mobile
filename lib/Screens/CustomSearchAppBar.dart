@@ -29,7 +29,7 @@ class CustomSearchAppBar extends StatelessWidget{
                      Navigator.pushNamed(context, "/Search");
                    },
                  child: Container(
-                   width: MediaQuery.of(context).size.width*.7,
+                   width: MediaQuery.of(context).size.width*.65,
                    height: MediaQuery.of(context).size.height*.05,
                    decoration: BoxDecoration(
                      borderRadius:BorderRadius.all(Radius.circular(30)),
@@ -97,7 +97,7 @@ class CustomSearchAppBar extends StatelessWidget{
                    menu(context);
                  },
                  child: Container(
-                   padding: EdgeInsets.all(5),
+                   padding: EdgeInsets.only(left: 17,right: 17,top: 5,bottom: 5),
                    child: Column(
                      children: [
                        Container(
@@ -138,7 +138,7 @@ class CustomSearchAppBar extends StatelessWidget{
      ),
    );
   }
-  void menu(BuildContext context) {
+ static void menu(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) =>StatefulBuilder(

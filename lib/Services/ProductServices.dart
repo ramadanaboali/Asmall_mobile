@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ashmall/Model/BanarModel.dart';
 import 'package:ashmall/Model/OneProductModel.dart';
 import 'package:ashmall/Model/OrdersModel.dart';
+import 'package:ashmall/Model/Product1Model.dart';
 import 'package:ashmall/Model/Product2Model.dart';
 import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Model/ProductRateModel.dart';
@@ -109,7 +110,28 @@ class ProductServices{
       print('$e,,,,error search doctors');
     }
   }
-
+  Future<List<Product1Detail>>getLastWatched(String lang,var user_id)async
+  {
+    var url="${baseURL}api/productWatch/get-productWatch/$user_id";
+    print(url);
+    var header={
+      "lang":lang
+      //  "Authorization":"Bearer $token"
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
+        return slideritems.map((e) => Product1Detail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
   Future<Map<String,dynamic>>getProductDetails(String lang,var product_id)async
   {
     var url="${baseURL}api/products/get-product-details?poductId=$product_id";
@@ -418,6 +440,38 @@ class ProductServices{
       final response = await http.post(url,body:json.encode(body),headers: header);
 
       print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        print("4444444444444444444444444");
+        return json.decode(utf8.decode(response.bodyBytes));
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<Map<String,dynamic>>addWatch(String lang,String Product_id,String UserId)async
+  {
+    var url="${baseURL}api/productWatch/add-productWatch";
+    print(url);
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    var body=
+    {
+      "ProductId":Product_id,
+      "UserId":UserId
+    };
+    print(body);
+    try
+    {
+      print("kkkk22");
+      final response = await http.post(url,body:json.encode(body),headers: header);
+
+      print(response.body);
+      print("88888888888888888888888888888888888888888");
       if(response.statusCode==200 && response.body!=null)
       {
         print("4444444444444444444444444");

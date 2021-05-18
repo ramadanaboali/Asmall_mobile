@@ -25,25 +25,15 @@ class _state extends State<Register>{
   TextEditingController password=new TextEditingController();
   TextEditingController confirmPassword=new TextEditingController();
   TextEditingController phone=new TextEditingController();
-  TextEditingController address=new TextEditingController();
   FocusNode emailNade=new FocusNode();
   FocusNode phoneNade=new FocusNode();
-  FocusNode addressNade=new FocusNode();
   FocusNode passwordNade=new FocusNode();
   FocusNode confirmPasswordNade=new FocusNode();
-  loadData()async{
-    Cites=await userServices.GetCities();
-    setState(() {
-    });
-    print(Cites.length);
-    print("oooooooooooooooooooooooooooooooo");
-  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print("Register");
-    loadData();
   }
   @override
   Widget build(BuildContext context) {
@@ -153,11 +143,11 @@ class _state extends State<Register>{
                                 child: TextFormField(
                                   focusNode: phoneNade,
                                   onFieldSubmitted: (value){
-                                    FocusScope.of(context).requestFocus(addressNade);
+                                    FocusScope.of(context).requestFocus(passwordNade);
                                   },
                                   validator: (value){
                                     if(value.isEmpty){
-                                      return 'Enter Phone';
+                                      return null;
                                     }
                                     return null;
                                   },
@@ -174,42 +164,6 @@ class _state extends State<Register>{
                             ],),
                         ),
                         ////////////////
-                        SizedBox(height: 25,),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(Icons.home ),
-                              Container(
-                                width: MediaQuery.of(context).size.width*.8,
-                                decoration: BoxDecoration(
-                                  /* borderRadius:BorderRadius.all(Radius.circular(30)),
-                              color: Colors.white,*/
-                                ),
-                                child: TextFormField(
-                                  focusNode: addressNade,
-                                  onFieldSubmitted: (value){
-                                    FocusScope.of(context).requestFocus(passwordNade);
-                                  },
-                                  validator: (value){
-                                    if(value.isEmpty){
-                                      return 'Enter Address';
-                                    }
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.text,
-                                  //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                    hintText:'Address' ,
-                                    hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
-                                  ),
-                                  controller: address,
-                                ),
-                              ),
-                            ],),
-                        ),
                         SizedBox(height: 25,),
                         Container(
                           width: MediaQuery.of(context).size.width,
@@ -321,7 +275,7 @@ class _state extends State<Register>{
                         GestureDetector(
                           onTap: ()async{
                             if(formKey.currentState.validate()){
-                            Map<String,dynamic>data =await userServices.registerServices("en", name.text.trim(), email.text.trim(), password.text.trim(), phone.text.trim(), address.text.trim());
+                            Map<String,dynamic>data =await userServices.registerServices("en", name.text, email.text, password.text, phone.text);
                             if(data["status"]==200){
                               setData("token",data["user"]["token"]);
                               setData("id",data["user"]["id"]);
@@ -343,26 +297,6 @@ class _state extends State<Register>{
                             alignment: Alignment.center,
                             child:   Text("Register",style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
                           ),),
-                        SizedBox(height: 15,),
-                        Container(
-                          width: MediaQuery.of(context).size.width*.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(onTap: (){Navigator.pushNamed(context, "/ForgetPassword");},child: Text("Forget Password",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54)))
-                            ],),
-                        ),
-                        SizedBox(height: 25,),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Have ACount?"),
-                              GestureDetector(onTap: (){Navigator.pushNamed(context, "/Login");},child: Text(" Sign In",style: TextStyle(color: Color(h.mainColor),fontWeight: FontWeight.bold),))
-                            ],
-                          ),
-                        ),
                         SizedBox(height: 25,)
                       ],
                     ),

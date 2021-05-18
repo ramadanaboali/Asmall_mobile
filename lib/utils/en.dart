@@ -46,7 +46,31 @@ class EN {
     "Delivered":"Delivered",
     "Rejected":"Rejected",
     "noOrders":"No Orders For you",
-    "NoItemsInFavourite":"No Items In Favourite"
+    "NoItemsInFavourite":"No Items In Favourite",
+    "seeall":"See All",
+    "inprocess":"InProcess",
+    "ongoing":"OnGoing",
+    "delivered":"Delivered",
+    "rejected":"Rejected",
+    "logout":"Logout",
+    "lastWatched":"Last Watched",
+    "profile":"Profile",
+    "addresses":"Addresses",
+    "currency":"Currency",
+    "language":"Language",
+    "rateapp":"Rate Ashmall",
+    "privacyPolices":"Privacy Polices",
+    "usagepolices":"Usage Polices",
+    "aboutapp":"About App",
+    "vendorLogin":"Login As Vendor",
+    "addtocart":"Add To Cart",
+    "buynow":"Buy Now",
+    "store":"Store",
+    "billdetails":"Bill Details",
+    "totalorders":"Total Orders",
+    "totalquantity":"Total Quantity",
+    "total":"Total",
+    "continuetopurchase":"Continue To Purchase"
 
 
   };

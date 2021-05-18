@@ -230,9 +230,10 @@ class _state extends State<Cart> {
                                                   width: MediaQuery.of(context).size.width*.62,
                                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                      Text(c.price.toString()+" ريال ",style: TextStyle(color: Colors.black,fontSize: 11),),
+                                                      Text(c.price.toString()+"",style: TextStyle(color: Colors.black,fontSize: 11),),
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
                                                         children: [
                                                           InkWell(
                                                             onTap: (){
@@ -265,8 +266,8 @@ class _state extends State<Cart> {
                                                           ),
                                                           SizedBox(width: 5,),
                                                           Container(
-                                                            width: 18,
-                                                            height: 18,
+                                                            width: 23,
+                                                            height: 23,
                                                             alignment: Alignment.topCenter,
                                                             child: Text(c.quantity.toString(),style: TextStyle(fontSize: 13,color: Colors.black,fontWeight: FontWeight.bold),),
                                                           ),
@@ -280,7 +281,6 @@ class _state extends State<Cart> {
                                                                 'price': c.price,
                                                                 'description':c.description,
                                                                 'quantity': c.quantity-1,
-
                                                               });
 
                                                               if(c.quantity>1){
@@ -340,7 +340,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Bill Details",style: TextStyle(fontSize: 12,color:Colors.black),)                      ],
+                      Text(DemoLocalizations.of(context).title["billdetails"],style: TextStyle(fontSize: 12,color:Colors.black),)                      ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height*.005,),
                   Divider(color: Colors.black26,height: 1,),
@@ -348,7 +348,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total Orders",style: TextStyle(fontSize: 12,color:Colors.black),),
+                      Text(DemoLocalizations.of(context).title["totalorders"],style: TextStyle(fontSize: 12,color:Colors.black),),
                       Text(allPrice.toString(),style: TextStyle(fontSize: 12,color:Colors.black),)
                     ],
                   ),
@@ -358,7 +358,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total Quantity",style: TextStyle(fontSize: 12,color:Colors.black),),
+                      Text(DemoLocalizations.of(context).title["totalquantity"],style: TextStyle(fontSize: 12,color:Colors.black),),
                       Text(totalquantity.toString(),style: TextStyle(fontSize: 12,color:Colors.black),)
                     ],
                   ),
@@ -368,7 +368,7 @@ class _state extends State<Cart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total ",style: TextStyle(fontSize: 12,color: Color(h.mainColor),),),
+                      Text(DemoLocalizations.of(context).title["total"],style: TextStyle(fontSize: 12,color: Color(h.mainColor),),),
                       Text((allPrice).toString(),style: TextStyle(fontSize: 12,color: Color(h.mainColor)),)
                     ],
                   ),
@@ -389,7 +389,7 @@ class _state extends State<Cart> {
                         left: MediaQuery.of(context).size.width*.07,
                         right: MediaQuery.of(context).size.width*.07,
                       ),
-                      child: Text("Continue to purchase",style: TextStyle(color:Colors.white,fontSize: 14),),
+                      child: Text(DemoLocalizations.of(context).title["continuetopurchase"],style: TextStyle(color:Colors.white,fontSize: 14),),
 
                     ),
                     onTap: ()async{

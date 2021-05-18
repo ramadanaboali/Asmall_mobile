@@ -120,19 +120,21 @@ class UserServices{
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>registerServices(var lang,var name,var email,var password, var phone ,var address)async{
+  Future<Map<String,dynamic>>registerServices(var lang,var name,var email,var password, var phone)async{
     String url=baseURL+"api/people/register";
     var body={
       "Email":email,
       "Name":name,
-      "Country":"Egypt",
       "Phone":phone,
-      "State":"ALexandria",
-      "City":"Meami",
-      "Address":address,
+      "Password":password,
+      "confirmPassword":password
+    };
+/*    var body2={
+      "Email":email,
+      "Name":name,
       "Password":password
     };
-    print(body);
+    var body=phone==null?body2:body1;*/
     var header={
       "Content-Type":"application/json",
       "lang":"ar"

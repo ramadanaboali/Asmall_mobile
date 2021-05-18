@@ -1,7 +1,7 @@
+import 'Screens/Cart.dart';
+import 'Screens/MainPage.dart';
 import 'Screens/MainProfile.dart';
 import 'Screens/Profile.dart';
-import 'file:///D:/projects/ashmall/lib/Screens/Cart.dart';
-import 'file:///D:/projects/ashmall/lib/Screens/MainPage.dart';
 import 'package:flutter/material.dart';
 import 'Screens/Login.dart';
 import 'Screens/Notifications.dart';

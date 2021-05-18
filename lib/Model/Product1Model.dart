@@ -4,23 +4,23 @@
 
 import 'dart:convert';
 
-ProductModel productModelFromJson(String str) => ProductModel.fromJson(json.decode(str));
+Product1Model productModelFromJson(String str) => Product1Model.fromJson(json.decode(str));
 
-String productModelToJson(ProductModel data) => json.encode(data.toJson());
+String productModelToJson(Product1Model data) => json.encode(data.toJson());
 
-class ProductModel {
-  ProductModel({
+class Product1Model {
+  Product1Model({
     this.productDetail,
     this.status,
     this.message,
   });
 
-  List<ProductDetail> productDetail;
+  List<Product1Detail> productDetail;
   int status;
   String message;
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-    productDetail: List<ProductDetail>.from(json["productDetail"].map((x) => ProductDetail.fromJson(x))),
+  factory Product1Model.fromJson(Map<String, dynamic> json) => Product1Model(
+    productDetail: List<Product1Detail>.from(json["productDetail"].map((x) => Product1Detail.fromJson(x))),
     status: json["status"],
     message: json["message"],
   );
@@ -32,8 +32,8 @@ class ProductModel {
   };
 }
 
-class ProductDetail {
-  ProductDetail({
+class Product1Detail {
+  Product1Detail({
     this.id,
     this.name,
     this.description,
@@ -49,11 +49,11 @@ class ProductDetail {
   String description;
   String coverPhoto;
   int price;
-  double rate;
+  int rate;
   int disCount;
   int offerPrice;
 
-  factory ProductDetail.fromJson(Map<String, dynamic> json) => ProductDetail(
+  factory Product1Detail.fromJson(Map<String, dynamic> json) => Product1Detail(
     id: json["id"],
     name: json["name"],
     description: json["description"],

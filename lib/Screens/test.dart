@@ -294,7 +294,7 @@ class _state extends State<Test>{
                               padding: EdgeInsets.only(
                                   left: 5,right: 5
                               ),
-                              child: CustomRate(BestList[index].rate,11),
+                              child: CustomRate(BestList[index].rate.round(),11),
                             ),
                             SizedBox(height: 10,)
                           ],
@@ -387,7 +387,7 @@ class _state extends State<Test>{
                                 padding: EdgeInsets.only(
                                     left: 5,right: 5
                                 ),
-                                child: CustomRate(OffersList[index].rate,11)
+                                child: CustomRate(OffersList[index].rate.round(),11)
                             ),
                             SizedBox(height: 10,)
                           ],
@@ -484,7 +484,7 @@ class _state extends State<Test>{
                                 padding: EdgeInsets.only(
                                     left: 5,right: 5
                                 ),
-                                child: CustomRate(LastList[index].rate,11),
+                                child: CustomRate(LastList[index].rate.round(),11),
                             ),
                             SizedBox(height: 10,)
                           ],

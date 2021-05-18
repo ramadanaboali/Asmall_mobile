@@ -313,7 +313,10 @@ class _state extends State<MainPage>{
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              child: Image.network(GlobalVariable.URl+advList[index].photo,fit: BoxFit.fitHeight,),
+                              child: Image.network(GlobalVariable.URl+advList[index].photo,fit: BoxFit.fill,
+                                height: MediaQuery.of(context).size.height*.13,
+                                width: MediaQuery.of(context).size.width*.9,
+                              ),
                             ),
                           ),
                           Positioned(
@@ -404,7 +407,6 @@ class _state extends State<MainPage>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-
                                 child: Container(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.only(
@@ -454,7 +456,7 @@ class _state extends State<MainPage>{
                                             padding: EdgeInsets.only(
                                               // left: 5,right: 5
                                             ),
-                                            child: CustomRate(BestList[index].rate,11),
+                                            child: CustomRate(BestList[index].rate.round(),11),
                                           ),
                                         ],
                                       ),
@@ -579,7 +581,7 @@ class _state extends State<MainPage>{
                                               padding: EdgeInsets.only(
                                                  // left: 5,right: 5
                                               ),
-                                              child: CustomRate(OffersList[index].rate,11),
+                                              child: CustomRate(OffersList[index].rate.round(),11),
                                             ),
                                           ],
                                         ),
@@ -700,7 +702,7 @@ class _state extends State<MainPage>{
                                             padding: EdgeInsets.only(
                                               //left: 5,right: 5
                                             ),
-                                            child: CustomRate(LastList[index].rate,12),
+                                            child: CustomRate(LastList[index].rate.round(),12),
                                           ),
                                         ],
                                       ),

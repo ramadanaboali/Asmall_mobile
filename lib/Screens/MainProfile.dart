@@ -1,15 +1,20 @@
+import 'package:ashmall/Model/Product1Model.dart';
+import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Screens/CustomText.dart';
 import 'package:ashmall/Screens/Login.dart';
 import 'package:ashmall/Screens/Orders.dart';
 import 'package:ashmall/Screens/ProfileSetting.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/ProductServices.dart';
 import 'package:ashmall/Services/UserServices.dart';
 import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../GlobalFunction.dart';
 import 'Favourite.dart';
+import 'LastWatched.dart';
 
 class MainProfile extends StatefulWidget{
   @override
@@ -20,10 +25,10 @@ class MainProfile extends StatefulWidget{
 class _state extends State<MainProfile>{
   home h=new home();
   UserServices  userServices=new UserServices();
+  ProductServices productServices=new ProductServices();
   Map<String,dynamic>data;
   loadData() async {
     SharedPreferences prefs=await SharedPreferences.getInstance();
-
       data=await userServices.getUserInfo(prefs.getString("lang"), prefs.getString("id"), prefs.getString("token"));
       setState(() {
       });
@@ -46,25 +51,26 @@ class _state extends State<MainProfile>{
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height*.015,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(width: 10,),
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  child: Image.asset("images/ar.png",width: 30,height: 21,fit: BoxFit.fill,),
-                ),
-                SizedBox(width: 5,),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(context, GlobalFunction.route(ProfileSetting()));
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(Icons.settings,size: 25,color: Colors.black54,)),
-                ),
-                SizedBox(width: 10,),
-              ],
+            GestureDetector(
+              onTap: (){
+                Navigator.push(context, GlobalFunction.route(ProfileSetting()));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(width: 10,),
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: Image.asset("images/ar.png",width: 30,height: 21,fit: BoxFit.fill,),
+                  ),
+                  SizedBox(width: 5,),
+                 Container(
+                        padding: EdgeInsets.all(5),
+                        child: Icon(Icons.settings,size: 25,color: Colors.black54,)),
+
+                  SizedBox(width: 10,),
+                ],
+              ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height*.015,),
             Container(
@@ -113,11 +119,24 @@ class _state extends State<MainProfile>{
                     child: Column(
                       children: [
                         Icon(Icons.favorite_border,size: 35,),
-                        CustomText.SubTitleText("Wish List")
+                        CustomText.CustomText10(DemoLocalizations.of(context).title["wishlist"])
                       ],
                     ),
                   ),
                   SizedBox(width: 10,),
+                  GestureDetector(
+                    onTap: () async {
+                      SharedPreferences prefs=await SharedPreferences.getInstance();
+                      List<Product1Detail> data=await productServices.getLastWatched(prefs.getString("lang"), prefs.getString("id"));
+                      Navigator.push(context, GlobalFunction.route(LastWatched(data,DemoLocalizations.of(context).title["lastWatched"])));
+                    },
+                    child: Column(
+                      children: [
+                        Icon(Icons.assistant_photo,size: 35,),
+                        CustomText.CustomText10(DemoLocalizations.of(context).title["lastWatched"])
+                      ],
+                    ),
+                  ),
 
                 ],
               ),
@@ -132,8 +151,8 @@ class _state extends State<MainProfile>{
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomText.TitleText("Orders"),
-                    CustomText.SubTitleText("See All >>"),
+                    CustomText.TitleText(DemoLocalizations.of(context).title["orders"]),
+                    CustomText.SubTitleText("${DemoLocalizations.of(context).title["seeall"]} >>"),
                   ],
                 ),
               ),
@@ -163,28 +182,28 @@ class _state extends State<MainProfile>{
                     Column(
                       children: [
                         ImageIcon(AssetImage("images/process.png",),size: 60,color: Colors.black38,),
-                        CustomText.SubTitleText("InProcess")
+                        CustomText.SubTitleText(DemoLocalizations.of(context).title["inprocess"])
                       ],
                     ),
                     SizedBox(width:  MediaQuery.of(context).size.width*.04,),
                     Column(
                       children: [
                         ImageIcon(AssetImage("images/inWay.png",),size: 60,color: Colors.black38,),
-                        CustomText.SubTitleText("OnGoing")
+                        CustomText.SubTitleText(DemoLocalizations.of(context).title["ongoing"])
                       ],
                     ),
                     SizedBox(width:  MediaQuery.of(context).size.width*.04,),
                     Column(
                       children: [
                         Icon(Icons.check_circle,color: Colors.black26,size: 60,),
-                        CustomText.SubTitleText("Delivered")
+                        CustomText.SubTitleText(DemoLocalizations.of(context).title["delivered"])
                       ],
                     ),
                     SizedBox(width:  MediaQuery.of(context).size.width*.04,),
                     Column(
                       children: [
                         Icon(Icons.cancel,color: Colors.black26,size: 60,),
-                        CustomText.SubTitleText("Rejected")
+                        CustomText.SubTitleText(DemoLocalizations.of(context).title["rejected"])
                       ],
                     )
                   ],
@@ -206,7 +225,7 @@ class _state extends State<MainProfile>{
                   color: Color(h.mainColor)
                 ),
                 alignment: Alignment.center,
-                child: Text("Logout",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                child: Text(DemoLocalizations.of(context).title["logout"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height*.035,),
