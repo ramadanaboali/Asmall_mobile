@@ -1,4 +1,5 @@
 import 'package:ashmall/Screens/AboutApp.dart';
+import 'package:ashmall/Screens/ChooseAddress.dart';
 import 'package:ashmall/Screens/CustomText.dart';
 import 'package:ashmall/Screens/PrivacyPolices.dart';
 import 'package:ashmall/main.dart';
@@ -54,8 +55,17 @@ class _state  extends State<ProfileSetting>{
                          onTap: (){
                            Navigator.pushNamed(context, "/Profile");
                          },
-                         child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["profile"]}")),
-                     CustomText.TitleText("- ${DemoLocalizations.of(context).title["addresses"]}")
+                         child: Container(
+                             width: MediaQuery.of(context).size.width,
+                             child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["profile"]}"))),
+                     GestureDetector(
+                       onTap: (){
+                         Navigator.push(context, GlobalFunction.route(ChooseAddress("Profile")));
+                       },
+                       child: Container(
+                           width: MediaQuery.of(context).size.width,
+                           child: CustomText.TitleText("- ${DemoLocalizations.of(context).title["addresses"]}")),
+                     )
                    ],
                  ),
                ),

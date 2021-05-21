@@ -1,4 +1,6 @@
 import 'package:ashmall/Model/AddressModel.dart';
+import 'package:ashmall/Model/CityModel.dart';
+import 'package:ashmall/Model/ZoneModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Services/AddressServices.dart';
 import 'package:ashmall/utils/app_Localization.dart';
@@ -10,12 +12,20 @@ import 'package:toast/toast.dart';
 import '../main.dart';
 
 class ChooseAddress extends StatefulWidget{
+  var type;
+  ChooseAddress(var type){
+    this.type=type;
+  }
   @override
   State<StatefulWidget> createState() {
-    return _state();
+    return _state(this.type);
   }
 }
 class _state extends State<ChooseAddress>{
+  var type;
+  _state(var type){
+    this.type=type;
+  }
   home h=new home();
   String SelectedAddress;
   bool formAddress=false;
@@ -24,6 +34,7 @@ class _state extends State<ChooseAddress>{
   TextEditingController address=new TextEditingController();
   TextEditingController country=new TextEditingController();
   TextEditingController city=new TextEditingController();
+  TextEditingController zone=new TextEditingController();
   FocusNode addressNode=new FocusNode();
   FocusNode countryNode=new FocusNode();
   FocusNode cityNode=new FocusNode();
@@ -37,14 +48,20 @@ class _state extends State<ChooseAddress>{
   }
   var user_id;
   var lang;
+  List<CityDetail>Cites=[];
+  String SelectedCity;
+  String SelectedCityId;
+  List<ZoneDetail>zones;
   loadData()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     addresses=await addressServices.getAllAddresses(prefs.getString("lang"), prefs.getString("id"));
+    Cites=await addressServices.GetCities();
     setState(() {
       user_id=prefs.getString("id");
       lang=prefs.getString("lang");
+      country.text="مصر";
     });
-    print(addresses.length);
+    print(Cites.length);
     print("ssssssssssssssssssssssssssssss");
   }
   @override
@@ -73,7 +90,7 @@ class _state extends State<ChooseAddress>{
                     formAddress?SizedBox(): Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height*.02,),
-                    Container(
+                        type=="Profile"?SizedBox():  Container(
                         height: MediaQuery.of(context).size.height*.05,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -183,7 +200,7 @@ class _state extends State<ChooseAddress>{
                                 color: Colors.white,*/
                               ),
                               child: TextFormField(
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.phone,
                                 onFieldSubmitted: (value){
                                   FocusScope.of(context).requestFocus(countryNode);
                                 },
@@ -242,6 +259,7 @@ class _state extends State<ChooseAddress>{
                               child: TextFormField(
                                 keyboardType: TextInputType.text,
                                 focusNode: countryNode,
+                                enabled: false,
                                 onFieldSubmitted: (value){
                                   FocusScope.of(context).requestFocus(cityNode);
                                 },
@@ -253,7 +271,7 @@ class _state extends State<ChooseAddress>{
                                 },
                                 //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
                                 decoration: InputDecoration(
-                                  enabledBorder: new OutlineInputBorder(
+                                  disabledBorder: new OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide(color: Colors.grey)
                                   ),
@@ -288,58 +306,128 @@ class _state extends State<ChooseAddress>{
                             SizedBox(height: 10,),
                             Row(
                               children: [
+                                Text(DemoLocalizations.of(context).title['government'] ,style: TextStyle(fontSize: 13,color: Colors.black54,fontWeight: FontWeight.bold),)
+                              ],
+                            ),
+                            SizedBox(height: 7,),
+                            GestureDetector(
+                              onTap: (){
+                                SelectCity(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  /* borderRadius:BorderRadius.all(Radius.circular(30)),
+                                  color: Colors.white,*/
+                                ),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  focusNode: cityNode,
+                                  enabled: false,
+                                  onFieldSubmitted: (value){
+                                    FocusScope.of(context).requestFocus(addressNode);
+                                  },
+                                  validator: (value){
+                                    if(value.isEmpty){
+                                      return DemoLocalizations.of(context).title['enterCity'];
+                                    }
+                                    return null;
+                                  },
+                                  //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
+                                  decoration: InputDecoration(
+                                    disabledBorder: new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey)
+                                    ),
+                                    focusedBorder:  new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Color(0xffdedede))
+                                    ),
+                                    focusedErrorBorder:new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Color(0xfff00f00))
+                                    ),
+                                    errorBorder:new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Color(0xfff00f00))
+                                    ),
+                                    errorStyle: TextStyle(fontSize: 11),
+                                    contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
+                                    hintText:DemoLocalizations.of(context).title['government'] ,
+                                    hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
+
+                                    suffixIconConstraints: BoxConstraints(
+                                        maxHeight: 50,
+                                        minHeight: 30,
+                                        maxWidth: 70,
+                                        minWidth: 50
+                                    ) ,
+                                  ),
+                                  controller: city,
+                                ),
+                              ),
+                            ),
+                            ////////////////////
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
                                 Text(DemoLocalizations.of(context).title['City'] ,style: TextStyle(fontSize: 13,color: Colors.black54,fontWeight: FontWeight.bold),)
                               ],
                             ),
                             SizedBox(height: 7,),
-                            Container(
-                              decoration: BoxDecoration(
-                                /* borderRadius:BorderRadius.all(Radius.circular(30)),
-                                color: Colors.white,*/
-                              ),
-                              child: TextFormField(
-                                keyboardType: TextInputType.text,
-                                focusNode: cityNode,
-                                onFieldSubmitted: (value){
-                                  FocusScope.of(context).requestFocus(addressNode);
-                                },
-                                validator: (value){
-                                  if(value.isEmpty){
-                                    return DemoLocalizations.of(context).title['enterCity'];
-                                  }
-                                  return null;
-                                },
-                                //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
-                                decoration: InputDecoration(
-                                  enabledBorder: new OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Colors.grey)
-                                  ),
-                                  focusedBorder:  new OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xffdedede))
-                                  ),
-                                  focusedErrorBorder:new OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xfff00f00))
-                                  ),
-                                  errorBorder:new OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Color(0xfff00f00))
-                                  ),
-                                  errorStyle: TextStyle(fontSize: 11),
-                                  contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                  hintText:DemoLocalizations.of(context).title['City'] ,
-                                  hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
-
-                                  suffixIconConstraints: BoxConstraints(
-                                      maxHeight: 50,
-                                      minHeight: 30,
-                                      maxWidth: 70,
-                                      minWidth: 50
-                                  ) ,
+                            GestureDetector(
+                              onTap: (){
+                                SelectZone(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  /* borderRadius:BorderRadius.all(Radius.circular(30)),
+                                  color: Colors.white,*/
                                 ),
-                                controller: city,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  focusNode: cityNode,
+                                  enabled: false,
+                                  onFieldSubmitted: (value){
+                                    FocusScope.of(context).requestFocus(addressNode);
+                                  },
+                                  validator: (value){
+                                    if(value.isEmpty){
+                                      return DemoLocalizations.of(context).title['enterCity'];
+                                    }
+                                    return null;
+                                  },
+                                  //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
+                                  decoration: InputDecoration(
+                                    disabledBorder: new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey)
+                                    ),
+                                    focusedBorder:  new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Color(0xffdedede))
+                                    ),
+                                    focusedErrorBorder:new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Color(0xfff00f00))
+                                    ),
+                                    errorBorder:new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Color(0xfff00f00))
+                                    ),
+                                    errorStyle: TextStyle(fontSize: 11),
+                                    contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
+                                    hintText:DemoLocalizations.of(context).title['City'] ,
+                                    hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
+
+                                    suffixIconConstraints: BoxConstraints(
+                                        maxHeight: 50,
+                                        minHeight: 30,
+                                        maxWidth: 70,
+                                        minWidth: 50
+                                    ) ,
+                                  ),
+                                  controller: zone,
+                                ),
                               ),
                             ),
                             ////////////////////
@@ -414,7 +502,7 @@ class _state extends State<ChooseAddress>{
                               ),
                               onTap: () async {
                                 if(formKey.currentState.validate()){
-                                  Map<String,dynamic>asd=await addressServices.AddAddress(lang, user_id, phone.text, country.text, city.text, address.text);
+                                  Map<String,dynamic>asd=await addressServices.AddAddress(lang, user_id, phone.text, country.text, zone.text, address.text);
                                   if(asd["status"]==200){
                                     Toast.show(
                                         "${asd["message"]}", context,
@@ -431,9 +519,9 @@ class _state extends State<ChooseAddress>{
                       ),
                     ):SizedBox(),
                     formAddress?SizedBox(): Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment:type=="Profile"? MainAxisAlignment.center: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        type=="Profile"? SizedBox(): GestureDetector(
                           child: Container(
                             decoration:BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -475,49 +563,53 @@ class _state extends State<ChooseAddress>{
                   ],
                 ),
               ),
-             SizedBox(height: 15,),
-             Container(
-               height: MediaQuery.of(context).size.height*.05,
-               width: MediaQuery.of(context).size.width*.9,
-               decoration: BoxDecoration(
-                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                 color: Colors.black12,
-               ),
-               padding: EdgeInsets.only(left: 10,right: 10),
-               child:Row(
-                 children: [
-                   Text("Select Payment Method",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
-                 ],
-               ),
-             ),
-             SizedBox(height: 10,),
-             Container(
-               width: MediaQuery.of(context).size.width*.9,
-               decoration: BoxDecoration(
-                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                 border: Border.all(color: Colors.black12,width: 1)
-               ),
-               child: Column(
-                 children: [
-                   Row(
-                     children: [
-                       SizedBox(width: 10,),
-                       Radio(value: "cash",groupValue: payment,activeColor: Color(h.mainColor),),
-                       Text("Cash on Delivery")
-                     ],
-                   ),
-                   Row(
-                     children: [
-                       SizedBox(width: 10,),
-                       Radio(value: "credit",groupValue: payment,activeColor: Color(h.mainColor),),
-                       Text("By Credit Cart"),
-                       SizedBox(width: MediaQuery.of(context).size.width*.05,),
-                       Text("(Services not active now)",style: TextStyle(fontSize: 12,color: Color(h.mainColor)),)
-                     ],
-                   )
-                 ],
-               ),
-             )
+            type=="Profile"?SizedBox():Column(
+              children: [
+                SizedBox(height: 15,),
+                Container(
+                  height: MediaQuery.of(context).size.height*.05,
+                  width: MediaQuery.of(context).size.width*.9,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.black12,
+                  ),
+                  padding: EdgeInsets.only(left: 10,right: 10),
+                  child:Row(
+                    children: [
+                      Text("Select Payment Method",style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold),)
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  width: MediaQuery.of(context).size.width*.9,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(color: Colors.black12,width: 1)
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 10,),
+                          Radio(value: "cash",groupValue: payment,activeColor: Color(h.mainColor),),
+                          Text("Cash on Delivery")
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 10,),
+                          Radio(value: "credit",groupValue: payment,activeColor: Color(h.mainColor),),
+                          Text("By Credit Cart"),
+                          SizedBox(width: MediaQuery.of(context).size.width*.05,),
+                          Text("(Services not active now)",style: TextStyle(fontSize: 12,color: Color(h.mainColor)),)
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )
 
            ],
 
@@ -575,7 +667,7 @@ class _state extends State<ChooseAddress>{
                             height: MediaQuery.of(context).size.height*.035,
                             width: MediaQuery.of(context).size.width*.27,
                             alignment: Alignment.center,
-                            child:   Text(DemoLocalizations.of(context).title['confrim'],style: TextStyle(color:Colors.white,fontSize: 10),),
+                            child:   Text(DemoLocalizations.of(context).title['confirm'],style: TextStyle(color:Colors.white,fontSize: 10),),
                           ),
                           onTap: () async {
                                addressServices.deleteAddress("en", id);
@@ -594,6 +686,113 @@ class _state extends State<ChooseAddress>{
 
 
             ],),
+          ),
+        ));
+  }
+  SelectCity(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          child:  Container(
+            width: MediaQuery.of(context).size.width*.4,
+            decoration: BoxDecoration(color: Colors.white,
+              // borderRadius: BorderRadius.all(Radius.circular(20))
+              // border: Border.all(color: Colors.black12,width: 2.0)
+            )
+            ,padding: EdgeInsets.only(
+            top:  MediaQuery.of(context).size.height*0.01,
+            bottom: MediaQuery.of(context).size.height*0.01,
+            left: MediaQuery.of(context).size.width*0.05,
+            right: MediaQuery.of(context).size.width*0.05,
+          ),
+
+
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListView.builder(shrinkWrap: true,primary: false,
+                    itemCount: Cites.length,
+                    itemBuilder: (context,index){
+                      return GestureDetector(
+                        onTap: ()async{
+                          zones=await addressServices.GetCityZone(Cites[index].id);
+                          setState(() {
+                            city.text=Cites[index].name;
+                          });
+                          print(zones.length);
+                          print("000000000000000000000000000000");
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*.005,top: MediaQuery.of(context).size.height*.005),
+                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*.005,top: MediaQuery.of(context).size.height*.005),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                color: Color(h.mainColor)
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(Cites[index].name,style: TextStyle(fontSize: 16,color: Colors.white),)),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+          ),
+        ));
+  }
+  SelectZone(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          child:  Container(
+            width: MediaQuery.of(context).size.width*.4,
+            decoration: BoxDecoration(color: Colors.white,
+              // borderRadius: BorderRadius.all(Radius.circular(20))
+              // border: Border.all(color: Colors.black12,width: 2.0)
+            )
+            ,padding: EdgeInsets.only(
+            top:  MediaQuery.of(context).size.height*0.01,
+            bottom: MediaQuery.of(context).size.height*0.01,
+            left: MediaQuery.of(context).size.width*0.05,
+            right: MediaQuery.of(context).size.width*0.05,
+          ),
+
+
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListView.builder(shrinkWrap: true,primary: false,
+                    itemCount: zones.length,
+                    itemBuilder: (context,index){
+                      return GestureDetector(
+                        onTap: ()async{
+                          setState(() {
+                            zone.text=zones[index].name;
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*.005,top: MediaQuery.of(context).size.height*.005),
+                            padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*.005,top: MediaQuery.of(context).size.height*.005),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                color: Color(h.mainColor)
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(zones[index].name,style: TextStyle(fontSize: 16,color: Colors.white),)),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+
           ),
         ));
   }

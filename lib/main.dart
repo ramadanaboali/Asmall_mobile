@@ -8,6 +8,8 @@ import 'ScopeModel/AppSCoedModel.dart';
 import 'ScopeModel/Base_View.dart';
 import 'ScopeModel/Locator_Service.dart';
 import 'Screens/Category.dart';
+import 'Screens/ChooseAddress.dart';
+import 'Screens/Followers.dart';
 import 'Screens/ForgetPassword.dart';
 import 'Screens/MainPage.dart';
 import 'Screens/MainProfile.dart';
@@ -54,7 +56,7 @@ class home extends StatelessWidget {
       locale: _State.lang==null?model.appLocal:Locale(_State.lang),
       theme:ThemeData(accentColor: Color(0xffff3185),
           primaryColor: Color(0xffff4747),
-          fontFamily: 'Cairo'
+          fontFamily: 'ArbFONTS-4_10'
       ),
       routes: <String,WidgetBuilder>{
        '/Search':(BuildContext context)=>new Search(),

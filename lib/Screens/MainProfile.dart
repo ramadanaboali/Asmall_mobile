@@ -1,6 +1,7 @@
 import 'package:ashmall/Model/Product1Model.dart';
 import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Screens/CustomText.dart';
+import 'package:ashmall/Screens/Followers.dart';
 import 'package:ashmall/Screens/Login.dart';
 import 'package:ashmall/Screens/Orders.dart';
 import 'package:ashmall/Screens/ProfileSetting.dart';
@@ -123,7 +124,7 @@ class _state extends State<MainProfile>{
                       ],
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(width: 15,),
                   GestureDetector(
                     onTap: () async {
                       SharedPreferences prefs=await SharedPreferences.getInstance();
@@ -134,6 +135,18 @@ class _state extends State<MainProfile>{
                       children: [
                         Icon(Icons.assistant_photo,size: 35,),
                         CustomText.CustomText10(DemoLocalizations.of(context).title["lastWatched"])
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 15,),
+                  GestureDetector(
+                    onTap: () async {
+                      Navigator.push(context, GlobalFunction.route(Follower()));
+                    },
+                    child: Column(
+                      children: [
+                        Icon(Icons.follow_the_signs_rounded,size: 35,),
+                        CustomText.CustomText10(DemoLocalizations.of(context).title["followers"])
                       ],
                     ),
                   ),

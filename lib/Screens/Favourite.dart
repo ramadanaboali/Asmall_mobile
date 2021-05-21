@@ -5,8 +5,10 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../DbHelper.dart';
+import '../GlobalFunction.dart';
 import '../Model/FavouriteLocalModel.dart';
 import '../main.dart';
+import 'ProductDetails.dart';
 
 
 
@@ -104,130 +106,135 @@ class _state extends State<Favourite>{
                                     .fromMap(snapshot.data[index]);
                                 //totalquantity+=int.parse(c.quantity.toString());
                                 //allPrice+=double.parse(c.totalPrice.toString());
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10)),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 3,
-                                        blurRadius: 3,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  height: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height * .12,
-                                  margin: EdgeInsets.only(
-                                      bottom: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height * .01,
-                                      left: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width * .03,
+                                return GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(context, GlobalFunction.route(ProductDetails(c.id,c.title)));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10)),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 3,
+                                          blurRadius: 3,
+                                          offset: Offset(
+                                              0, 3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    height: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height * .12,
+                                    margin: EdgeInsets.only(
+                                        bottom: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height * .01,
+                                        left: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width * .03,
+                                        right: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width * .03
+                                    ),
+                                    padding: EdgeInsets.only(
                                       right: MediaQuery
                                           .of(context)
                                           .size
-                                          .width * .03
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    right: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width * .02,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        child: Image.network(GlobalVariable.URl+c.img,
+                                          .width * .02,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          child: Image.network(GlobalVariable.URl+c.img,
+                                            width: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width * .25,
+                                            height: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .height * .12,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(width: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .width * .02,),
+                                        Container(
                                           width: MediaQuery
                                               .of(context)
                                               .size
-                                              .width * .25,
-                                          height: MediaQuery
-                                              .of(context)
-                                              .size
-                                              .height * .12,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      SizedBox(width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width * .02,),
-                                      Container(
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width * .65,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start,
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  top: MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .height * .014,
-                                                  bottom: MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .height * .014
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment
-                                                    .start,
-                                                children: [
-                                                  Text(c.title, style: TextStyle(
-                                                      height: 1.2,
-                                                      color: Color(h.mainColor),
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight
-                                                          .bold),),
+                                              .width * .65,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    top: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height * .014,
+                                                    bottom: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height * .014
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment
+                                                      .spaceBetween,
+                                                  crossAxisAlignment: CrossAxisAlignment
+                                                      .start,
+                                                  children: [
+                                                    Text(c.title, style: TextStyle(
+                                                        height: 1.2,
+                                                        color: Color(h.mainColor),
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight
+                                                            .bold),),
 
-                                                  GestureDetector(
-                                                    onTap: (){
-                                                      DeleteFromFavorite(context,c.id);
-                                                    },
-                                                    child: Icon(Icons.favorite,
-                                                      color: Color(h.mainColor),),
-                                                  ),
+                                                    GestureDetector(
+                                                      onTap: (){
+                                                        DeleteFromFavorite(context,c.id);
+                                                      },
+                                                      child: Icon(Icons.favorite,
+                                                        color: Color(h.mainColor),),
+                                                    ),
 
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  bottom: MediaQuery
-                                                      .of(context)
-                                                      .size
-                                                      .height * .014
+                                              Container(
+                                                padding: EdgeInsets.only(
+                                                    bottom: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .height * .014
+                                                ),
+                                                child: Text(c.description,
+                                                  style: TextStyle(height: 1.2,
+                                                      fontSize: 10,
+                                                      color: Colors.black38),
+                                                  maxLines: 2,
+                                                ),
                                               ),
-                                              child: Text(c.description,
-                                                style: TextStyle(height: 1.2,
-                                                    fontSize: 10,
-                                                    color: Colors.black38),
-                                                maxLines: 2,
-                                              ),
-                                            ),
 
-                                          ],),
-                                      )
-                                    ],
+                                            ],),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 );
                               },

@@ -5,6 +5,7 @@ import 'package:ashmall/Screens/CustomText.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/Services/ProductServices.dart';
 import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -58,6 +59,8 @@ class _state extends State <AllProduct>{
   Widget build(BuildContext context) {
    return SafeArea(
      child: Scaffold(
+       resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       // backgroundColor: Color(h.mainColor),
        body: Container(
          child: Column(
@@ -146,11 +149,14 @@ class _state extends State <AllProduct>{
                ],
              )),
              SizedBox(height: MediaQuery.of(context).size.height*.02,),
-             data==null?Center(child: CircularProgressIndicator(),):data.length>0?
+             data==null?Container(
+                 height: MediaQuery.of(context).size.height*.7,
+                 child: Center(child: CircularProgressIndicator(),)):data.length>0?
              Expanded(child: GridView.builder(
                padding: EdgeInsets.only(
                    left: MediaQuery.of(context).size.width*.05,
-                   right: MediaQuery.of(context).size.width*.05
+                   right: MediaQuery.of(context).size.width*.05,
+                 bottom: 30
                ),
                primary: false,
                shrinkWrap: true,
@@ -246,7 +252,17 @@ class _state extends State <AllProduct>{
 
              ):Center(child: Container(
                  height: MediaQuery.of(context).size.height*.7,
-                 child: Center(child: CustomText.TitleText("No Product in $name"),)),),
+                 child:Column(
+                   children: [
+                     SizedBox(height: MediaQuery.of(context).size.height*.2,),
+                     Image.asset("images/logo.png",height: MediaQuery.of(context).size.height*.2,color: Colors.black38,),
+                     SizedBox(height: 13,),
+                     Center(child: CustomText.TitleText(DemoLocalizations.of(context).title["noproduct"]),)
+                   ],
+                 )
+
+             ),
+             ),
            ],
          ),
        )

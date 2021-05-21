@@ -36,9 +36,9 @@ dependencies:
   path: ^1.6.4
   http_parser: ^3.1.4
   image_picker:
-  url_launcher: ^5.7.10
   video_player:
   flutter_share:
+  url_launcher: ^5.7.10
   chewie:
   smooth_star_rating:
   flutter_localizations:
@@ -71,13 +71,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
-    - family: Cairo
+    - family: ArbFONTS-4_10
       fonts:
-        - asset: fonts/Cairo-Regular.ttf
+        - asset: fonts/ArbFONTS-4_10.otf
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+    - images/icon/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

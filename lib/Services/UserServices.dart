@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:ashmall/Model/CityModel.dart';
+import 'package:ashmall/Model/FollowerModel.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -67,15 +68,18 @@ class UserServices{
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>editProfile(var id,var name,var email,var phone)async{
+  Future<Map<String,dynamic>>editProfile(var id,var name,var email,var phone,var gender,var birthdate)async{
     String url=baseURL+"api/home/edit-profile";
     print(url);
     var body={
         "Id":id,
         "Name":name,
         "Email":email,
-        "Phone":phone
+        "Phone":phone,
+        "Gender":gender,
+        "DateOfBirth":birthdate
     };
+    print(body);
     var header={
       "Content-Type":"application/json",
       "lang":"en"
@@ -407,9 +411,9 @@ class UserServices{
       }
     }
   }
-  Future<List<CityDetail>>GetCities()async
+  Future<List<FollowerDetail>>GetFolloers(var id)async
   {
-    var url="${baseURL}api/Lookups/get-governorates";
+    var url="${baseURL}api/follower/get-all-followers?userId=$id";
     print(url);
     try
     {
@@ -418,7 +422,7 @@ class UserServices{
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
-        return slideritems.map((e) => CityDetail.fromJson(e)).toList();
+        return slideritems.map((e) => FollowerDetail.fromJson(e)).toList();
       }
     }
     catch(e)
@@ -426,6 +430,7 @@ class UserServices{
       print('$e,,,,error search doctors');
     }
   }
+
 
 
 }

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:ashmall/Screens/ChangePassword.dart';
 import 'package:ashmall/Screens/Login.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
@@ -23,6 +23,7 @@ class Profile extends StatefulWidget{
 }
 class _state extends State<Profile>{
   home h=new home();
+  var gender;
   final formKey=GlobalKey<FormState>();
   UserServices userServices=new UserServices();
   bool passVisibility=true;
@@ -38,10 +39,10 @@ class _state extends State<Profile>{
   String image;
   Map<String,dynamic>data;
   loadData() async {
-    print("ssssssssssssssss");
     SharedPreferences prefs=await SharedPreferences.getInstance();
     setState(() {
       user_id=prefs.getString("id");
+      finaldate=prefs.getString("date");
     });
     if(user_id!=null){
       data=await userServices.getUserInfo(prefs.getString("lang"), user_id, prefs.getString("token"));
@@ -50,17 +51,40 @@ class _state extends State<Profile>{
         email.text=data["data"]["email"];
         phone.text=data["data"]["phone"];
         image="http://"+data["data"]["photo"];
+        gender=data["data"]["gender"];
       });
-      print(image);
-      print("sssssssssssssssssssssssssssssssssssssssssss");
     }
+  }
+  var finaldate;
+  var today = DateFormat.yMMMd().format(new DateTime.now());
+  void callDatePicker(BuildContext context) async {
+    var order = await getDate(context);
+    setState(() {
+      finaldate =DateFormat('yyyy-MM-dd').format(order);
+    });
+    print(finaldate);
+  }
+  Future<DateTime> getDate(BuildContext context) {
+    // Imagine that this function is
+    // more complex and slow.
+    return showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.dark(),
+          child: child,
+        );
+      },
+    );
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadData();
-
   }
   @override
   Widget build(BuildContext context) {
@@ -184,7 +208,6 @@ class _state extends State<Profile>{
                     keyboardType: TextInputType.number,
                     onFieldSubmitted: (value){
                       if(value.isNotEmpty){
-                        userServices.editProfile(user_id, name.text, email.text, phone.text);
                       }
                       FocusScope.of(context).requestFocus(emailNode);
                     },
@@ -251,7 +274,7 @@ class _state extends State<Profile>{
                     keyboardType: TextInputType.number,
                     onFieldSubmitted: (value){
                       if(value.isNotEmpty){
-                        userServices.editProfile(user_id, name.text, email.text, phone.text);
+
                       }
                       FocusScope.of(context).requestFocus(phoneNode);
                     },
@@ -318,7 +341,6 @@ class _state extends State<Profile>{
                     keyboardType: TextInputType.number,
                     onFieldSubmitted: (value){
                       if(value.isNotEmpty){
-                        userServices.editProfile(user_id, name.text, email.text, phone.text);
                       }
                       FocusScope.of(context).requestFocus(emailNode);
                     },
@@ -355,8 +377,106 @@ class _state extends State<Profile>{
                     controller: phone,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*.025,),
-                GestureDetector(
+                SizedBox(height: MediaQuery.of(context).size.height*.02,),
+                Container(
+                  width: MediaQuery.of(context).size.width*.9,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText.text12Bold("Birth Date", Colors.black87),
+                    ],
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                 GestureDetector(
+                   onTap: (){
+                     callDatePicker(context);
+                   },
+                   child: Container(
+               width: MediaQuery.of(context).size.width*.9,
+              height: MediaQuery.of(context).size.height*.065,
+              decoration: BoxDecoration(
+               borderRadius:BorderRadius.all(Radius.circular(10)),
+               color: Colors.white,
+               boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 3,
+                    blurRadius: 3,
+                    offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+            child: CustomText.text12Bold(finaldate==null?"Select Date":finaldate, Colors.black),
+          ),
+                 ),
+                SizedBox(height: MediaQuery.of(context).size.height*.02,),
+                   Container(
+                     padding: EdgeInsets.only(
+                       left: MediaQuery.of(context).size.width*.05,
+                       right: MediaQuery.of(context).size.width*.05,
+                     ),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         CustomText.text12Bold("Gender", Colors.black87),
+                         GestureDetector(
+                           onTap: (){
+                             setState(() {
+                               gender="Male";
+                             });
+                           },
+                           child: Row(
+                             children: [
+                               CustomText.text12("Male"),
+                               Radio(value: "Male", groupValue: gender, onChanged: (val){
+                                 setState(() {
+                                   gender="Male";
+                                 });
+                               })
+                             ],
+                           ),
+                         ),
+                         GestureDetector(
+                           onTap: (){
+                             setState(() {
+                               gender="Female";
+                             });
+                           },
+                           child: Row(
+                             children: [
+                               CustomText.text12("Female"),
+                               Radio(value: "Female", groupValue: gender, onChanged: (val){
+                                 setState(() {
+                                   gender="Female";
+                                 });
+                               })
+                             ],
+                           ),
+                         )
+                       ],
+                     ),
+                   ),
+                SizedBox(height: MediaQuery.of(context).size.height*.02,),
+                 GestureDetector(
+                   onTap: () async {
+                     SharedPreferences pref=await SharedPreferences.getInstance();
+                     userServices.editProfile(user_id, name.text, email.text, phone.text,gender,null);
+                     pref.setString("date", finaldate);
+                   },
+                   child: Container(
+                     width: MediaQuery.of(context).size.width*.9,
+                     height: MediaQuery.of(context).size.height*.065,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                       color: Color(h.mainColor)
+                     ),
+                     alignment: Alignment.center,
+                     child: Text("Edit",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
+                   ),
+                 )
+            /*GestureDetector(
                   onTap: (){
                     Navigator.push(context, GlobalFunction.route(ChangePassword(email.text)));
                   },
@@ -367,7 +487,7 @@ class _state extends State<Profile>{
                       ,SizedBox(width: MediaQuery.of(context).size.width*.05,),
                     ],
                   ),
-                )
+                )*/
               ],
             ),
           ),

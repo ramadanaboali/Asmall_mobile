@@ -28,6 +28,7 @@ class _state extends State<Search>{
    return SafeArea(
      child: Scaffold(
        resizeToAvoidBottomInset: false,
+       resizeToAvoidBottomPadding: false,
        body:  Container(
              padding: EdgeInsets.only(
                left: MediaQuery.of(context).size.width*.03,
@@ -51,7 +52,7 @@ class _state extends State<Search>{
                          child: TextFormField(
                            autofocus: true,
                            onChanged: (val)async{
-                          if(val.isNotEmpty){
+                          if(val.trim().isNotEmpty){
                             data2=await productServices.Search("en", val);
                             setState(() {
                                   Empty="No Data Available With This Key Search";
@@ -201,6 +202,7 @@ class _state extends State<Search>{
              color: Colors.white,
              child:GridView.builder(
                  padding: EdgeInsets.only(
+                   bottom: 20
                  ),
                  primary: false,
                  shrinkWrap: true,
@@ -214,12 +216,14 @@ class _state extends State<Search>{
                  itemBuilder: (context,index){
                    return  GestureDetector(
                      onTap: (){
+                       print(data2[index].type);
+                       print("*************************************");
                        if(data2[index].type==1)
                          Navigator.push(context, GlobalFunction.route(SearchSubCategory(data2[index].id)));
                      else if( data2[index].type==2)
                       Navigator.push(context, GlobalFunction.route(AllProduct(data2[index].id,data2[index].name,"category")));
                     else if(data2[index].type==3)
-                        Navigator.push(context, GlobalFunction.route(AllProduct(data2[index].id,data2[index].name,"category")));
+                        Navigator.push(context, GlobalFunction.route(AllProduct(data2[index].id,data2[index].name,"brand")));
                     else
                         Navigator.push(context, GlobalFunction.route(ProductDetails(data2[index].id,data2[index].name)));
                      },

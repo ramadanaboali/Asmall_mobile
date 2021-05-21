@@ -70,7 +70,15 @@ class EN {
     "totalorders":"Total Orders",
     "totalquantity":"Total Quantity",
     "total":"Total",
-    "continuetopurchase":"Continue To Purchase"
+    "continuetopurchase":"Continue To Purchase",
+    "home":"Home",
+    "account":"Account",
+    "nosub":"No Sub Category For This Category",
+    "noproduct":"No Exist Products In This Item",
+    "chatsoon":"Chat Will Be Add Soon",
+    "SimillarProduct":"Simillar Product",
+    "government":"GovernMent",
+    "followers":"Followers"
 
 
   };

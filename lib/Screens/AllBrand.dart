@@ -144,6 +144,7 @@ class _state extends State<Bran>{
                     padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width*.03,
                       right: MediaQuery.of(context).size.width*.03,
+                        bottom: 100
                     ),
                     primary: false,
                     shrinkWrap: true,

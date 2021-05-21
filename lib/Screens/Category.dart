@@ -106,13 +106,22 @@ getSubCat(String id)async{
                     ),
                   ),
                   Container(height: MediaQuery.of(context).size.height,color: Colors.black12,width: 1.0,),
+
                 subCategories.length==null?
                 Container(
                     width: MediaQuery.of(context).size.width*.7,
                     child: Center(child: CircularProgressIndicator(),)):subCategories.length==0?
                 Container(
                     width: MediaQuery.of(context).size.width*.7,
-                    child: Center(child: Text("Not Contain Sub Category",style: TextStyle(color: Colors.black45,fontSize: 12,fontWeight: FontWeight.bold),)))
+                    child: Column(
+                      children: [
+                        SizedBox(height: MediaQuery.of(context).size.height*.2,),
+                        Image.asset("images/logo.png",height: MediaQuery.of(context).size.height*.2,color: Colors.black38,),
+                        SizedBox(height: 13,),
+                        Center(child: Text(DemoLocalizations.of(context).title["nosub"],style: TextStyle(color: Colors.black45,fontSize: 12,fontWeight: FontWeight.bold),))
+                      ],
+                    )
+                )
                     :SingleChildScrollView(
                     child: Container(
                       width: MediaQuery.of(context).size.width*.745,
@@ -122,6 +131,7 @@ getSubCat(String id)async{
                         padding: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width*.03,
                           right: MediaQuery.of(context).size.width*.03,
+                            bottom: 100
                         ),
                         primary: false,
                         shrinkWrap: true,

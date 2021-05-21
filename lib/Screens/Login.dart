@@ -238,7 +238,8 @@ class _state extends State<Login>{
                              children: [
                              GestureDetector(onTap: (){Navigator.pushNamed(context, "/ForgetPassword");},child: Text(DemoLocalizations.of(context).title["ForgetPassword"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54)))
                            ],),
-                         )
+                         ),
+
                         ],
                       ),
                     ),
@@ -269,7 +270,6 @@ class _state extends State<Login>{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }
-
   launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);

@@ -44,7 +44,6 @@ class _state extends State<MainPage>{
     LastList=await productServices.getlastAdd(Prefs.getString("lang"), Prefs.getString("token"));
     advList=await productServices.getBanar(Prefs.getString("lang"));
     setting=await productServices.getSetting(Prefs.getString("lang"));
-    Prefs.setString("about", setting["data"]["aboutApplication"]);
     Prefs.setString("usage", setting["data"]["usingPolicy"]);
     Prefs.setString("privacy", setting["data"]["privacyPolicy"]);
     setting["data"]["dashboardLinkEnable"]==true?Prefs.setString("dashboardLink", setting["data"]["dashboardLink"]):print("sharrrrrrrrrrrf");
@@ -622,7 +621,8 @@ class _state extends State<MainPage>{
                  height: MediaQuery.of(context).size.height*.17,
                  width: MediaQuery.of(context).size.width,
                  child: Center(child: CircularProgressIndicator(),),
-               ): Container(
+               ):
+               Container(
                   width: MediaQuery.of(context).size.width,
                   child: GridView.builder(
                     padding: EdgeInsets.only(

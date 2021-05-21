@@ -46,7 +46,7 @@ class ProductRateDetail {
 
   String id;
   String comment;
-  int rateNum;
+  double rateNum;
   String productId;
   String photo;
   String userId;

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:ashmall/Model/CityModel.dart';
+import 'package:ashmall/Model/ZoneModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:ashmall/Model/AddressModel.dart';
 
@@ -100,6 +102,44 @@ class AddressServices{
     }
     catch(e) {
       print(e.toString());
+    }
+  }
+  Future<List<CityDetail>>GetCities()async
+  {
+    var url="${baseURL}api/Lookups/get-governorates";
+    print(url);
+    try
+    {
+      final response = await http.get(url);
+      print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
+        return slideritems.map((e) => CityDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ZoneDetail>>GetCityZone(var id)async
+  {
+    var url="${baseURL}api/Lookups/get-cities-by-governorateId?governorateId=$id";
+    print(url);
+    try
+    {
+      final response = await http.get(url);
+      print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
+        return slideritems.map((e) => ZoneDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
     }
   }
 }

@@ -70,7 +70,16 @@ class AR {
     "totalorders":"اجمالي الطلبات",
     "totalquantity":"اجمالي الكميات",
     "total":"الاجمالي",
-    "continuetopurchase":"متابعة الشراء"
+    "continuetopurchase":"متابعة الشراء",
+    "home":"الرئيسية",
+    "account":"حسابي",
+    "nosub":"لا يوجد فئات فرعية لهذا الصنف ",
+    "noproduct":"لا يوجد منتجات في هذا العنصر",
+    "chatsoon":"سيتم تفعيل الدردشة قريبا ",
+    "SimillarProduct":"منتجات مشابهه",
+    "government":"المحافظة",
+    "followers":"Followers"
+
 
 
   };

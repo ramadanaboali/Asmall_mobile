@@ -1,3 +1,4 @@
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -184,7 +185,7 @@ class CustomSearchAppBar extends StatelessWidget{
                                 },
                                 child: Container(
                                     padding: EdgeInsets.all(5),
-                                    child: Text("Home")),
+                                    child: Text(DemoLocalizations.of(context).title["home"])),
                               ),
                               GestureDetector(
                                 onTap: (){
@@ -192,7 +193,7 @@ class CustomSearchAppBar extends StatelessWidget{
                                 },
                                 child: Container(
                                     padding: EdgeInsets.all(5),
-                                    child: Text("Account")),
+                                    child: Text(DemoLocalizations.of(context).title["account"])),
                               ),
                               GestureDetector(
                                 onTap: (){
@@ -200,7 +201,7 @@ class CustomSearchAppBar extends StatelessWidget{
                                 },
                                 child: Container(
                                     padding: EdgeInsets.all(5),
-                                    child: Text("Setting")),
+                                    child: Text(DemoLocalizations.of(context).title["setting"])),
                               ),
 
                             ],

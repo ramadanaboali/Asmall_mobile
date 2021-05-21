@@ -4,6 +4,7 @@ import 'package:ashmall/Screens/CustomText.dart';
 import 'package:ashmall/Services/CategoryServices.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +27,7 @@ class _state extends State<SearchSubCategory>{
     this.id=id;
   }
   home  h=new home();
-  List<SubCategoryDetail>subCategories=[];
+  List<SubCategoryDetail>subCategories;
   TextEditingController searchKey=new TextEditingController();
   CategoryServices categoryServices=new CategoryServices();
   loadData()async{
@@ -47,6 +48,8 @@ class _state extends State<SearchSubCategory>{
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
+      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         body: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height*.02,),
@@ -122,18 +125,21 @@ class _state extends State<SearchSubCategory>{
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height*.015,),
-            subCategories.length==null?
-            Expanded(
-              child: Container(
-                  width: MediaQuery.of(context).size.width*.7,
-                  child: Center(child: CircularProgressIndicator(),)),
-            ):subCategories.length==0?
+            subCategories==null?Expanded(child: Center(child: CircularProgressIndicator(),),):
+             subCategories.length==0?
             Expanded(
               child: Container(
                   height: MediaQuery.of(context).size.height*.7,
                   width: MediaQuery.of(context).size.width*.7,
-                  child: Center(child: Text("No Sub Category For This Category",style: TextStyle(height: 1.7,fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black54),textAlign: TextAlign.center,),)),
-            )
+                  child: Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height*.2,),
+                      Image.asset("images/logo.png",height: MediaQuery.of(context).size.height*.2,color: Colors.black38,),
+                  SizedBox(height: 13,),
+                  Center(child: Text(DemoLocalizations.of(context).title["nosub"],style: TextStyle(height: 1.7,fontSize: 14,fontWeight: FontWeight.bold,color: Colors.black54),textAlign: TextAlign.center,),),
+                    ],
+                  )
+            ))
                 :Expanded(child: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
@@ -148,6 +154,7 @@ class _state extends State<SearchSubCategory>{
                     padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width*.03,
                       right: MediaQuery.of(context).size.width*.03,
+                      bottom: 100
                     ),
                     primary: false,
                     shrinkWrap: true,

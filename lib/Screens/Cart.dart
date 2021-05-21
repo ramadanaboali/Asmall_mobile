@@ -396,19 +396,20 @@ class _state extends State<Cart> {
                       SharedPreferences prefs=await SharedPreferences.getInstance();
                         loadData();
                         if(user_id!=null){
-                          if(address_id!=null){
+                          if(prefs.getString("address_id")!=null){
 
                             List Items=new List();
                             List<Map<String,dynamic>>list2=[];
                             for(int i=0;i<dataLocal.length;i++){
                               CartMedelLocal c=new CartMedelLocal.fromMap(dataLocal[i]);
-                              AddOrderDetail a=new AddOrderDetail(ProductId:c.id, Quantity:int.parse(c.quantity.toString()));
+                              AddOrderDetail a=new AddOrderDetail(ProductId:c.id, Quantity:int.parse(c.quantity.toString()),ColorId:c.ColorId,ProductSizeId:c.ProductSizeId);
                               Items.add(a.toJson());
                             }
                             print(Items);
                             // Map<String, dynamic> result = Map.fromIterable(Items, key: (v) => v.ProductId.toString(), value: (v) => v.Quantity.toString());
                             Map<String,dynamic>data=await productServices.addOrders(lang, prefs.getString("id"), allPrice, prefs.getString("address_id"), Items);
                            if(data["status"]==200){
+                             prefs.remove("address_id");
                              Toast.show(
                                  "${data["message"]}", context,
                                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -419,7 +420,7 @@ class _state extends State<Cart> {
                             }
                           }
                           else{
-                            Navigator.push(context, GlobalFunction.route(ChooseAddress()));
+                            Navigator.push(context, GlobalFunction.route(ChooseAddress("cart")));
                           }
                         }
                         else{

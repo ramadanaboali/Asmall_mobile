@@ -188,7 +188,7 @@ class _state extends State<Reviews>{
                                    child: Text(rate[index].userName,maxLines: 1,))
                              ],
                            ),
-                           CustomRate(rate[index].rateNum,12)
+                           CustomRate(rate[index].rateNum.round(),12)
                          ],
                        ),
                        SizedBox(height: 8,),

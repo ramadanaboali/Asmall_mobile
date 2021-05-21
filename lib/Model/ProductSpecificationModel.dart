@@ -12,21 +12,21 @@ class ProductSpecifiction {
   ProductSpecifiction({
     this.id,
     this.speceficationId,
-    this.speceficationKey,
+    this.speceficationName,
     this.productId,
     this.value,
   });
 
   String id;
   String speceficationId;
-  String speceficationKey;
+  String speceficationName;
   String productId;
   String value;
 
   factory ProductSpecifiction.fromJson(Map<String, dynamic> json) => ProductSpecifiction(
     id: json["id"],
     speceficationId: json["speceficationId"],
-    speceficationKey: json["speceficationKey"],
+    speceficationName: json["speceficationName"],
     productId: json["productId"],
     value: json["value"],
   );
@@ -34,7 +34,7 @@ class ProductSpecifiction {
   Map<String, dynamic> toJson() => {
     "id": id,
     "speceficationId": speceficationId,
-    "speceficationKey": speceficationKey,
+    "speceficationName": speceficationName,
     "productId": productId,
     "value": value,
   };

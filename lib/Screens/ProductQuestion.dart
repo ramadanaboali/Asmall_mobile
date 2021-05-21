@@ -57,6 +57,7 @@ class _state extends State<ProductQuestion>{
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           child: Column(
             children: [
@@ -68,6 +69,68 @@ class _state extends State<ProductQuestion>{
                 child: Center(
                   child: Column(
                     children: [
+                      user_id==null?SizedBox():Container(
+                        width: MediaQuery.of(context).size.width*.9,
+                        margin: EdgeInsets.only(
+                            bottom: 10
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius:BorderRadius.all(Radius.circular(10)),
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          keyboardType: TextInputType.text,
+                          onFieldSubmitted: (val)async{
+                            if(val.isNotEmpty){
+                              Map<String,dynamic>responces=  await  productServices.addQuestion(lang, val, this.product_id, user_id);
+                              print(responces);
+                              loadData();
+                              setState(() {
+                                question.text="";
+                              });
+
+
+                            }
+                          },
+                          validator: (value){
+                            if(value.isEmpty){
+                              return 'Enter Your Email';
+                            }
+                            return null;
+                          },
+                          //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
+                          decoration: InputDecoration(
+                            enabledBorder: new OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Colors.grey.withOpacity(.2))
+                            ),
+                            focusedBorder:  new OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xffdedede))
+                            ),
+                            focusedErrorBorder:new OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xfff00f00))
+                            ),
+                            errorBorder:new OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xfff00f00))
+                            ),
+                            errorStyle: TextStyle(fontSize: 11),
+                            contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
+                            hintText:'Enter Your Questions' ,
+                            hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
+
+                            suffixIconConstraints: BoxConstraints(
+                                maxHeight: 50,
+                                minHeight: 30,
+                                maxWidth: 70,
+                                minWidth: 50
+                            ) ,
+                          ),
+                          controller: question,
+                        ),
+                      ),
                       SizedBox(height: MediaQuery.of(context).size.height*.2,),
                       Image.asset("images/logo.png",
                       height: MediaQuery.of(context).size.height*.2,

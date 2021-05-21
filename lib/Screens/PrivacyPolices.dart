@@ -42,7 +42,11 @@ class _state extends State<PrivacyPolices>{
             Container(height: 1.5,width: MediaQuery.of(context).size.width*.94,color: Colors.black54,),
             SizedBox(height: MediaQuery.of(context).size.height*.02,),
             Container(
-              width: MediaQuery.of(context).size.width*.9,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width*.08,
+                  right: MediaQuery.of(context).size.width*.08
+              ),
               child: Text(txt,style: TextStyle(fontSize: 12,color: Colors.black54,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
             )
           ],

@@ -10,6 +10,7 @@ import 'package:ashmall/Model/ProductRateModel.dart';
 import 'package:ashmall/Model/ProductSpecificationModel.dart';
 import 'package:ashmall/Model/QuestionModel.dart';
 import 'package:ashmall/Model/SearchModel.dart';
+import 'package:ashmall/Model/SemillarModel.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
@@ -201,11 +202,13 @@ class ProductServices{
   {
  //   Map<String, dynamic> result = Map.fromIterable(orderItem, key: (v) => v.ProductId.toString(), value: (v) => v.Quantity.toString());
     var url="${baseURL}api/order/add-order";
+    print("4444444444444444444444444444444");
     print(url);
     var header={
       "Content-Type":"application/json",
       "lang":lang
     };
+    print(header);
     var body={
       "UserId":user_id,
       "TotalPrice":total,
@@ -502,6 +505,142 @@ class ProductServices{
       print(e.toString());
     }
   }
+  Future<Map<String,dynamic>>getvendorData(String lang,String id)async{
+    String url=baseURL+"api/products/get-store-data?vendorId=$id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try{
+      final responce=await http.get(url,headers: header);
+      if(responce.body.isNotEmpty)
+      {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
+  Future<List<ProductDetail>>getVendorProduct(String lang,var id)async
+  {
+    String url=baseURL+"api/products/get-store-data?vendorId=$id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["productVMs"];
+        return slideritems.map((e) => ProductDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<SemillarDetail>>getSemillarProduct(String lang,var id)async
+  {
+    String url=baseURL+"api/products/get-all-Similar-products/$id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      print(response.body);
+      print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
+        return slideritems.map((e) => SemillarDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<Map<String,dynamic>>addFollowers(String lang,String token,String vendor_id,String UserId)async
+  {
+    var url="${baseURL}api/follower/add-follower";
+    print(url);
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang,
+      "token":"Bearer "+token
+    };
+    var body= {
+        "UserId":UserId,
+        "VendorId":vendor_id
+      };
+    print(body);
+    try
+    {
+      final response = await http.post(url,body:json.encode(body),headers: header);
+      print(response.body);
+      if(response.body!=null)
+      {
+        return json.decode(utf8.decode(response.bodyBytes));
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<Map<String,dynamic>>getFollowStatus(String lang,String token,String vendor_id,String UserId)async
+  {
+    var url="${baseURL}api/follower/get-follower/$UserId/$vendor_id";
+    print(url);
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang,
+      "token":"Bearer "+token
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      print(response.body);
+      if(response.body!=null)
+      {
+        return json.decode(utf8.decode(response.bodyBytes));
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<Map<String,dynamic>>deleteFollower(String lang,String token,String vendor_id,String UserId)async
+  {
+    var url="${baseURL}api/follower/delete-follower?userId=$UserId&vendorId=$vendor_id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang,
+      "token":"Bearer "+token
+    };
+    try
+    {
+      final response = await http.delete(url,headers: header);
+      print(response.body);
+      if(response.body!=null)
+      {
+        return json.decode(utf8.decode(response.bodyBytes));
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
   Future<Map<String,dynamic>>SetRate(String lang,String token,String Comment,int RateNum,String ProductId,String UserId)async
   {
     var url="${baseURL}api/products/set-product-rate";
@@ -511,6 +650,7 @@ class ProductServices{
       "lang":lang,
       "token":"Bearer "+token
     };
+    print(header);
     var body={
       "Comment":Comment,
       "RateNum":RateNum,
