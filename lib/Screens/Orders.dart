@@ -7,6 +7,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../GlobalFunction.dart';
 import '../HomePage.dart';
+import 'package:ashmall/Services/GlobalVarible.dart';
 import '../main.dart';
 import 'CustomAppBar.dart';
 
@@ -259,9 +260,21 @@ class _state extends State<Orders>{
                             child:Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                Text(data[index].orderDate.toString().substring(0,10),style: TextStyle(height: .8,fontSize: 16,fontWeight: FontWeight.bold),),
-                                SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                              Container(
+                                  width: MediaQuery.of(context).size.width,
+
+                                decoration: BoxDecoration(
+borderRadius: BorderRadius.circular(10),
+                                  color: Color(h.mainColor),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                    Text(data[index].orderDate.toString().substring(0,10),style: TextStyle(color: Colors.white,height: .8,fontSize: 16,fontWeight: FontWeight.bold),),
+                                    SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                  ],
+                                ),
+                              ),
                                 Container(
                                   width:MediaQuery.of(context).size.width*.9,
                                   padding: EdgeInsets.only(
@@ -282,15 +295,32 @@ class _state extends State<Orders>{
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
+                                                   Row(
+children: [
+      ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(GlobalVariable.URL2+data[index].orderItems[i].productCoverPhoto,
+                                                    width: MediaQuery.of(context).size.width*.2,
+                                                      height: MediaQuery.of(context).size.height*.06,
+fit: BoxFit.fill,
+                                                    ),
+      ),
+                                                  SizedBox(width: 5,),
                                                   Row(
                                                     children: [
-                                                      Text(data[index].orderItems[i].quantity.toString(),style: TextStyle(fontSize: 12,color: Colors.black54)),
-                                                      Icon(Icons.clear,size: 17,color: Colors.black54),
-                                                      SizedBox(width: 5,),
                                                       Text(data[index].orderItems[i].productName,style: TextStyle(fontSize: 12,color: Colors.black54)),
 
                                                     ],
                                                   ),
+],
+                                                   ),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(100),
+                                                      border: Border.all(color: Color(h.mainColor),width: 1)
+                                                    ),
+                                                    padding: EdgeInsets.all(3),
+                                                      child: Text(data[index].orderItems[i].quantity.toString(),style: TextStyle(fontSize: 12,color: Colors.black54))),
                                                   /*   Row(
                                                       children: [
                                                         Icon(Icons.delete,size: 17,color: Colors.black54),
@@ -302,6 +332,7 @@ class _state extends State<Orders>{
                                                 ],
                                               ),
                                             ),
+                                            SizedBox(height: 3,),
                                             i==data[index].orderItems.length-1?Column(
                                               children: [
                                                 Divider(color: Colors.black38,thickness: 1,),

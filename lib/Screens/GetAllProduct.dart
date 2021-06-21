@@ -60,7 +60,7 @@ class _state extends State <AllProduct>{
    return SafeArea(
      child: Scaffold(
        resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false,
+     // resizeToAvoidBottomPadding: false,
       // backgroundColor: Color(h.mainColor),
        body: Container(
          child: Column(

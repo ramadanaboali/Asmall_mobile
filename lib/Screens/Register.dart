@@ -279,6 +279,9 @@ class _state extends State<Register>{
                             if(data["status"]==200){
                               setData("token",data["user"]["token"]);
                               setData("id",data["user"]["id"]);
+                              setState(() {
+                                ParentPage.user_id=data["user"]["id"];
+                              });
                               Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                             }else{
                               Toast.show(

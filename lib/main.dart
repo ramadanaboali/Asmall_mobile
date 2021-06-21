@@ -1,6 +1,9 @@
 import 'package:ashmall/Screens/FirstLanguage.dart';
+import 'package:ashmall/Screens/Orders.dart';
 import 'package:ashmall/Screens/Profile.dart';
 import 'package:ashmall/utils/app_LocalizationDeledate.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,11 +28,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'HomePage.dart';
 import 'Screens/Login.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'DbHelper.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
-  runApp(
-      Phoenix(child: ParentPage()));
+  runApp(Phoenix(child: ParentPage()));
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 }
@@ -61,12 +65,13 @@ class home extends StatelessWidget {
       routes: <String,WidgetBuilder>{
        '/Search':(BuildContext context)=>new Search(),
         '/Category':(BuildContext context)=>new Category(),
-        '/Login':(BuildContext context)=>new Login(),
+        '/Login':(BuildContext context)=>new Login("first"),
         '/Register':(BuildContext context)=>new Register(),
         '/FirstLanguage':(BuildContext context)=>new FirstLanguage(),
         '/ForgetPassword':(BuildContext context)=>new ForgetPassword(),
         '/Profile':(BuildContext context)=>new Profile(),
         '/mainPage':(BuildContext context)=>new HomePage(0),
+        '/Orders':(BuildContext context)=>new Orders(),
         '/notification':(BuildContext context)=>new HomePage(1),
         '/Cart':(BuildContext context)=>new HomePage(2),
         '/MainProfile':(BuildContext context)=>new MainProfile(),
@@ -77,9 +82,15 @@ class home extends StatelessWidget {
   }
 }
 class ParentPage extends StatefulWidget {
-  static int counter;
+  static int counter=0;
   static String user_id;
   static String language;
+  static String username;
+  static String email;
+  static String phone;
+  static String userimage;
+  static double total=0.0;
+  static int quantity=0;
   @override
   _State createState() => _State();
 }
@@ -87,27 +98,78 @@ class ParentPage extends StatefulWidget {
 class _State extends State<ParentPage>
 {
   static String lang;
+  DbHelper db=new DbHelper();
+  List dataLocal=[];
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    dataLocal=await db.allProduct();
     setState(() {
       lang=prefs.get('lang');
       ParentPage.language=prefs.get('lang');
       ParentPage.user_id=prefs.getString("id");
+      ParentPage.counter=dataLocal.length;
+      ParentPage.username=prefs.getString("username");
+      ParentPage.email=prefs.getString("email");
+      ParentPage.phone=prefs.getString("phone");
+      ParentPage.userimage=prefs.getString("photo");
+      ParentPage.total=double.parse(prefs.getString("total"));
+      ParentPage.quantity=int.parse(prefs.getString("quantity"));
     });
   }
 
+  String _message = '';
+  String _tokenAccess='';
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =new  FlutterLocalNotificationsPlugin();
 
+  //final FirebaseMessaging _firebaseMessaging =new  FirebaseMessaging();
 
+  /* _register()async {
+    await _firebaseMessaging.getToken().then((token){
+      SharedPreferences.getInstance().then((shared){
+        shared.setString('token', token);
+      });
 
+      print('${token},,,,,,toookkk');
+    });
+    print("_____________________________________________________________________________________________________________");
+  }*/
+ /* void getMessage()async{
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          showNotificationsFunc(message);
+          print('on message $message');
+          setState(() => _message = message["notification"]["title"]);
+        }, onResume: (Map<String, dynamic> message) async {
+      print('on resume $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print('on launch $message');
+      setState(() => _message = message["notification"]["title"]);
+    });
+  }
 
+  showNotificationsFunc(Map<String,dynamic>message)async
+  {
+    var android = AndroidNotificationDetails('channel_id', 'CHANNEL_NAME', 'channelDescription');
+    var ios = IOSNotificationDetails();
+    var platform = new NotificationDetails();
+    await flutterLocalNotificationsPlugin.show(0, message['notification']['title'].toString(),
+        message['notification']['body'].toString(), platform);
+  }*/
   @override
   void initState() {
     // TODO: implement initState
     //  secureScreen();
     super.initState();
+    var android = new AndroidInitializationSettings('mipmap/launcher_icon');
+    var ios = IOSInitializationSettings();
+    var platform = InitializationSettings();
+    flutterLocalNotificationsPlugin.initialize(platform);
+   // getMessage();
+    //_register();
     loadData();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return home();

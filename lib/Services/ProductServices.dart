@@ -11,6 +11,9 @@ import 'package:ashmall/Model/ProductSpecificationModel.dart';
 import 'package:ashmall/Model/QuestionModel.dart';
 import 'package:ashmall/Model/SearchModel.dart';
 import 'package:ashmall/Model/SemillarModel.dart';
+import 'package:ashmall/Model/SidesModel.dart';
+import 'package:ashmall/Model/VendorModel.dart';
+import 'package:ashmall/Screens/VendorCategory.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
@@ -176,6 +179,28 @@ class ProductServices{
       print('$e,,,,error search doctors');
     }
   }
+  Future<List<SidesDetail>>getProductSides(String lang,var product_id)async
+  {
+    var url="${baseURL}api/products/get-product-details?poductId=$product_id";
+    print(url);
+    var header={
+      "lang":lang
+      //  "Authorization":"Bearer $token"
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["sidesDtos"];
+        return slideritems.map((e) => SidesDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
   Future<List<ProductSizeModel>>getProductSize(String lang,var product_id)async
   {
     var url="${baseURL}api/products/get-product-details?poductId=$product_id";
@@ -238,6 +263,28 @@ class ProductServices{
   {
     var url="${baseURL}api/products/get-product-rate?Id=$id";
     print(url);
+    var header={
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
+        return slideritems.map((e) => ProductRateDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ProductRateDetail>>getProductRateWithImage(String lang,var id)async
+  {
+    var url="${baseURL}api/products/get-product-rate-with-image?id=$id";
+    print(url);
+    print("sssssssssssssssssssssssssssssssssssssssssssssss");
     var header={
       "lang":lang
     };
@@ -536,8 +583,94 @@ class ProductServices{
       final response = await http.get(url,headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
-        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["productVMs"];
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["allProducts"];
         return slideritems.map((e) => ProductDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ProductDetail>>getVendorLastAdded(String lang,var id)async
+  {
+    String url=baseURL+"api/products/get-store-data?vendorId=$id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["lastAdded"];
+        return slideritems.map((e) => ProductDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ProductDetail>>getProductVendorCategory(String lang,var vendor_id,var sub_id)async
+  {
+    String url=baseURL+"api/products/get-all-products-by-subCategory-and-userId?subId=$sub_id&userId=$vendor_id";
+    print(url);
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
+        return slideritems.map((e) => ProductDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<VendorGallary>>getVendorGallery(String lang,var id)async
+  {
+    String url=baseURL+"api/products/get-store-data?vendorId=$id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["vendorGallaryDtos"];
+        return slideritems.map((e) => VendorGallary.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<SubCategoryVm>>getVendorGategory(String lang,var id)async
+  {
+    String url=baseURL+"api/products/get-store-data?vendorId=$id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["subCategoryVMs"];
+        return slideritems.map((e) => SubCategoryVm.fromJson(e)).toList();
       }
     }
     catch(e)

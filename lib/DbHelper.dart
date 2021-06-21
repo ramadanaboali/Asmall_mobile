@@ -14,7 +14,7 @@ class DbHelper{
       return _db;
     }
     //define the path to the database
-    String path = join(await getDatabasesPath(), 'cart.db');
+    String path = join(await getDatabasesPath(), 'product.db');
     _db = await openDatabase(path,version: 1, onCreate: (Database db, int v){
       //create tables
       db.execute("CREATE TABLE product ("
@@ -26,7 +26,8 @@ class DbHelper{
           "totalPrice REAL,"
           "quantity INTEGER,"
           "ColorId TEXT,"
-          "ProductSizeId TEXT"
+          "ProductSizeId TEXT,"
+          "selectItem INTEGER"
           ")");
       db.execute("CREATE TABLE favorite ("
           "id TEXT PRIMARY KEY,"
@@ -44,6 +45,11 @@ class DbHelper{
     //db.rawInsert('insert into courses value')
     return db.insert('product', cartMedelLocal.toMap());
   }
+  Future<List> allProduct2(int select) async{
+    Database db = await createDatabase();
+    //db.rawQuery('select * from courses');
+    return db.query('product', where: 'selectItem = ?', whereArgs: [select]);
+  }
   Future<List> allProduct() async{
     Database db = await createDatabase();
     //db.rawQuery('select * from courses');
@@ -56,6 +62,10 @@ class DbHelper{
   Future<int> delete(String id) async{
     Database db = await createDatabase();
     return db.delete('product', where: 'id = ?', whereArgs: [id]);
+  }
+  Future<int> delete2(int select) async{
+    Database db = await createDatabase();
+    return db.delete('product', where: 'selectItem = ?', whereArgs: [select]);
   }
   Future<int> updateCourse(CartMedelLocal product) async{
     print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");

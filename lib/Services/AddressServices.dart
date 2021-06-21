@@ -66,14 +66,13 @@ class AddressServices{
     String url=baseURL+"api/addsress/delete-address?id=$id";
     print(url);
     var header={
-      "Content-Type":"application/json",
       "lang":lang
     };
     print(header);
     try{
-      final responce=await http.post(url,headers: header);
+      final responce=await http.delete(url,headers: header);
       print(responce.body);
-      print("000000000000000000000000000000000000000");
+      print("*********************************************");
       if(responce.body.isNotEmpty)
       {
         print(responce.body);

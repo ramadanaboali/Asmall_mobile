@@ -55,6 +55,8 @@ class _state extends State<ChooseAddress>{
   loadData()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     addresses=await addressServices.getAllAddresses(prefs.getString("lang"), prefs.getString("id"));
+    setState(() {
+    });
     Cites=await addressServices.GetCities();
     setState(() {
       user_id=prefs.getString("id");
@@ -670,8 +672,9 @@ class _state extends State<ChooseAddress>{
                             child:   Text(DemoLocalizations.of(context).title['confirm'],style: TextStyle(color:Colors.white,fontSize: 10),),
                           ),
                           onTap: () async {
-                               addressServices.deleteAddress("en", id);
-                               loadData();
+                               Map<String,dynamic>r=await addressServices.deleteAddress("en", id);
+                               if(r!=null)
+                                 loadData();
                             setState(() {
                             });
                             Navigator.pop(context);

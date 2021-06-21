@@ -301,9 +301,7 @@ class _state extends State<MainPage>{
                   color: Colors.white,
                   child:  new Swiper(
                     itemBuilder: (BuildContext context,int index){
-                      return Stack(
-                        children: [
-                          Container(
+                      return Container(
                             height: MediaQuery.of(context).size.height*.13,
                             width: MediaQuery.of(context).size.width*.9,
                             decoration: BoxDecoration(
@@ -317,9 +315,10 @@ class _state extends State<MainPage>{
                                 width: MediaQuery.of(context).size.width*.9,
                               ),
                             ),
-                          ),
-                          Positioned(
+                          );
+                       /*   Positioned(
                               left: MediaQuery.of(context).size.width*.81,
+                              top:5,
                               child: GestureDetector(
                                 onTap: (){
                                   setState(() {
@@ -327,12 +326,15 @@ class _state extends State<MainPage>{
                                   });
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.all(5),
-                                  child: Icon(Icons.cancel,color: Color(h.mainColor),),
+                                  padding: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                    color: Color(h.mainColor)
+                                  ),
+                                  child: Icon(Icons.clear,color: Colors.white,size: 20,),
                                 ),
-                              ))
-                        ],
-                      );
+                              ))*/
+
                     },
                     autoplay: true,
                     itemCount: advList.length,
@@ -392,7 +394,7 @@ class _state extends State<MainPage>{
                         },
                         child: Container(
                           margin: EdgeInsets.only(
-                              right: 15
+                              right: 10
                           ),
                           height: MediaQuery.of(context).size.height*.17,
                           width: MediaQuery.of(context).size.width*.3,
@@ -445,7 +447,7 @@ class _state extends State<MainPage>{
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
-                                              CustomText.CustomText10(BestList[index].offerPrice.toString()),
+                                              CustomText.CustomText10(BestList[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
                                              /* SizedBox(width: 7,),
                                               CustomText.CustomTextOffers(BestList[index].price.toString())*/
 
@@ -459,11 +461,10 @@ class _state extends State<MainPage>{
                                           ),
                                         ],
                                       ),
-                                      Icon(Icons.add_shopping_cart,size: 22,)
+                                      Icon(Icons.add_shopping_cart,size: 20,)
                                     ],
                                   )
                               ),
-
                               SizedBox(height:MediaQuery.of(context).size.height*.01,)
                             ],
                           ),
@@ -517,7 +518,7 @@ class _state extends State<MainPage>{
                           },
                           child: Container(
                             margin: EdgeInsets.only(
-                              right: 15
+                              right: 10
                             ),
                             height: MediaQuery.of(context).size.height*.18,
                             width: MediaQuery.of(context).size.width*.3,
@@ -568,23 +569,36 @@ class _state extends State<MainPage>{
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                CustomText.CustomText10(OffersList[index].offerPrice.toString()),
-                                                SizedBox(width: 7,),
-                                                CustomText.CustomTextOffers(OffersList[index].price.toString())
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*.3-12,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  CustomText.CustomText10(OffersList[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
+                                                  SizedBox(width: 5,),
+                                                  CustomText.CustomTextOffers(OffersList[index].price.toString()+"  "+DemoLocalizations.of(context).title["le"])
 
-                                              ],
-                                            ),Container(
-                                              padding: EdgeInsets.only(
-                                                 // left: 5,right: 5
+                                                ],
                                               ),
-                                              child: CustomRate(OffersList[index].rate.round(),11),
                                             ),
+                                           Container(
+                                             width: MediaQuery.of(context).size.width*.3-12,
+                                             child: Row(
+                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                               children: [
+                                                 Container(
+                                                   padding: EdgeInsets.only(
+                                                     // left: 5,right: 5
+                                                   ),
+                                                   child: CustomRate(OffersList[index].rate.round(),11),
+                                                 ),
+                                                 Icon(Icons.add_shopping_cart,size: 20,)
+                                               ],
+                                             ),
+                                           )
                                           ],
                                         ),
-                                        Icon(Icons.add_shopping_cart,size: 22,)
+
                                       ],
                                     )
                                 ),
@@ -685,7 +699,7 @@ class _state extends State<MainPage>{
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 2,),
+                              SizedBox(height: 0,),
                               Container(
                                 padding: EdgeInsets.only(left: 3,right: 3),
                                 child: Row(
@@ -696,7 +710,7 @@ class _state extends State<MainPage>{
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          CustomText.CustomText10(LastList[index].offerPrice.toString()),
+                                          CustomText.CustomText10(LastList[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
                                           Container(
                                             height: 7,
                                             padding: EdgeInsets.only(
@@ -707,7 +721,7 @@ class _state extends State<MainPage>{
                                         ],
                                       ),
                                     ),
-                                    Icon(Icons.add_shopping_cart)
+                                    Icon(Icons.add_shopping_cart,size: 20,)
                                     /* SizedBox(width: 7,),
                                                 CustomText.CustomTextOffers(LastList[index].price.toString())*/
 

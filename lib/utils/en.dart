@@ -78,8 +78,39 @@ class EN {
     "chatsoon":"Chat Will Be Add Soon",
     "SimillarProduct":"Simillar Product",
     "government":"GovernMent",
-    "followers":"Followers"
-
+    "followers":"Stores",
+    "sellProducts":"The number of sales of this product : ",
+    "NoAddresses":"No Addresses For You",
+    ///////////////
+    "confirm1":"Confirm",
+    "name":"Name",
+     "email":"Email",
+    "next":"Next",
+    "address":"Address",
+    "shipping":"Shipping",
+    "payment":"Payment",
+    "user":"User",
+    "ShippingMethod":"Delivery Method",
+    "Shippingbymerchant":"Shipping by merchant",
+    "Shippingbyshippingcompany":"Shipping by shipping company",
+    "paymentmethod":"Payment method",
+    "payment1":"Paiement when recieving",
+    "payment2":"By credit card",
+    "clientname":"Client Name",
+    "BillDetail":"Bill Details",
+    "Totalorders":"Total orders",
+    "Confirmpurchase":"Confirm purchase",
+    "products":"Products",
+    "ordersuccess":"Successfully Order",
+    "chooseaddress":"Choose Delivery Address",
+    "selectColor":"Select Color",
+    "selectSize":"Select Size",
+    "le":"LE",
+    "confirmdelete":"Confirm Delete This Item",
+    "confrim":"Confirm",
+    "question":"Question",
+    "seeAll":"See More",
+    "reviews":"Reviews"
 
   };
 }

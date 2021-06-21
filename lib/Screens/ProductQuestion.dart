@@ -220,7 +220,6 @@ class _state extends State<ProductQuestion>{
                                  ],
                                ),
                               Expanded(
-
                                   child: Icon(SelectedQuestion==index?Icons.keyboard_arrow_down:Icons.keyboard_arrow_up,color: Colors.black))
                             ],
                           ),
@@ -286,7 +285,7 @@ class _state extends State<ProductQuestion>{
                                           ],
                                         ),
                                         Container(
-                                            width: MediaQuery.of(context).size.width*.7,
+                                            width: MediaQuery.of(context).size.width*.65,
                                             child: Text(data[index].answerDtos[i].answerText,style: TextStyle(fontSize: 12)))
                                       ],
                                     )

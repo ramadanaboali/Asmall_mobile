@@ -40,9 +40,8 @@ class _state extends State<Reviews>{
     rate=await productServices.getProductRate(prefs.getString("lang"), this.id);
     setState(() {
     });
-    print(rate.length);
-    // print(data);
-    print("wwwwwwwwwwwwwwwwwww");
+    print(GlobalVariable.URL2+rate[rate.length-1].photo);
+    print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
   }
   @override
   void initState() {
@@ -192,17 +191,22 @@ class _state extends State<Reviews>{
                          ],
                        ),
                        SizedBox(height: 8,),
-                       Row(
-                         children: [
-                           Container(
-                             width:rate[index].photo==null? MediaQuery.of(context).size.width*.6:MediaQuery.of(context).size.width*.8,
-                             child: Text(rate[index].comment,
-                               maxLines: 3,textAlign: TextAlign.start,style: TextStyle(fontSize: 12),),
-                           ),
-                           rate[index].photo==null? Image.network(GlobalVariable.URL2+rate[index].photo,
-                           width: MediaQuery.of(context).size.width*.22,
-                           ):SizedBox()
-                         ],
+                       Container(
+                         padding: EdgeInsets.only(left: 0,right: 0),
+                         child: Row(
+                           children: [
+                             Container(
+                               width:rate[index].photo==null?MediaQuery.of(context).size.width*.6-20:MediaQuery.of(context).size.width*.68-20,
+                               child: Text(rate[index].comment,
+                                 maxLines: 3,textAlign: TextAlign.start,style: TextStyle(fontSize: 12),),
+                             ),
+                             rate[index].photo!=null?Image.network(GlobalVariable.URL2.toString()+rate[index].photo.toString(),
+                               width: MediaQuery.of(context).size.width*.2,
+                               height: MediaQuery.of(context).size.height*.12,
+                               fit: BoxFit.fill,
+                             ):SizedBox()
+                           ],
+                         ),
                        ),
                        SizedBox(height: 8,),
                      ],

@@ -78,9 +78,38 @@ class AR {
     "chatsoon":"سيتم تفعيل الدردشة قريبا ",
     "SimillarProduct":"منتجات مشابهه",
     "government":"المحافظة",
-    "followers":"Followers"
-
-
-
+    "followers":"التجار",
+    "sellProducts":"عدد المبيعات من هذا المنتج",
+    "NoAddresses":"لم تقم باضافة اي عنواين",
+    ///////////////
+    "confirm1":"متابعة الطلب",
+    "name":"الاسم",
+    "email":"البريد الالكتروني",
+    "next":"التالي",
+    "address":"العنوان",
+    "shipping":"الشحن",
+    "payment":"الدفع",
+    "user":"المستخدم",
+    "ShippingMethod":"طريقة الشحن",
+    "Shippingbymerchant":"شحن عن طريق التاجر",
+    "Shippingbyshippingcompany":"شحن بواسطة شركة شحن",
+    "paymentmethod":"طريقة الدفع",
+    "payment1":"الدفع عند الاستلام",
+    "payment2":"بواسطة بطاقة الائتمان",
+    "clientname":"اسم العميل",
+    "BillDetail":"تفاصيل الفاتورة",
+    "Totalorders":"مجموع الطلبات",
+     "Confirmpurchase":"تاكيد الشراء",
+    "products":"المنتجات",
+    "ordersuccess":"تم الطلب بنجاح",
+    "chooseaddress":"اختر عنوان الشحن",
+    "selectColor":"اختر اللون",
+    "selectSize":"اختر الحجم",
+    "le":"جم",
+    "confirmdelete":"تـأكيد الحذف من سلة المشتريات",
+    "confrim":"تأكيد",
+    "question":"اسئلة",
+    "seeAll":"مشاهد المزيد",
+    "reviews":"اراء العملاء"
   };
 }

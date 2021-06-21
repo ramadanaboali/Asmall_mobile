@@ -1,6 +1,7 @@
 import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -118,7 +119,7 @@ class _state extends State<ProductsHome>{
                                            Row(
                                              mainAxisAlignment: MainAxisAlignment.start,
                                              children: [
-                                               CustomText.CustomText10(data[index].offerPrice.toString()),
+                                               CustomText.CustomText10(data[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
                                                SizedBox(width: 7,),
                                                Container(
                                                  height: 7,

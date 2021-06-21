@@ -28,7 +28,7 @@ class _state extends State<Search>{
    return SafeArea(
      child: Scaffold(
        resizeToAvoidBottomInset: false,
-       resizeToAvoidBottomPadding: false,
+       //resizeToAvoidBottomPadding: false,
        body:  Container(
              padding: EdgeInsets.only(
                left: MediaQuery.of(context).size.width*.03,

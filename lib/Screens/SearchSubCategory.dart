@@ -49,7 +49,7 @@ class _state extends State<SearchSubCategory>{
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       resizeToAvoidBottomInset: false,
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         body: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height*.02,),

@@ -1,4 +1,4 @@
-package com.example.ashmool
+package com.app.ashmool
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-package com.example.ashmall
+package com.app.ashmall
 
 import io.flutter.embedding.android.FlutterActivity
 

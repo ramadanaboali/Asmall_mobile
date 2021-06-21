@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "210519581111",
+    "project_id": "ashmall-eb5d8",
+    "storage_bucket": "ashmall-eb5d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210519581111:android:136078c3ef65a420a88832",
+        "android_client_info": {
+          "package_name": "com.app.ashmall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210519581111-3eucnnbvq7qbrm65ihc191ftq0inq803.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDszKe0z0cPW2DjZvosLYQR1uzqRGD0iio"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210519581111-3eucnnbvq7qbrm65ihc191ftq0inq803.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
