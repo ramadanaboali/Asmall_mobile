@@ -105,6 +105,7 @@ class _state extends State<BuyNow>{
     print("ssssssssssssssssssssssssssssss");
   }
   int selected=1;
+  bool loader=true;
   List <String>data=["5","5","5","5"];
   @override
   void initState() {
@@ -1335,10 +1336,10 @@ class _state extends State<BuyNow>{
                       //left:  MediaQuery.of(context).size.width*.2
                     ),
                     decoration:BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(h.mainColor),
+                      borderRadius: BorderRadius.circular(10),
+                      color: loader?Color(h.mainColor):Colors.black12,
                     ),
-                    height: MediaQuery.of(context).size.height*.06,
+                    height: MediaQuery.of(context).size.height*.05,
                     //  width: MediaQuery.of(context).size.width*.8,
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
@@ -1359,6 +1360,9 @@ class _state extends State<BuyNow>{
                     print(prefs.getString("address_id"));
                     print("0000000000000000000000000000000000000000000000000000000000000");
                     if(prefs.getString("address_id")!=null){
+                      setState(() {
+                        loader=false;
+                      });
                       List Items=new List();
                       List<Map<String,dynamic>>list2=[];
                         AddOrderDetail a=new AddOrderDetail(ProductId:this.id, Quantity:counter,ColorId:this.color_id,ProductSizeId:this.size_id);
@@ -1375,6 +1379,11 @@ class _state extends State<BuyNow>{
                         prefs.remove("address_id");
                         Navigator.push(context, GlobalFunction.route(OrderSuccess(1, data["data"]["id"],double.parse(price), 45)));
                         setState(() {
+                        });
+                      }
+                      else{
+                        setState(() {
+                          loader=true;
                         });
                       }
                     }
@@ -1398,17 +1407,26 @@ class _state extends State<BuyNow>{
                 height: MediaQuery.of(context).size.height*.06,
                 child: Row(
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width*.1,
-                      height: MediaQuery.of(context).size.width*.1,
-                      padding: EdgeInsets.all(index>1?2:3),
+                    GestureDetector(
+                      onTap: (){
+                        if(index>0){
+                          setState(() {
+                            index=1;
+                          });
+                        }
+                      },
                       child: Container(
-                          width: 25,height: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(1000)),
-                              color: index>0?Colors.green:Colors.black26
-                          ),
-                          child:index>1?Icon(Icons.check,color: Colors.white,):Icon(Icons.person,color: Colors.white,size: 18,)
+                        width: MediaQuery.of(context).size.width*.1,
+                        height: MediaQuery.of(context).size.width*.1,
+                        padding: EdgeInsets.all(index>1?2:3),
+                        child: Container(
+                            width: 25,height: 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                color: index>0?Colors.green:Colors.black26
+                            ),
+                            child:index>1?Icon(Icons.check,color: Colors.white,):Icon(Icons.person,color: Colors.white,size: 18,)
+                        ),
                       ),
                     ),
                     DottedLine(
@@ -1422,17 +1440,26 @@ class _state extends State<BuyNow>{
                       dashGapColor: Colors.transparent,
                       dashGapRadius: 0.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width*.1,
-                      height: MediaQuery.of(context).size.width*.1,
-                      padding: EdgeInsets.all(index>2?2:3),
+                    GestureDetector(
+                      onTap: (){
+                        if(index>1){
+                          setState(() {
+                            index=2;
+                          });
+                        }
+                      },
                       child: Container(
-                          width: 25,height: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(1000)),
-                              color: index>1?Colors.green:Colors.black26
-                          ),
-                          child:index>2?Icon(Icons.check,color: Colors.white,):Icon(Icons.location_on,color: Colors.white,size: 18,)
+                        width: MediaQuery.of(context).size.width*.1,
+                        height: MediaQuery.of(context).size.width*.1,
+                        padding: EdgeInsets.all(index>2?2:3),
+                        child: Container(
+                            width: 25,height: 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                color: index>1?Colors.green:Colors.black26
+                            ),
+                            child:index>2?Icon(Icons.check,color: Colors.white,):Icon(Icons.location_on,color: Colors.white,size: 18,)
+                        ),
                       ),
                     ),
                     DottedLine(
@@ -1446,18 +1473,27 @@ class _state extends State<BuyNow>{
                       dashGapColor: Colors.transparent,
                       dashGapRadius: 0.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width*.1,
-                      height: MediaQuery.of(context).size.width*.1,
-                      padding: EdgeInsets.all(index>3?2:3),
+                    GestureDetector(
+                      onTap: (){
+                        if(index>2){
+                          setState(() {
+                            index=3;
+                          });
+                        }
+                      },
                       child: Container(
-                          width: 25,height: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(1000)),
-                              color: index>2?Colors.green:Colors.black26
-                          ),
-                          padding: EdgeInsets.all(4),
-                          child:index>3?Icon(Icons.check,color: Colors.white,):ImageIcon(AssetImage("images/inWay.png"),size: 18,color: Colors.white,)
+                        width: MediaQuery.of(context).size.width*.1,
+                        height: MediaQuery.of(context).size.width*.1,
+                        padding: EdgeInsets.all(index>3?2:3),
+                        child: Container(
+                            width: 25,height: 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                color: index>2?Colors.green:Colors.black26
+                            ),
+                            padding: EdgeInsets.all(4),
+                            child:index>3?Icon(Icons.check,color: Colors.white,):ImageIcon(AssetImage("images/inWay.png"),size: 18,color: Colors.white,)
+                        ),
                       ),
                     ),
                     DottedLine(
@@ -1471,17 +1507,26 @@ class _state extends State<BuyNow>{
                       dashGapColor: Colors.transparent,
                       dashGapRadius: 0.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width*.1,
-                      height: MediaQuery.of(context).size.width*.1,
-                      padding: EdgeInsets.all(index>4?2:3),
+                    GestureDetector(
+                      onTap: (){
+                        if(index>3){
+                          setState(() {
+                            index=4;
+                          });
+                        }
+                      },
                       child: Container(
-                          width: 25,height: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(1000)),
-                              color: index>3?Colors.green:Colors.black26
-                          ),
-                          child:index>4?Icon(Icons.check,color: Colors.white,):Icon(Icons.payment,color: Colors.white,size: 18,)
+                        width: MediaQuery.of(context).size.width*.1,
+                        height: MediaQuery.of(context).size.width*.1,
+                        padding: EdgeInsets.all(index>4?2:3),
+                        child: Container(
+                            width: 25,height: 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                color: index>3?Colors.green:Colors.black26
+                            ),
+                            child:index>4?Icon(Icons.check,color: Colors.white,):Icon(Icons.payment,color: Colors.white,size: 18,)
+                        ),
                       ),
                     ),
                     DottedLine(
@@ -1495,17 +1540,26 @@ class _state extends State<BuyNow>{
                       dashGapColor: Colors.transparent,
                       dashGapRadius: 0.0,
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width*.1,
-                      height: MediaQuery.of(context).size.width*.1,
-                      padding: EdgeInsets.all(2),
+                    GestureDetector(
+                      onTap: (){
+                        if(index>4){
+                          setState(() {
+                            index=5;
+                          });
+                        }
+                      },
                       child: Container(
-                          width: 25,height: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(1000)),
-                              color: index>4?Colors.green:Colors.black26
-                          ),
-                          child:Icon(Icons.check,color: Colors.white,)
+                        width: MediaQuery.of(context).size.width*.1,
+                        height: MediaQuery.of(context).size.width*.1,
+                        padding: EdgeInsets.all(2),
+                        child: Container(
+                            width: 25,height: 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                color: index>4?Colors.green:Colors.black26
+                            ),
+                            child:Icon(Icons.check,color: Colors.white,)
+                        ),
                       ),
                     ),
                   ],

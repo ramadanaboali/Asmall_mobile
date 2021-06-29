@@ -11,7 +11,6 @@ import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 class Login extends StatefulWidget{
   var type;
   Login(var type){
@@ -34,6 +33,7 @@ class _state extends State<Login> {
   final formKey = GlobalKey<FormState>();
   TextEditingController username = new TextEditingController();
   TextEditingController password = new TextEditingController();
+  FocusNode passwordNode=new FocusNode();
   var lang;
   var link;
 
@@ -89,7 +89,7 @@ class _state extends State<Login> {
                           onTap: (){
                             Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                           },
-                          child: Icon(ParentPage.language=="en"?Icons.arrow_forward_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
+                          child: Icon(ParentPage.language=="ar"?Icons.arrow_forward_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
                       Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                       GestureDetector(
                           onTap: (){
@@ -127,6 +127,9 @@ class _state extends State<Login> {
                                     ),
                                     child: TextFormField(
                                       keyboardType: TextInputType.text,
+                                      onFieldSubmitted: (value){
+                                        FocusScope.of(context).requestFocus(passwordNode);
+                                      },
                                       validator: (value){
                                         if(value.isEmpty){
                                           return DemoLocalizations.of(context).title['EnterYourEmail'];
@@ -172,6 +175,10 @@ class _state extends State<Login> {
                                         }
                                         return null;
                                       },
+                                      focusNode: passwordNode,
+                                      onFieldSubmitted: (value){
+                                        FocusScope.of(context).requestFocus(FocusNode());
+                                      },
                                       obscureText: passVisibility,
                                       keyboardType: TextInputType.text,
                                       //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
@@ -205,10 +212,10 @@ class _state extends State<Login> {
                             GestureDetector(
                               onTap: () async {
                                 if(formKey.currentState.validate()){
+                                  setState(() {
+                                    loader=false;
+                                  });
                                   Map<String,dynamic>data=await userServices.login("en",username.text.trim().toString(), password.text.trim().toString());
-                                 setState(() {
-                                   loader=false;
-                                 });
                                   if(data["status"]==200){
                                     setData("token",data["user"]["token"]);
                                     setData("id",data["user"]["id"]);
@@ -282,7 +289,7 @@ class _state extends State<Login> {
                               children: [
                                 GestureDetector(
                                     onTap: (){
-                                  _login();
+                                  //_login();
                                     },
                                     child:Container(
                                       decoration: BoxDecoration(
@@ -353,7 +360,7 @@ class _state extends State<Login> {
     }}
  AccessToken _accessToken;
   bool _checking = true;
-  Future<void> _login() async {
+ /* Future<void> _login() async {
     final LoginResult result = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
 
     // loginBehavior is only supported for Android devices, for ios it will be ignored
@@ -380,7 +387,7 @@ class _state extends State<Login> {
     setState(() {
       _checking = false;
     });
-  }
+  }*/
   GoogleSignIn _googleSignIn = GoogleSignIn(
     clientId:"499289536123-qtrm23ag828tp2486ihgkdnd8svhb84d.apps.googleusercontent.com",
   );

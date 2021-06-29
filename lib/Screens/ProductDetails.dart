@@ -836,7 +836,88 @@ class  _state extends State<ProductDetails>{
                            ],
                          ),
                        ),
-                       GestureDetector(
+                       reviews.length==0?SizedBox():GestureDetector(
+                         onTap: (){
+                           Navigator.push(context, GlobalFunction.route(Reviews(data["id"],this.name)));
+                         },
+                         child: Container(
+                           width: MediaQuery.of(context).size.width*.9,
+                           padding: EdgeInsets.only(top: 8,bottom: 8),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               Text(DemoLocalizations.of(context).title["reviews"],style: TextStyle(color: Colors.black54,fontSize: 16,fontWeight: FontWeight.bold),),
+                               Text(DemoLocalizations.of(context).title["seeAll"],style: TextStyle(color: Colors.black54,fontSize: 13,fontWeight: FontWeight.bold),)
+                             ],
+                           ),
+                         ),
+                       ),
+                       Container(
+                         width: MediaQuery.of(context).size.width*.9,
+                         child: ListView.builder(primary: false,shrinkWrap: true,itemCount: reviews.length>2?2:reviews.length,itemBuilder: (context,index){
+                           return Container(
+                             width: MediaQuery.of(context).size.width*.9,
+                             margin: EdgeInsets.only(bottom:index==reviews.length-1?MediaQuery.of(context).size.height*.05:MediaQuery.of(context).size.height*.01,),
+                             padding: EdgeInsets.only(
+                                 top: MediaQuery.of(context).size.height*.015,
+                                 bottom: MediaQuery.of(context).size.height*.015,
+                                 left:12,
+                                 right: 12
+                             ),
+                             decoration: BoxDecoration(
+                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                                 border: Border.all(color: Colors.black12,width: 1),
+                                 color: Colors.black12.withOpacity(.05)
+                             ),
+                             child: Column(
+                               children: [
+                                 Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                   children: [
+                                     Row(
+                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                       children: [
+                                         CircleAvatar(
+                                           minRadius: 13,
+                                           maxRadius: 14,
+                                           child: ClipRRect(
+                                               borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                               child: reviews[index].userPhoto==null?Icon(Icons.person,):Image.network(GlobalVariable.URl+reviews[index].userPhoto,fit: BoxFit.fill,)),
+                                         ),
+                                         SizedBox(width: 5,),
+                                         Container(
+                                             width: MediaQuery.of(context).size.width*.55,
+                                             child: Text(reviews[index].userName,maxLines: 1,))
+                                       ],
+                                     ),
+                                     CustomRate(reviews[index].rateNum.round(),12)
+                                   ],
+                                 ),
+                                 SizedBox(height: 8,),
+                                 Container(
+                                   padding: EdgeInsets.only(left: 0,right: 0),
+                                   child: Row(
+                                     children: [
+                                       Container(
+                                         width:reviews[index].photo==null?MediaQuery.of(context).size.width*.6-20:MediaQuery.of(context).size.width*.68-20,
+                                         child: Text(reviews[index].comment,
+                                           maxLines: 3,textAlign: TextAlign.start,style: TextStyle(fontSize: 12),),
+                                       ),
+                                       reviews[index].photo!=null?Image.network(GlobalVariable.URL2.toString()+reviews[index].photo.toString(),
+                                         width: MediaQuery.of(context).size.width*.2,
+                                         height: MediaQuery.of(context).size.height*.12,
+                                         fit: BoxFit.fill,
+                                       ):SizedBox()
+                                     ],
+                                   ),
+                                 ),
+                                 SizedBox(height: 8,),
+                               ],
+                             ),
+                           );
+                         }),
+                       ),
+                       questions.length==0? SizedBox():GestureDetector(
                          onTap: (){
                            Navigator.push(context, GlobalFunction.route(ProductQuestion(data["id"],this.name)));
                          },
@@ -923,87 +1004,7 @@ class  _state extends State<ProductDetails>{
                            );
                          }),
                        ),
-                       GestureDetector(
-                         onTap: (){
-                           Navigator.push(context, GlobalFunction.route(Reviews(data["id"],this.name)));
-                         },
-                         child: Container(
-                           width: MediaQuery.of(context).size.width*.9,
-                           padding: EdgeInsets.only(top: 8,bottom: 8),
-                           child: Row(
-                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                             children: [
-                               Text(DemoLocalizations.of(context).title["reviews"],style: TextStyle(color: Colors.black54,fontSize: 16,fontWeight: FontWeight.bold),),
-                               Text(DemoLocalizations.of(context).title["seeAll"],style: TextStyle(color: Colors.black54,fontSize: 13,fontWeight: FontWeight.bold),)
-                             ],
-                           ),
-                         ),
-                       ),
-                       Container(
-                         width: MediaQuery.of(context).size.width*.9,
-                         child: ListView.builder(primary: false,shrinkWrap: true,itemCount: reviews.length>2?2:reviews.length,itemBuilder: (context,index){
-                           return Container(
-                             width: MediaQuery.of(context).size.width*.9,
-                             margin: EdgeInsets.only(bottom:index==reviews.length-1?MediaQuery.of(context).size.height*.05:MediaQuery.of(context).size.height*.01,),
-                             padding: EdgeInsets.only(
-                                 top: MediaQuery.of(context).size.height*.015,
-                                 bottom: MediaQuery.of(context).size.height*.015,
-                                 left:12,
-                                 right: 12
-                             ),
-                             decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                                 border: Border.all(color: Colors.black12,width: 1),
-                                 color: Colors.black12.withOpacity(.05)
-                             ),
-                             child: Column(
-                               children: [
-                                 Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   children: [
-                                     Row(
-                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                       children: [
-                                         CircleAvatar(
-                                           minRadius: 13,
-                                           maxRadius: 14,
-                                           child: ClipRRect(
-                                               borderRadius: BorderRadius.all(Radius.circular(1000)),
-                                               child: reviews[index].userPhoto==null?Icon(Icons.person,):Image.network(GlobalVariable.URl+reviews[index].userPhoto,fit: BoxFit.fill,)),
-                                         ),
-                                         SizedBox(width: 5,),
-                                         Container(
-                                             width: MediaQuery.of(context).size.width*.55,
-                                             child: Text(reviews[index].userName,maxLines: 1,))
-                                       ],
-                                     ),
-                                     CustomRate(reviews[index].rateNum.round(),12)
-                                   ],
-                                 ),
-                                 SizedBox(height: 8,),
-                                 Container(
-                                   padding: EdgeInsets.only(left: 0,right: 0),
-                                   child: Row(
-                                     children: [
-                                       Container(
-                                         width:reviews[index].photo==null?MediaQuery.of(context).size.width*.6-20:MediaQuery.of(context).size.width*.68-20,
-                                         child: Text(reviews[index].comment,
-                                           maxLines: 3,textAlign: TextAlign.start,style: TextStyle(fontSize: 12),),
-                                       ),
-                                       reviews[index].photo!=null?Image.network(GlobalVariable.URL2.toString()+reviews[index].photo.toString(),
-                                         width: MediaQuery.of(context).size.width*.2,
-                                         height: MediaQuery.of(context).size.height*.12,
-                                         fit: BoxFit.fill,
-                                       ):SizedBox()
-                                     ],
-                                   ),
-                                 ),
-                                 SizedBox(height: 8,),
-                               ],
-                             ),
-                           );
-                         }),
-                       ),
+
                        SizedBox(height: MediaQuery.of(context).size.height*.01,),
                        Container(
                          child: Column(
@@ -1107,13 +1108,13 @@ class  _state extends State<ProductDetails>{
                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                            children: [
                                                              CustomText.CustomText10(SimillarProducts[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
-                                                             SizedBox(width: 7,),
+                                                             SizedBox(width: 3,),
                                                              Container(
                                                                height: 7,
                                                                padding: EdgeInsets.only(
                                                                  //left: 5,right: 5
                                                                ),
-                                                               child: CustomRate(SimillarProducts[index].rate.round(),10),
+                                                               child: CustomRate(SimillarProducts[index].rate.round(),9),
                                                              ),
                                                            ],
                                                          ),

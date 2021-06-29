@@ -24,6 +24,7 @@ class _state extends State<CartOrder>{
   int totalquantity=0;
   double allPrice=0.0;
   List dataLocal=[];
+  bool loader=true;
   double tax=0.0;
   DbHelper dbHelper=new DbHelper();
   loadData() async {
@@ -73,7 +74,8 @@ class _state extends State<CartOrder>{
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width*.05,
-                      right: MediaQuery.of(context).size.width*.05
+                      right: MediaQuery.of(context).size.width*.05,
+                    top: 10
                   ),
                   child: Row(
                     children: [
@@ -480,10 +482,10 @@ class _state extends State<CartOrder>{
                       //left:  MediaQuery.of(context).size.width*.2
                     ),
                     decoration:BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color(h.mainColor),
+                      borderRadius: BorderRadius.circular(10),
+                      color: loader?Color(h.mainColor):Colors.black12,
                     ),
-                    height: MediaQuery.of(context).size.height*.06,
+                    height: MediaQuery.of(context).size.height*.05,
                     //  width: MediaQuery.of(context).size.width*.8,
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
@@ -504,6 +506,9 @@ class _state extends State<CartOrder>{
                     print(prefs.getString("address_id"));
                     print("0000000000000000000000000000000000000000000000000000000000000");
                     if(prefs.getString("address_id")!=null){
+                      setState(() {
+                        loader=false;
+                      });
                       List Items=new List();
                       List<Map<String,dynamic>>list2=[];
                       for(int i=0;i<dataLocal.length;i++){
@@ -518,9 +523,14 @@ class _state extends State<CartOrder>{
                         print(data);
                         print("ssssssssssssssssssssss");
                         prefs.remove("address_id");
-                         Navigator.push(context, GlobalFunction.route(OrderSuccess(totalquantity, data["data"]["id"], allPrice, tax)));
+                         Navigator.push(context, GlobalFunction.route(OrderSuccess(ParentPage.quantity, data["data"]["id"], ParentPage.total, tax)));
                         int i=await dbHelper.delete2(1);
                         setState(() {
+                        });
+                      }
+                      else{
+                        setState(() {
+                          loader=true;
                         });
                       }
                     }

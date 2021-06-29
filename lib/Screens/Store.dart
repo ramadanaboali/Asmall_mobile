@@ -81,7 +81,7 @@ loadData()async{
   }
   @override
   Widget build(BuildContext context) {
- if(data!=null){
+ if(responce["data"]["video"]!=null){
    _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
    _chewieController = ChewieController(
        videoPlayerController: _videoPlayerController1,
@@ -134,7 +134,7 @@ loadData()async{
                 ),
               ),
             ),
-            Container(
+            responce["data"]["video"]!=null?Container(
                 height: MediaQuery.of(context).size.height * 0.4,
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
@@ -158,7 +158,7 @@ loadData()async{
                       ),
                     ),
                   ],
-                ))
+                )):SizedBox()
           ],
         ),
       ),
@@ -426,7 +426,9 @@ loadData()async{
                            children: [
                              Row(
                                children: [
-                                 Text(responce["data"]["name"],style: TextStyle(fontSize: 13,height: 1.3),),
+                                 Container(
+                                     width: MediaQuery.of(context).size.width*.4,
+                                     child: Text(responce["data"]["name"],style: TextStyle(fontSize: 13,height: 1.3),maxLines: 1,)),
                                  SizedBox(width: 5,),
                                  responce["data"]["credibility"]==true?Icon(Icons.check_circle_outline,color: Colors.green,size: 18,):SizedBox()
                                ],

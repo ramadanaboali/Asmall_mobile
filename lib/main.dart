@@ -169,7 +169,6 @@ class _State extends State<ParentPage>
     //_register();
     loadData();
   }
-
   @override
   Widget build(BuildContext context) {
     return home();

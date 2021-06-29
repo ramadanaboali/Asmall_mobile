@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ashmall/Model/BanarModel.dart';
 import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Screens/AllBrand.dart';
@@ -56,11 +58,19 @@ class _state extends State<MainPage>{
       });
     }
   }
+  endload(){
+    Timer(Duration(seconds: 4), (){
+      setState(() {
+      });
+      print("0000000000000000000000000000000000000000000000000000000000000000");
+    });
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadData();
+    endload();
   }
   @override
   Widget build(BuildContext context) {
@@ -130,12 +140,12 @@ class _state extends State<MainPage>{
                     ),
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                SizedBox(height: MediaQuery.of(context).size.height*.008,),
                 Row(
                   children: [
                     SizedBox(  width: MediaQuery.of(context).size.width*.05,),
                     Container(
-                      height: MediaQuery.of(context).size.height*.14,
+                      height: MediaQuery.of(context).size.height*.13,
                       width: MediaQuery.of(context).size.width*.95,
                       child: ListView(
                         shrinkWrap: true,
@@ -296,7 +306,7 @@ class _state extends State<MainPage>{
                   ],
                 ),
                 adv?Container(
-                  height: MediaQuery.of(context).size.height*.13,
+                  height: MediaQuery.of(context).size.height*.15,
                   width: MediaQuery.of(context).size.width*.9 ,
                   color: Colors.white,
                   child:  new Swiper(
@@ -357,7 +367,7 @@ class _state extends State<MainPage>{
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width*.94,
-                    height: MediaQuery.of(context).size.height*.04,
+                    height: MediaQuery.of(context).size.height*.05,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 0,right: 0),
                     decoration: BoxDecoration(
@@ -365,13 +375,13 @@ class _state extends State<MainPage>{
                         //color: Color(h.redColor)
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(DemoLocalizations.of(context).title["bestSeller"],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
                       ],
                     )
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*.01,),
                 BestList.length==0?
                 Container(
                   height: MediaQuery.of(context).size.height*.17,
@@ -480,7 +490,7 @@ class _state extends State<MainPage>{
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width*.94,
-                    height: MediaQuery.of(context).size.height*.04,
+                    height: MediaQuery.of(context).size.height*.05,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 0,right: 0),
                     decoration: BoxDecoration(
@@ -488,13 +498,13 @@ class _state extends State<MainPage>{
                         //color: Color(h.redColor)
                     ),
                     child:Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(DemoLocalizations.of(context).title["offers"],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
                       ],
                     )
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*.01,),
                 OffersList.length==0?
                 Container(
                   height: MediaQuery.of(context).size.height*.18,
@@ -616,7 +626,7 @@ class _state extends State<MainPage>{
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width*.94,
-                    height: MediaQuery.of(context).size.height*.04,
+                    height: MediaQuery.of(context).size.height*.05,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 0,right: 0),
                     decoration: BoxDecoration(
@@ -624,13 +634,13 @@ class _state extends State<MainPage>{
                         //color: Color(h.redColor)
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(DemoLocalizations.of(context).title["lastAdded"],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black),),
                       ],
                     )
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*.01,),
                LastList.length==0?  Container(
                  height: MediaQuery.of(context).size.height*.17,
                  width: MediaQuery.of(context).size.width,

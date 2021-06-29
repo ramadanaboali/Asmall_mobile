@@ -135,7 +135,7 @@ class _state extends State<Orders>{
                           onTap: (){
                           Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                           },
-                          child: Icon(ParentPage.language=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                          child: Icon(ParentPage.language=="ar"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
                       Text(DemoLocalizations.of(context).title["Orders"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                       GestureDetector(
                           onTap: (){
@@ -225,7 +225,8 @@ class _state extends State<Orders>{
                      ],
                    ),
                  )),
-               ):Expanded(child: ListView.builder(
+               ):
+              Expanded(child: ListView.builder(
                      padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height*.0,
                          bottom: MediaQuery.of(context).size.height*.04

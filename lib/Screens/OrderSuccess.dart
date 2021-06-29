@@ -90,7 +90,7 @@ class _state extends State<OrderSuccess>{
                                 ),
                                 Column(
                                   children: [
-                                    Text(ParentPage.quantity.toString(),style: TextStyle(fontSize: 12),),
+                                    Text(this.quantity.toString(),style: TextStyle(fontSize: 12),),
                                     Container(
                                       width: MediaQuery.of(context).size.width*.3,
                                       height: 1,
@@ -117,7 +117,7 @@ class _state extends State<OrderSuccess>{
                                 ),
                                 Column(
                                   children: [
-                                    Text(ParentPage.total.toString(),style: TextStyle(fontSize: 12),),
+                                    Text(this.total.toString(),style: TextStyle(fontSize: 12),),
                                     Container(
                                       width: MediaQuery.of(context).size.width*.3,
                                       height: 1,
@@ -137,7 +137,7 @@ class _state extends State<OrderSuccess>{
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*.03,),
-                Text(DemoLocalizations.of(context).title["total"]+  " ${ParentPage.total}",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                Text(DemoLocalizations.of(context).title["total"]+  " ${this.total}",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                 SizedBox(height: MediaQuery.of(context).size.height*.03,),
                 Container(
                   width: MediaQuery.of(context).size.width*.9,
