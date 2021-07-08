@@ -61,7 +61,7 @@ loadData()async{
     disableFollow=true;
     user_id=prefs.getString("id");
   });
-  print(vendorCategory.length);
+  print(gallary.length);
   print("*************************");
 }
   VideoPlayerController _videoPlayerController1;
@@ -81,24 +81,35 @@ loadData()async{
   }
   @override
   Widget build(BuildContext context) {
- if(responce["data"]["video"]!=null){
-   _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
-   _chewieController = ChewieController(
-       videoPlayerController: _videoPlayerController1,
-       autoPlay: true,
-       aspectRatio: 3.8 / 3,
-       looping: false,
-       allowPlaybackSpeedChanging: false,
-       allowedScreenSleep: true
-   );
- }
+   if(responce!=null){
+     if(responce["data"]["video"]!=null){
+       _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
+       _chewieController = ChewieController(
+           videoPlayerController: _videoPlayerController1,
+           autoPlay: true,
+           aspectRatio: 3.8 / 3,
+           allowPlaybackSpeedChanging: false,
+           autoInitialize: true,
+           isLive: false,
+           looping: false,
+           allowedScreenSleep: true
+       );
+     }
+   }
   List content=[
     gallary==null?SizedBox(): Expanded(
       child: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height*.02,),
-            Container(
+           gallary.length==0? Container(
+             padding: EdgeInsets.only(
+               left: MediaQuery.of(context).size.width*.08,
+               right: MediaQuery.of(context).size.width*.08,
+               top: MediaQuery.of(context).size.height*.08
+             ),
+             child: Image.asset("images/logo.png"),
+           ):Container(
               height: MediaQuery.of(context).size.height*.21,
               width: MediaQuery.of(context).size.width*.9 ,
               color: Colors.white,
@@ -542,8 +553,8 @@ loadData()async{
                      ),
                      GestureDetector(
                        onTap: (){
-                          _chewieController.dispose();
-                         _videoPlayerController1.dispose();
+                         // _chewieController.dispose();
+                        // _videoPlayerController1.dispose();
                          setState(() {
                            indexContent=1;
                          });
@@ -565,8 +576,8 @@ loadData()async{
                      ),
                      GestureDetector(
                        onTap: (){
-                         _chewieController.dispose();
-                         _videoPlayerController1.dispose();
+                        // _chewieController.dispose();
+                        // _videoPlayerController1.dispose();
                          setState(() {
                            indexContent=2;
                          });

@@ -275,7 +275,8 @@ class _state extends State<Register>{
                         GestureDetector(
                           onTap: ()async{
                             if(formKey.currentState.validate()){
-                            Map<String,dynamic>data =await userServices.registerServices("en", name.text, email.text, password.text, phone.text);
+                              SharedPreferences pref=await SharedPreferences.getInstance();
+                            Map<String,dynamic>data =await userServices.registerServices("en", name.text, email.text, password.text, phone.text,pref.getString("device_token"));
                             if(data["status"]==200){
                               setData("token",data["user"]["token"]);
                               setData("id",data["user"]["id"]);

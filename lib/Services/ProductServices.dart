@@ -13,6 +13,7 @@ import 'package:ashmall/Model/SearchModel.dart';
 import 'package:ashmall/Model/SemillarModel.dart';
 import 'package:ashmall/Model/SidesModel.dart';
 import 'package:ashmall/Model/VendorModel.dart';
+import 'package:ashmall/Model/ProductGallaryModel.dart';
 import 'package:ashmall/Screens/VendorCategory.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
@@ -694,6 +695,51 @@ class ProductServices{
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
         return slideritems.map((e) => SemillarDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<SemillarDetail>>getRecomendationProduct(String lang,var vendor_id)async
+  {
+    String url=baseURL+"api/home/get-preferred-products-by-userId?userId=$vendor_id";
+    var header={
+      "Content-Type":"application/json",
+      "lang":lang
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      print(response.body);
+      print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
+        return slideritems.map((e) => SemillarDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<ProductGallaryDetail>>getProductGallary(var Product_id)async
+  {
+    String url=baseURL+"api/products/get-product-attachments?poductId=$Product_id";
+    var header={
+      "Content-Type":"application/json",
+    };
+    try
+    {
+      final response = await http.get(url,headers: header);
+      print(response.body);
+      print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
+        return slideritems.map((e) => ProductGallaryDetail.fromJson(e)).toList();
       }
     }
     catch(e)

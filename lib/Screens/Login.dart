@@ -1,10 +1,11 @@
 import 'package:ashmall/Services/GlobalVarible.dart';
+import 'package:ashmall/Services/ProductServices.dart';
 import 'package:ashmall/Services/UserServices.dart';
 import 'package:ashmall/main.dart';
 import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+//import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -29,6 +30,7 @@ class _state extends State<Login> {
   bool loader=true;
   home h = new home();
   UserServices userServices = new UserServices();
+  ProductServices productServices=new ProductServices();
   bool passVisibility = true;
   final formKey = GlobalKey<FormState>();
   TextEditingController username = new TextEditingController();
@@ -36,9 +38,11 @@ class _state extends State<Login> {
   FocusNode passwordNode=new FocusNode();
   var lang;
   var link;
-
+  Map<String,dynamic>setting;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    setting=await productServices.getSetting(prefs.getString("lang"));
+    setting["data"]["dashboardLinkEnable"]==true?prefs.setString("dashboardLink", setting["data"]["dashboardLink"]):print("sharrrrrrrrrrrf");
     setState(() {
       lang = prefs.getString("lang");
       link = prefs.getString("dashboardLink");
@@ -79,7 +83,6 @@ class _state extends State<Login> {
                   padding: EdgeInsets.only(
                     left: 10,
                     right: 20,
-
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +92,7 @@ class _state extends State<Login> {
                           onTap: (){
                             Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                           },
-                          child: Icon(ParentPage.language=="ar"?Icons.arrow_forward_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
+                          child: Icon(ParentPage.language=="ar"?Icons.arrow_back_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
                       Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                       GestureDetector(
                           onTap: (){
@@ -215,7 +218,8 @@ class _state extends State<Login> {
                                   setState(() {
                                     loader=false;
                                   });
-                                  Map<String,dynamic>data=await userServices.login("en",username.text.trim().toString(), password.text.trim().toString());
+                                  SharedPreferences pref=await SharedPreferences.getInstance();
+                                  Map<String,dynamic>data=await userServices.login("en",username.text.trim().toString(), password.text.trim().toString(),pref.getString("device_token"));
                                   if(data["status"]==200){
                                     setData("token",data["user"]["token"]);
                                     setData("id",data["user"]["id"]);
@@ -335,7 +339,7 @@ class _state extends State<Login> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(DemoLocalizations.of(context).title["DontHaveACount"]+"?"),
+                      Text(DemoLocalizations.of(context).title["DontHaveACount"]),
                       GestureDetector(onTap: (){Navigator.pushNamed(context, "/Register");},child: Text(DemoLocalizations.of(context).title["SignUp"],style: TextStyle(color: Color(h.mainColor),fontWeight: FontWeight.bold),))
                     ],
                   ),
@@ -358,7 +362,7 @@ class _state extends State<Login> {
     } else {
       throw 'Could not launch $url';
     }}
- AccessToken _accessToken;
+// AccessToken _accessToken;
   bool _checking = true;
  /* Future<void> _login() async {
     final LoginResult result = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile

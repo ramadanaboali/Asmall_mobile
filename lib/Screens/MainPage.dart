@@ -59,10 +59,33 @@ class _state extends State<MainPage>{
     }
   }
   endload(){
-    Timer(Duration(seconds: 4), (){
+    Timer(Duration(seconds: 1), (){
       setState(() {
       });
-      print("0000000000000000000000000000000000000000000000000000000000000000");
+      print("11111111111111111111111111111111111111111111");
+    });
+    Timer(Duration(seconds: 2), (){
+      setState(() {
+      });
+      print("2222222222222222222222222222222222222222222222");
+    });
+    Timer(Duration(seconds: 3), (){
+      loadData();
+      setState(() {
+      });
+      print("333333333333333333333333333333333333333333333333333");
+    });
+    Timer(Duration(seconds: 4), (){
+      loadData();
+      setState(() {
+      });
+      print("4444444444444444444444444444444444444444444444444444");
+    });
+    Timer(Duration(seconds: 5), (){
+      loadData();
+      setState(() {
+      });
+      print("55555555555555555555555555555555555555555555555555555555555");
     });
   }
   @override
@@ -548,7 +571,7 @@ class _state extends State<MainPage>{
                                           topLeft: Radius.circular(5),
                                           topRight: Radius.circular(5)
                                       ),
-                                      child: Image.network(GlobalVariable.URl+LastList[index].coverPhoto,
+                                      child:LastList[index].coverPhoto==null? SizedBox():Image.network(GlobalVariable.URl+LastList[index].coverPhoto,
                                         width: MediaQuery.of(context).size.width,
                                         fit: BoxFit.fill,
                                       ),

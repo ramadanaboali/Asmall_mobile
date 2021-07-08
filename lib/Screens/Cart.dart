@@ -32,13 +32,15 @@ class _state extends State<Cart> {
   int totalquantity=0;
   double allPrice=0.0;
   List dataLocal=[];
+  List dataLocal1=[];
   DbHelper db=new DbHelper();
   String address_id;
   String user_id;
   var lang;
-  loadData() async {
+  loadData() async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
     dataLocal=await db.allProduct();
+    dataLocal1=await db.allProduct2(1);
     setState(() {
       user_id=prefs.getString("id");
       address_id=prefs.getString("address_id");
@@ -68,7 +70,7 @@ class _state extends State<Cart> {
           color: Colors.white,
           child: Column(
             children: [
-              Container(
+               Container(
                 height: MediaQuery.of(context).size.height*.07,
                 width: MediaQuery.of(context).size.width,
                 color: Color(h.mainColor),
@@ -85,7 +87,7 @@ class _state extends State<Cart> {
                         onTap: (){
                           Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                         },
-                        child: Icon(ParentPage.language=="ar"?Icons.arrow_forward_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
+                        child: Icon(ParentPage.language=="ar"?Icons.arrow_back_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
                     Text(DemoLocalizations.of(context).title["ShoopingCart"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                     GestureDetector(
                         onTap: (){
@@ -95,7 +97,89 @@ class _state extends State<Cart> {
                   ],
                 ),
               ),
-              Expanded(
+              dataLocal.length==0? SizedBox():
+              Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                GestureDetector(
+                  onTap: ()async{
+                     SharedPreferences pref=await SharedPreferences.getInstance();
+                     if(dataLocal.length==dataLocal1.length){
+                       for(int i=0;i<dataLocal.length;i++){
+                        CartMedelLocal c=new CartMedelLocal.fromMap(dataLocal[i]);
+                        CartMedelLocal cartLDBModel = CartMedelLocal({
+                          'id':c.id,
+                          'name': c.name,
+                          'img':  c.img,
+                          'price': c.price,
+                          'description':c.description,
+                          'quantity': c.quantity,
+                          "selectItem":0
+                        });
+                        setState(() {
+                          db.updateCourse(cartLDBModel);
+                          ParentPage.quantity=ParentPage.quantity-c.quantity;
+                          ParentPage.total=ParentPage.total-(c.price*c.quantity);
+                        });
+                        pref.setString("total", ParentPage.total.toString());
+                        pref.setString("quantity", ParentPage.quantity.toString());
+                      }
+                         loadData();
+                    }
+                      else{
+                       for(int i=0;i<dataLocal.length;i++){
+                         CartMedelLocal c=new CartMedelLocal.fromMap(dataLocal[i]);
+                         CartMedelLocal cartLDBModel = CartMedelLocal({
+                           'id':c.id,
+                           'name': c.name,
+                           'img':  c.img,
+                           'price': c.price,
+                           'description':c.description,
+                           'quantity': c.quantity,
+                           "selectItem":1
+                         });
+                         setState(() {
+                           db.updateCourse(cartLDBModel);
+                           ParentPage.quantity=ParentPage.quantity+c.quantity;
+                           ParentPage.total=ParentPage.total+(c.price*c.quantity);
+                         });
+                         pref.setString("total", ParentPage.total.toString());
+                         pref.setString("quantity", ParentPage.quantity.toString());
+                       }
+                       loadData();
+                     }
+                  },
+                  child: Container(
+                      height: MediaQuery.of(context).size.height*.05,
+                      width: MediaQuery.of(context).size.width*.9,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(Radius.circular(10))
+                      ),
+                      padding: EdgeInsets.only(
+                        left:MediaQuery.of(context).size.width*.05,
+                        right: MediaQuery.of(context).size.width*.05,
+                      ),
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(dataLocal.length==dataLocal1.length?DemoLocalizations.of(context).title["unselectall"]:DemoLocalizations.of(context).title["selectall"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                          dataLocal.length==dataLocal1.length?
+                          Container(
+                            height: 25,width: 25,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(100)),
+                                color: Colors.white
+                            ),
+                          ):Icon(Icons.check_circle,color: Colors.white)
+                        ],
+                      )
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*.01,),
+              ],
+            ),
+               Expanded(
                 child: FutureBuilder(
                     future: db.allProduct(),
                     builder: (context, AsyncSnapshot snapshot) {
@@ -105,9 +189,9 @@ class _state extends State<Cart> {
                       else{
                         return snapshot.data.length==0?Container(
                             padding:EdgeInsets.only(top:MediaQuery.of(context).size.height*.15),child: Center(
-                          child: Column(
-                            children: [
-                              ClipRRect(
+                              child: Column(
+                              children: [
+                                ClipRRect(
                                   borderRadius: BorderRadius.all(Radius.circular(1000)),
                                   child: Image.asset("images/logo.png",color: Color(h.mainColor),
                                   height: MediaQuery.of(context).size.height*.25,
@@ -251,7 +335,7 @@ class _state extends State<Cart> {
                                                                       'quantity': c.quantity,
                                                                       "selectItem":0
                                                                     });
-                                                                    setState(() {
+                                                                                                                              setState(() {
                                                                       db.updateCourse(cartLDBModel);
                                                                       ParentPage.quantity=ParentPage.quantity-c.quantity;
                                                                       ParentPage.total=ParentPage.total-(c.price*c.quantity);
@@ -278,6 +362,7 @@ class _state extends State<Cart> {
                                                                     pref.setString("total", ParentPage.total.toString());
                                                                     pref.setString("quantity", ParentPage.quantity.toString());
                                                                   }
+                                                                  loadData();
                                                                 },
                                                                 child: Container(
                                                                   height: 22,width: 22,

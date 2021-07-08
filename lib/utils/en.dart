@@ -20,7 +20,7 @@ class EN {
     "Email":"Email",
     "EnterYourPassword":"Enter Your Password",
     "Password":"Password",
-    "DontHaveACount":"Dont Have ACount",
+    "DontHaveACount":"Dont Have ACount ?",
     "SignUp":"Sign Up",
     "ForgetPassword":"Forget Password",
     "noReviews":"No Reviews",
@@ -110,7 +110,13 @@ class EN {
     "confrim":"Confirm",
     "question":"Question",
     "seeAll":"See More",
-    "reviews":"Reviews"
+    "reviews":"Reviews",
+    "selectall":"Select All",
+    "unselectall":"UnSelect All",
+    "MoreDetails":"More Details",
+    "colors":"Colors",
+    "specification":"Specification",
+    "SellerRecommendations":"Seller Recommendations"
 
   };
 }

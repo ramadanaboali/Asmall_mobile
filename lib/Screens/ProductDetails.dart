@@ -7,6 +7,7 @@ import 'package:ashmall/Model/FavouriteLocalModel.dart';
 import 'package:ashmall/Model/OneProductModel.dart';
 import 'package:ashmall/Model/Product1Model.dart';
 import 'package:ashmall/Model/Product2Model.dart';
+import 'package:ashmall/Model/ProductGallaryModel.dart';
 import 'package:ashmall/Model/ProductRateModel.dart';
 import 'package:ashmall/Model/ProductSpecificationModel.dart';
 import 'package:ashmall/Model/QuestionModel.dart';
@@ -74,10 +75,12 @@ class  _state extends State<ProductDetails>{
   List<ProductColorModel>colorList=[];
   List<ProductSizeModel>sizeList=[];
   List<SemillarDetail>SimillarProducts=[];
+  List<SemillarDetail>RecomendationProducts=[];
   List<ProductRateDetail>ratelist=[];
   List<SidesDetail>sidesList=[];
   List<QuestionDetail>questions=[];
   List<ProductRateDetail>reviews=[];
+  List<ProductGallaryDetail>gallary=[];
   loadData() async {
     SharedPreferences prefs=await SharedPreferences.getInstance();
     data=await productServices.getProductDetails(prefs.getString("lang"), this.id);
@@ -89,6 +92,8 @@ class  _state extends State<ProductDetails>{
     sidesList=await productServices.getProductSides(prefs.getString("lang"), this.id);
     questions=await productServices.GetQuestion(prefs.getString("lang"), this.id);
     reviews=await productServices.getProductRate(prefs.getString("lang"), this.id);
+    RecomendationProducts=await productServices.getRecomendationProduct(prefs.getString("lang"), data["vendorId"]);
+    gallary=await productServices.getProductGallary(this.id);
     setState(() {
       lang=prefs.getString("lang");
       user_id=prefs.getString("id");
@@ -99,6 +104,8 @@ class  _state extends State<ProductDetails>{
        Map<String,dynamic>responce=await productServices.addWatch(lang, this.id, prefs.getString("id"));
        print(responce.toString()+"rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
      }
+     print(gallary.length);
+     print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   }
   home h=new home();
   @override
@@ -120,6 +127,8 @@ class  _state extends State<ProductDetails>{
    return WillPopScope(
      onWillPop: (){
        Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
+       //_chewieController.dispose();
+     //  _videoPlayerController1.dispose();
      },
      child: SafeArea(
        child: Scaffold(
@@ -366,6 +375,53 @@ class  _state extends State<ProductDetails>{
                      children: [
                        Container(
                          height: MediaQuery.of(context).size.height*.3,
+                         width: MediaQuery.of(context).size.width*.9,
+                         child:ListView.builder(
+                             scrollDirection: Axis.horizontal,
+                             itemCount: gallary.length,itemBuilder: (context,index){
+
+                           if(gallary[index].type=="Video"){
+                             _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URl+gallary[index].attachment);
+                             _chewieController = ChewieController(
+                               videoPlayerController: _videoPlayerController1,
+                               autoPlay: false,
+                               aspectRatio: 6.5 / 4,
+                               looping: false,
+                               allowPlaybackSpeedChanging: false,
+                               autoInitialize: true,
+                               isLive: false,
+                               placeholder: Container(
+                                 height: MediaQuery.of(context).size.height*.3,
+                                 width: MediaQuery.of(context).size.width*.9,
+                                 color: Colors.red,
+                                 child: Center(
+                                   child: Icon(Icons.play_arrow),
+                                 ),
+                               ),
+                               allowedScreenSleep: true
+                             );
+                           }
+
+                           return gallary[index].type=="Video"?Container(
+                             height: MediaQuery.of(context).size.height * 0.4,
+                             width: MediaQuery.of(context).size.width*.9,
+                             child: Chewie(
+                               controller: _chewieController,
+                             ),
+                           ):Container(
+                             height: MediaQuery.of(context).size.height*.3,
+                             width: MediaQuery.of(context).size.width*.9 ,
+                             child:   ClipRRect(
+                               borderRadius: BorderRadius.all(Radius.circular(5)),
+                               child: Image.network(GlobalVariable.URl+gallary[index].attachment,fit: BoxFit.fill,height: MediaQuery.of(context).size.height*.27 ,
+                                 width: MediaQuery.of(context).size.width,
+                               ),
+                             ),
+                           );
+                         })
+                       ),
+                       /*Container(
+                         height: MediaQuery.of(context).size.height*.3,
                          width: MediaQuery.of(context).size.width*.9 ,
                          color: Colors.white,
                          child:  new Swiper(
@@ -394,7 +450,7 @@ class  _state extends State<ProductDetails>{
                                size: 0
                            ),
                          ),
-                       ),
+                       ),*/
                        SizedBox(height: MediaQuery.of(context).size.height*.015,),
                        Container(
                          width: MediaQuery.of(context).size.width*.9 ,
@@ -546,7 +602,7 @@ class  _state extends State<ProductDetails>{
                                            padding: EdgeInsets.all(5),
                                            child: Icon(Icons.rate_review,color: Color(h.mainColor),)),
                                      ),*/
-                                     SizedBox(width: 10,),
+                                  /*   SizedBox(width: 10,),
                                      data["video"]!=null?
                                      GestureDetector(
                                        onTap: (){
@@ -562,7 +618,7 @@ class  _state extends State<ProductDetails>{
                                          ),
                                          child: Icon(Icons.play_arrow,color: Colors.white,size: 15,),
                                        ),
-                                     ):SizedBox(),
+                                     ):SizedBox(),*/
                                   /*   SizedBox(width: 10,),
                                      GestureDetector(
                                        onTap: (){
@@ -608,7 +664,7 @@ class  _state extends State<ProductDetails>{
                                width: MediaQuery.of(context).size.width*.9,
                                child: Row(
                                  children: [
-                                   Text("Colors",style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),)
+                                   Text(DemoLocalizations.of(context).title["colors"],style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),)
                                  ],
                                ),
                              ),
@@ -650,7 +706,7 @@ class  _state extends State<ProductDetails>{
                             width: MediaQuery.of(context).size.width*.9,
                             child: Row(
                               children: [
-                                Text("Specification",style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),)
+                                Text(DemoLocalizations.of(context).title["specification"],style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),)
                               ],
                             ),
                           ),
@@ -769,73 +825,6 @@ class  _state extends State<ProductDetails>{
                         ),
                       ),
                        SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                       sidesList.length==0?SizedBox():
-                       Container(
-                         decoration: BoxDecoration(
-                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                             border: Border.all(color: Colors.black54,width: 1)
-                         ),
-                         padding: EdgeInsets.all(5),
-                         child: Column(
-                           children: [
-                             Column(
-                               children: [
-                                 SizedBox(height: MediaQuery.of(context).size.height*.008,),
-                                 Container(
-                                   width: MediaQuery.of(context).size.width*.9,
-                                   child: Row(
-                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                     children: [
-                                       Text("More Details",style: TextStyle(color: Colors.black54,fontSize: 16,fontWeight: FontWeight.bold),),
-                                     ],
-                                   ),
-                                 ),
-                                 SizedBox(height: MediaQuery.of(context).size.height*.008,),
-                               ],
-                             ),
-                             SizedBox(height: 5,),
-                             Container(
-                               height: MediaQuery.of(context).size.height*.18,
-                               width: MediaQuery.of(context).size.width*.9,
-                               child: ListView.builder(
-                                   scrollDirection: Axis.horizontal,
-                                   itemCount: sidesList.length,itemBuilder: (context,index){
-                                 return GestureDetector(
-                                   onTap: (){
-                                     ShowImage(context, GlobalVariable.URl+sidesList[index].sideImage);
-                                   },
-                                   child: Container(
-                                     width: MediaQuery.of(context).size.width*.45,
-                                     height: MediaQuery.of(context).size.height*.15,
-                                     child: Row(
-                                       children: [
-                                         Container(
-                                             width: MediaQuery.of(context).size.width*.45-8,
-                                             height: MediaQuery.of(context).size.height*.15,
-                                             decoration: BoxDecoration(
-                                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                                               border: Border.all(color: Colors.green,width: 1)
-                                             ),
-                                             child: Column(
-                                               children: [
-                                                 Expanded(
-                                                   child: ClipRRect(
-                                                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                       child: Image.network(GlobalVariable.URl+sidesList[index].sideImage,fit: BoxFit.cover,)),
-                                                 ),
-                                                 Text(sidesList[index].title,style: TextStyle(fontWeight: FontWeight.bold,color: Color(h.mainColor),fontSize: 12),)
-                                               ],
-                                             )),
-                                         SizedBox(width: 8,)
-                                       ],
-                                     ),
-                                   ),
-                                 );
-                               }),
-                             )
-                           ],
-                         ),
-                       ),
                        reviews.length==0?SizedBox():GestureDetector(
                          onTap: (){
                            Navigator.push(context, GlobalFunction.route(Reviews(data["id"],this.name)));
@@ -1004,7 +993,6 @@ class  _state extends State<ProductDetails>{
                            );
                          }),
                        ),
-
                        SizedBox(height: MediaQuery.of(context).size.height*.01,),
                        Container(
                          child: Column(
@@ -1013,11 +1001,11 @@ class  _state extends State<ProductDetails>{
                                padding: EdgeInsets.only(
                                  left: MediaQuery.of(context).size.width*.05,
                                  right: MediaQuery.of(context).size.width*.05,
-                                 bottom: 10,top: 5
+                                 bottom: 5,top: 5
                                ),
                                child: Row(
                                  children: [
-                                   CustomText.TitleText(DemoLocalizations.of(context).title["SimillarProduct"])
+                                   Text(DemoLocalizations.of(context).title["SimillarProduct"],style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),),
                                  ],
                                ),
                              ),
@@ -1137,7 +1125,217 @@ class  _state extends State<ProductDetails>{
                              )
                            ],
                          ),
-                       )
+                       ),
+                       SizedBox(height: MediaQuery.of(context).size.height*.0,),
+                       Container(
+                         child: Column(
+                           children: [
+                             Container(
+                               padding: EdgeInsets.only(
+                                   left: MediaQuery.of(context).size.width*.05,
+                                   right: MediaQuery.of(context).size.width*.05,
+                                   bottom: 5,top: 5
+                               ),
+                               child: Row(
+                                 children: [
+                                   Text(DemoLocalizations.of(context).title["SellerRecommendations"],style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),),
+                                 ],
+                               ),
+                             ),
+                             Container(
+                               child: GridView.builder(
+                                 padding: EdgeInsets.only(
+                                     left: MediaQuery.of(context).size.width*.05,
+                                     right: MediaQuery.of(context).size.width*.05,
+                                     bottom: 30
+                                 ),
+                                 primary: false,
+                                 shrinkWrap: true,
+                                 itemCount: RecomendationProducts.length,
+                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                     crossAxisCount: 3,
+                                     mainAxisSpacing: 10,
+                                     crossAxisSpacing: 10,
+                                     childAspectRatio: 1/1.4
+                                 ),
+                                 itemBuilder: (context,index){
+                                   return GestureDetector(
+                                     onTap: (){
+                                       print("sssssssss");
+                                       Navigator.push(context, GlobalFunction.route(ProductDetails(RecomendationProducts[index].id,RecomendationProducts[index].name)));
+                                     },
+                                     child: Container(
+                                       margin: EdgeInsets.only(
+                                       ),
+
+                                       decoration: BoxDecoration(
+                                           border: Border.all(color: Colors.black12,width: 1),
+                                           borderRadius: BorderRadius.all(Radius.circular(5))
+                                       ),
+
+                                       child: Column(
+                                         crossAxisAlignment: CrossAxisAlignment.start,
+                                         children: [
+                                           Expanded(
+                                             child: Container(
+                                               child: ClipRRect(
+                                                 borderRadius: BorderRadius.only(
+                                                     topLeft: Radius.circular(5),
+                                                     topRight: Radius.circular(5)
+                                                 ),
+                                                 child: Image.network(GlobalVariable.URl+RecomendationProducts[index].coverPhoto,
+                                                   width: MediaQuery.of(context).size.width,
+                                                   fit: BoxFit.fill,
+                                                 ),
+                                               ),
+                                             ),
+                                           ),
+                                           SizedBox(height: 3,),
+                                           Container(
+                                             padding: EdgeInsets.only(left: 5,right: 5),
+                                             child: Row(
+                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                               children: [
+                                                 Container(
+                                                     child: Row(
+                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                       children: [
+                                                         Container(
+                                                             width: MediaQuery.of(context).size.width*.18,
+                                                             child:Text(RecomendationProducts[index].name,maxLines: 1,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),)),
+
+                                                         Icon(Icons.add_shopping_cart,size: 18,)
+                                                       ],
+                                                     )
+                                                 ),
+
+                                               ],
+                                             ),
+                                           ),
+                                           SizedBox(height: 2,),
+                                           Container(
+                                             padding: EdgeInsets.only(left: 3,right: 3),
+                                             child: Row(
+                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                               children: [
+                                                 Container(
+
+                                                   // padding: EdgeInsets.only(left: 5,right: 5),
+                                                     child: Column(
+                                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                       children: [
+                                                         Row(
+                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                           children: [
+                                                             CustomText.CustomText10(RecomendationProducts[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
+                                                             SizedBox(width: 3,),
+                                                             Container(
+                                                               height: 7,
+                                                               padding: EdgeInsets.only(
+                                                                 //left: 5,right: 5
+                                                               ),
+                                                               child: CustomRate(RecomendationProducts[index].rate.round(),9),
+                                                             ),
+                                                           ],
+                                                         ),
+                                                       ],
+                                                     )
+                                                 ),
+
+                                               ],
+                                             ),
+                                           ),
+                                           SizedBox(height: 2,),
+
+                                           SizedBox(height: 10,)
+                                         ],
+                                       ),
+                                     ),
+                                   );
+                                 },
+                               ),
+                             )
+                           ],
+                         ),
+                       ),
+                       sidesList.length==0?SizedBox():
+                       Container(
+                         decoration: BoxDecoration(
+                             borderRadius: BorderRadius.all(Radius.circular(10)),
+                            // border: Border.all(color: Colors.black54,width: 1)
+                         ),
+                         padding: EdgeInsets.all(3),
+                         child: Column(
+                           children: [
+                             Column(
+                               children: [
+                                 //SizedBox(height: MediaQuery.of(context).size.height*.008,),
+                                 Container(
+                                   width: MediaQuery.of(context).size.width*.9,
+                                   child: Row(
+                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                     children: [
+                                       Text(DemoLocalizations.of(context).title["MoreDetails"],style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),),
+                                     ],
+                                   ),
+                                 ),
+                               //  SizedBox(height: MediaQuery.of(context).size.height*.008,),
+                               ],
+                             ),
+                             SizedBox(height: 5,),
+                             Container(
+                             //  height: MediaQuery.of(context).size.height*.18,
+                               width: MediaQuery.of(context).size.width*.9,
+                               child: ListView.builder(
+                                 shrinkWrap: true,primary: false,
+                                   itemCount: sidesList.length,itemBuilder: (context,index){
+                                 return GestureDetector(
+                                   onTap: (){
+                                     ShowImage(context, GlobalVariable.URl+sidesList[index].sideImage);
+                                   },
+                                   child: Container(
+                                     width: MediaQuery.of(context).size.width*.9,
+                                     height: MediaQuery.of(context).size.height*.25,
+                                     margin: EdgeInsets.only(bottom: 10),
+                                     child: Row(
+                                       children: [
+                                         Container(
+                                             width: MediaQuery.of(context).size.width*.9-8,
+                                             height: MediaQuery.of(context).size.height*.25,
+                                             decoration: BoxDecoration(
+                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                                               //  border: Border.all(color: Colors.green,width: 1)
+                                             ),
+                                             child: Column(
+                                               children: [
+                                                Row(
+                                                  children: [
+                                                    SizedBox(width:10),
+                                                    Text(sidesList[index].title,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 15),),
+                                                  ],
+                                                ),
+                                                 SizedBox(height:5),
+                                                 Expanded(
+                                                   child: ClipRRect(
+                                                       borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                       child: Image.network(GlobalVariable.URl+sidesList[index].sideImage,fit: BoxFit.fill,
+                                                         width: MediaQuery.of(context).size.width*.9-8,
+                                                         height: MediaQuery.of(context).size.height*.25,)),
+                                                 ),
+
+                                               ],
+                                             )),
+                                         SizedBox(width: 8,)
+                                       ],
+                                     ),
+                                   ),
+                                 );
+                               }),
+                             )
+                           ],
+                         ),
+                       ),
                      ],
                    ),
                  )
@@ -1434,294 +1632,300 @@ class  _state extends State<ProductDetails>{
                     // height: MediaQuery.of(context).size.height*.75,
                     child: Column(
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height*.05,),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Container(
-                              // height: MediaQuery.of(context).size.height*.75,
-                              padding: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width*.05,
-                                  right:  MediaQuery.of(context).size.width*.05
-                              ),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(20),
-                                      topLeft: Radius.circular(20)
-                                  )),
-                              child: ListView(
-                                shrinkWrap: true,primary: false,
-                                children:[
-                                  SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                        color: Colors.black12
+                        Expanded(child:SizedBox()),
+                         Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20)
+                                )),
+                            child: SingleChildScrollView(
+                              child: Container(
+                                // height: MediaQuery.of(context).size.height*.75,
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width*.05,
+                                    right:  MediaQuery.of(context).size.width*.05
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        topLeft: Radius.circular(20)
+                                    )),
+                                child: ListView(
+                                  shrinkWrap: true,primary: false,
+                                  children:[
+                                    SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                          color: Colors.black12
+                                      ),
+                                      width: MediaQuery.of(context).size.width*.1,
+                                      margin: EdgeInsets.only(
+                                          left: MediaQuery.of(context).size.width*.37,
+                                          right: MediaQuery.of(context).size.width*.37
+                                      ),
+                                      height: 5,
                                     ),
-                                    width: MediaQuery.of(context).size.width*.1,
-                                    margin: EdgeInsets.only(
-                                        left: MediaQuery.of(context).size.width*.37,
-                                        right: MediaQuery.of(context).size.width*.37
+                                    Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        alignment: Alignment.centerLeft,
+                                        child: Row(
+                                          children: [
+                                            GestureDetector(
+                                                onTap: (){
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                                        color: Color(h.mainColor)
+                                                    ),
+                                                    padding: EdgeInsets.all(2),
+                                                    child: Icon(Icons.clear,size: 20,color: Colors.white,))),
+                                          ],
+                                        )
                                     ),
-                                    height: 5,
-                                  ),
-                                  Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      alignment: Alignment.centerLeft,
+                                    SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                                    Container(
                                       child: Row(
                                         children: [
-                                          GestureDetector(
-                                              onTap: (){
-                                                Navigator.pop(context);
-                                              },
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(Radius.circular(1000)),
-                                                      color: Color(h.mainColor)
-                                                  ),
-                                                  padding: EdgeInsets.all(2),
-                                                  child: Icon(Icons.clear,size: 20,color: Colors.white,))),
-                                        ],
-                                      )
-                                  ),
-                                  SizedBox(height: MediaQuery.of(context).size.height*.015,),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                          child: Image.network(GlobalVariable.URl+image,
-                                              width: MediaQuery.of(context).size.width*.9,
-                                              height: MediaQuery.of(context).size.height*.2,
-                                            fit: BoxFit.cover,
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                                            child: Image.network(GlobalVariable.URl+image,
+                                                width: MediaQuery.of(context).size.width*.9,
+                                                height: MediaQuery.of(context).size.height*.2,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
 
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: MediaQuery.of(context).size.height*.025,),
-                                  Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   children: [
-                                     Text(name,style: TextStyle(fontSize: 16,color: Colors.black54),),
-                                     Row(
-                                       children: [
-                                         GestureDetector(
-                                           onTap: (){
-                                             setState((){
-                                               counter=counter+1;
-                                             });
-                                           },
-                                           child: Container(
-                                               padding: EdgeInsets.all(1.5),
-                                               decoration: BoxDecoration(
-                                                 borderRadius: BorderRadius.all(Radius.circular(100)),
-                                                 border: Border.all(color: Color(h.mainColor),width: 1.5)
-                                               ),
-                                               child: Icon(Icons.add,size: 18,)),
-                                         ),
-                                         SizedBox(width: 15,),
-                                         Text(counter.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
-                                         SizedBox(width: 15,),
-                                         GestureDetector(
-                                           onTap: (){
-                                           if(counter>1){
-                                             setState((){
-                                               counter=counter-1;
-                                             });
-                                           }
-                                           },
-                                           child: Container(
-                                             padding: EdgeInsets.all(1.5),
-                                               decoration: BoxDecoration(
+                                    SizedBox(height: MediaQuery.of(context).size.height*.025,),
+                                    Row(
+                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                     children: [
+                                       Text(name,style: TextStyle(fontSize: 16,color: Colors.black54),),
+                                       Row(
+                                         children: [
+                                           GestureDetector(
+                                             onTap: (){
+                                               setState((){
+                                                 counter=counter+1;
+                                               });
+                                             },
+                                             child: Container(
+                                                 padding: EdgeInsets.all(1.5),
+                                                 decoration: BoxDecoration(
                                                    borderRadius: BorderRadius.all(Radius.circular(100)),
                                                    border: Border.all(color: Color(h.mainColor),width: 1.5)
-                                               ),
-                                               child: Icon(Icons.remove,size: 18,)),
-                                         ),
-                                       ],
-                                     )
-                                   ],
-                                 ),
-                                  SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: MediaQuery.of(context).size.width*.7,
-                                        child:Text(description,style: TextStyle(fontSize: 10,color: Colors.black54),maxLines: 3,)
-                                      ),
-                                      Text(price+"  "+DemoLocalizations.of(context).title["le"],style: TextStyle(color: Color(h.mainColor)),)
-                                    ],
-                                  ),
-                                  /* SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: "images/logo.png",
-                                    image:image==null?"":GlobalVariable.URl+image,
-                                    width: MediaQuery.of(context).size.width*.9,
-                                    height: MediaQuery.of(context).size.height*.15,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),*/
-
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                 ),
+                                                 child: Icon(Icons.add,size: 18,)),
+                                           ),
+                                           SizedBox(width: 15,),
+                                           Text(counter.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20),),
+                                           SizedBox(width: 15,),
+                                           GestureDetector(
+                                             onTap: (){
+                                             if(counter>1){
+                                               setState((){
+                                                 counter=counter-1;
+                                               });
+                                             }
+                                             },
+                                             child: Container(
+                                               padding: EdgeInsets.all(1.5),
+                                                 decoration: BoxDecoration(
+                                                     borderRadius: BorderRadius.all(Radius.circular(100)),
+                                                     border: Border.all(color: Color(h.mainColor),width: 1.5)
+                                                 ),
+                                                 child: Icon(Icons.remove,size: 18,)),
+                                           ),
+                                         ],
+                                       )
+                                     ],
+                                   ),
+                                    SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        colorList.length==0||colorList==null?  SizedBox():
-                                        Column(
-                                          children: [
-                                            SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                            Text(DemoLocalizations.of(context).title["selectColor"],style: TextStyle(fontSize: 16,color: Colors.black54),),
-                                            SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                          ],
-                                        ),
                                         Container(
-                                          height: MediaQuery.of(context).size.height*.1,
-                                          width: MediaQuery.of(context).size.width,
-                                          child: ListView.builder(scrollDirection: Axis.horizontal,shrinkWrap: true,primary: false,itemCount: colorList.length,itemBuilder: (context,index){
-                                            return GestureDetector(
-                                              onTap: (){
-                                                setState((){
-                                                  SelectedColor=colorList[index].id;
-                                                });
-                                              },
-                                              child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                      border: Border.all(color: SelectedColor==colorList[index].id?Color(h.mainColor):Colors.white,width: 1),
-                                                      color: Colors.white
-                                                  ),
-                                                  margin: EdgeInsets.all(3),
-                                                  padding: EdgeInsets.all(3),
-                                                  child:  Image.network(GlobalVariable.URl+colorList[index].imageColor,
-                                                    height: MediaQuery.of(context).size.height*.1,
-                                                  )
-                                              ),
-                                            );
-                                          }),
+                                          width: MediaQuery.of(context).size.width*.7,
+                                          child:Text(description,style: TextStyle(fontSize: 10,color: Colors.black54),maxLines: 3,)
                                         ),
-                                        sizeList.length==0||sizeList==null?  SizedBox():
-                                        Column(
-                                          children: [
-                                            SizedBox(height: MediaQuery.of(context).size.height*.02,),
-                                            Text(DemoLocalizations.of(context).title["selectSize"],style: TextStyle(fontSize: 16,color: Colors.black54),),
-                                            SizedBox(height: MediaQuery.of(context).size.height*.00,),
-                                          ],
-                                        ),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width,
-                                          child: ListView.builder(padding: EdgeInsets.zero,scrollDirection: Axis.vertical,shrinkWrap: true,primary: false,itemCount: sizeList.length,itemBuilder: (context,index){
-                                            return GestureDetector(
-                                              onTap: (){
-                                                setState((){
-                                                  SizeValue=sizeList[index].id;
-                                                });
-                                              },
-                                              child: Container(
-                                                  child: Row(
-                                                    children: [
-                                                      Radio(groupValue: SizeValue,value: sizeList[index].id,onChanged: (val){
-                                                        setState((){
-                                                          SizeValue=sizeList[index].id;
-                                                        });
-                                                      },),
-                                                      SizedBox(width: 8,),
-                                                      Text(sizeList[index].sizeValue,style: TextStyle(color: Colors.black54,fontSize: 12),)
-                                                    ],
-                                                  )
-                                              ),
-                                            );
-                                          }),
-                                        )
+                                        Text(price+"  "+DemoLocalizations.of(context).title["le"],style: TextStyle(color: Color(h.mainColor)),)
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(height: MediaQuery.of(context).size.height*.03,),
-                                  GestureDetector(
-                                    child: Container(
-                                        margin: EdgeInsets.only(
-                                          //right:  MediaQuery.of(context).size.width*.2,
-                                          //left:  MediaQuery.of(context).size.width*.2
-                                        ),
-                                        decoration:BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: Color(h.mainColor),
-                                        ),
-                                        height: MediaQuery.of(context).size.height*.06,
-                                        width: MediaQuery.of(context).size.width*.8,
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.only(
-                                          left: MediaQuery.of(context).size.width*.07,
-                                          right: MediaQuery.of(context).size.width*.07,
-                                        ),
-                                        child:   Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(DemoLocalizations.of(context).title["addtocart"],style: TextStyle(color:Colors.white,fontSize: 13),),
-                                          ],
-                                        )
+                                    SizedBox(height: MediaQuery.of(context).size.height*.025,),
+                                    /* SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: "images/logo.png",
+                                      image:image==null?"":GlobalVariable.URl+image,
+                                      width: MediaQuery.of(context).size.width*.9,
+                                      height: MediaQuery.of(context).size.height*.15,
+                                      fit: BoxFit.cover,
                                     ),
-                                    onTap: () async {
-                                      print(data["id"].toString());
-                                      CartMedelLocal p1=new CartMedelLocal({
-                                        "id":data["id"],
-                                        "name":data["name"],
-                                        "img":data["imagesPaths"][0],
-                                        "description":data["description"],
-                                        "price":double.parse(data["offerPrice"].toString()),
-                                        "totalPrice":double.parse(data["offerPrice"].toString()),
-                                        "quantity":counter,
-                                        "ColorId":SelectedColor,
-                                        "ProductSizeId":SizeValue,
-                                        "selectItem":1
-                                      });
-                                      try
-                                      {
-                                        await dbHelper.addToCart(p1);
-                                        SharedPreferences prefs=await SharedPreferences.getInstance();
-                                        setState((){
-                                          ParentPage.counter=ParentPage.counter+1;
-                                          ParentPage.total=ParentPage.total+(double.parse(data["offerPrice"].toString())*counter);
-                                          ParentPage.quantity= ParentPage.quantity+counter;
+                                  ),*/
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          colorList.length==0||colorList==null?  SizedBox():
+                                          Column(
+                                            children: [
+                                              SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                              Text(DemoLocalizations.of(context).title["selectColor"],style: TextStyle(fontSize: 16,color: Colors.black54),),
+                                              SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                            ],
+                                          ),
+                                          Container(
+                                            height: MediaQuery.of(context).size.height*.1,
+                                            width: MediaQuery.of(context).size.width,
+                                            child: ListView.builder(scrollDirection: Axis.horizontal,shrinkWrap: true,primary: false,itemCount: colorList.length,itemBuilder: (context,index){
+                                              return GestureDetector(
+                                                onTap: (){
+                                                  setState((){
+                                                    SelectedColor=colorList[index].id;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                        border: Border.all(color: SelectedColor==colorList[index].id?Color(h.mainColor):Colors.white,width: 1),
+                                                        color: Colors.white
+                                                    ),
+                                                    margin: EdgeInsets.all(3),
+                                                    padding: EdgeInsets.all(3),
+                                                    child:  Image.network(GlobalVariable.URl+colorList[index].imageColor,
+                                                      height: MediaQuery.of(context).size.height*.1,
+                                                    )
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                          sizeList.length==0||sizeList==null?  SizedBox():
+                                          Column(
+                                            children: [
+                                              SizedBox(height: MediaQuery.of(context).size.height*.02,),
+                                              Text(DemoLocalizations.of(context).title["selectSize"],style: TextStyle(fontSize: 16,color: Colors.black54),),
+                                              SizedBox(height: MediaQuery.of(context).size.height*.00,),
+                                            ],
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: ListView.builder(padding: EdgeInsets.zero,scrollDirection: Axis.vertical,shrinkWrap: true,primary: false,itemCount: sizeList.length,itemBuilder: (context,index){
+                                              return GestureDetector(
+                                                onTap: (){
+                                                  setState((){
+                                                    SizeValue=sizeList[index].id;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Radio(groupValue: SizeValue,value: sizeList[index].id,onChanged: (val){
+                                                          setState((){
+                                                            SizeValue=sizeList[index].id;
+                                                          });
+                                                        },),
+                                                        SizedBox(width: 8,),
+                                                        Text(sizeList[index].sizeValue,style: TextStyle(color: Colors.black54,fontSize: 12),)
+                                                      ],
+                                                    )
+                                                ),
+                                              );
+                                            }),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 15,),
+                                    GestureDetector(
+                                      child: Container(
+                                          margin: EdgeInsets.only(
+                                            //right:  MediaQuery.of(context).size.width*.2,
+                                            //left:  MediaQuery.of(context).size.width*.2
+                                          ),
+                                          decoration:BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Color(h.mainColor),
+                                          ),
+                                          height: MediaQuery.of(context).size.height*.06,
+                                          width: MediaQuery.of(context).size.width*.8,
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context).size.width*.07,
+                                            right: MediaQuery.of(context).size.width*.07,
+                                          ),
+                                          child:   Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(DemoLocalizations.of(context).title["addtocart"],style: TextStyle(color:Colors.white,fontSize: 13),),
+                                            ],
+                                          )
+                                      ),
+                                      onTap: () async {
+                                        print(data["id"].toString());
+                                        CartMedelLocal p1=new CartMedelLocal({
+                                          "id":data["id"],
+                                          "name":data["name"],
+                                          "img":data["imagesPaths"][0],
+                                          "description":data["description"],
+                                          "price":double.parse(data["offerPrice"].toString()),
+                                          "totalPrice":double.parse(data["offerPrice"].toString()),
+                                          "quantity":counter,
+                                          "ColorId":SelectedColor,
+                                          "ProductSizeId":SizeValue,
+                                          "selectItem":1
                                         });
-                                        prefs.setString("total", ParentPage.total.toString());
-                                        prefs.setString("quantity", ParentPage.quantity.toString());
-                                        print("en tyy");
-                                        /*    addProductDialog(context,"Product  Added To Shopping Cart", Container(
-                                        padding: EdgeInsets.only(top: 13),
-                                        child: Icon(Icons.check_circle,size: 50,color: Color(h.mainColor),),
-                                      ),);*/
-                                        Timer(Duration(seconds: 2), (){
-                                          Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
-                                          // Phoenix.rebirth(context);
-                                        });
-                                      }
-                                      catch(e)
-                                      {
-                                        print('${e},,,,,,errorro addd');
-                                        addProductDialog(context,"Product Has Been Added Before ", Container(
+                                        try
+                                        {
+                                          await dbHelper.addToCart(p1);
+                                          SharedPreferences prefs=await SharedPreferences.getInstance();
+                                          setState((){
+                                            ParentPage.counter=ParentPage.counter+1;
+                                            ParentPage.total=ParentPage.total+(double.parse(data["offerPrice"].toString())*counter);
+                                            ParentPage.quantity= ParentPage.quantity+counter;
+                                          });
+                                          prefs.setString("total", ParentPage.total.toString());
+                                          prefs.setString("quantity", ParentPage.quantity.toString());
+                                          print("en tyy");
+                                          /*    addProductDialog(context,"Product  Added To Shopping Cart", Container(
                                           padding: EdgeInsets.only(top: 13),
-                                          child: Icon(Icons.error,size: 50,color: Color(h.mainColor),),
-                                        ),);
-                                        Timer(Duration(seconds: 2), (){
-                                          Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);
-                                          // Phoenix.rebirth(context);
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  SizedBox(height: 20,)
-                                ],
+                                          child: Icon(Icons.check_circle,size: 50,color: Color(h.mainColor),),
+                                        ),);*/
+                                          Timer(Duration(seconds: 2), (){
+                                            Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);;
+                                            // Phoenix.rebirth(context);
+                                          });
+                                        }
+                                        catch(e)
+                                        {
+                                          print('${e},,,,,,errorro addd');
+                                          addProductDialog(context,"Product Has Been Added Before ", Container(
+                                            padding: EdgeInsets.only(top: 13),
+                                            child: Icon(Icons.error,size: 50,color: Color(h.mainColor),),
+                                          ),);
+                                          Timer(Duration(seconds: 2), (){
+                                            Navigator.pushNamedAndRemoveUntil(context, "/Cart", (route) => false);
+                                            // Phoenix.rebirth(context);
+                                          });
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(height: 15,)
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        )
                       ],
                     ),
 
@@ -1855,7 +2059,19 @@ class  _state extends State<ProductDetails>{
                                     )
                                   ],
                                 ),
-
+                                SizedBox(height: MediaQuery.of(context).size.height*.025,),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        width: MediaQuery.of(context).size.width*.7,
+                                        child:Text(description,style: TextStyle(fontSize: 10,color: Colors.black54),maxLines: 3,)
+                                    ),
+                                    Text(price+"  "+DemoLocalizations.of(context).title["le"],style: TextStyle(color: Color(h.mainColor)),)
+                                  ],
+                                ),
+                                SizedBox(height: MediaQuery.of(context).size.height*.025,),
 
                                 /* SizedBox(height: MediaQuery.of(context).size.height*.01,),
                           ClipRRect(

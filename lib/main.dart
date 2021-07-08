@@ -121,19 +121,19 @@ class _State extends State<ParentPage>
   String _tokenAccess='';
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =new  FlutterLocalNotificationsPlugin();
 
-  //final FirebaseMessaging _firebaseMessaging =new  FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging =new  FirebaseMessaging();
 
-  /* _register()async {
+_register()async {
     await _firebaseMessaging.getToken().then((token){
       SharedPreferences.getInstance().then((shared){
-        shared.setString('token', token);
+        shared.setString('device_token', token);
       });
 
-      print('${token},,,,,,toookkk');
+      print('${token},,,,,,toookkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
     });
     print("_____________________________________________________________________________________________________________");
-  }*/
- /* void getMessage()async{
+  }
+ void getMessage()async{
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
           showNotificationsFunc(message);
@@ -152,10 +152,10 @@ class _State extends State<ParentPage>
   {
     var android = AndroidNotificationDetails('channel_id', 'CHANNEL_NAME', 'channelDescription');
     var ios = IOSNotificationDetails();
-    var platform = new NotificationDetails();
+    var platform = new NotificationDetails(android,ios);
     await flutterLocalNotificationsPlugin.show(0, message['notification']['title'].toString(),
         message['notification']['body'].toString(), platform);
-  }*/
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -163,10 +163,10 @@ class _State extends State<ParentPage>
     super.initState();
     var android = new AndroidInitializationSettings('mipmap/launcher_icon');
     var ios = IOSInitializationSettings();
-    var platform = InitializationSettings();
+    var platform = InitializationSettings(android,ios);
     flutterLocalNotificationsPlugin.initialize(platform);
-   // getMessage();
-    //_register();
+   getMessage();
+     _register();
     loadData();
   }
   @override

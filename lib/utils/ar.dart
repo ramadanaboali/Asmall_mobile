@@ -20,7 +20,7 @@ class AR {
     "Email":"الايميل",
     "EnterYourPassword":"ادخل كلمة المرور",
     "Password":"كلمة المرور",
-    "DontHaveACount":"ليس لديك حساب",
+    "DontHaveACount":"ليس لديك حساب ؟",
     "SignUp":"اشتراك",
     "ForgetPassword":"هل نسيت كلمة المرور ؟",
     "noReviews":"لا يوجد اي تقيمات لهذا المنتج",
@@ -110,6 +110,12 @@ class AR {
     "confrim":"تأكيد",
     "question":"اسئلة",
     "seeAll":"مشاهد المزيد",
-    "reviews":"اراء العملاء"
+    "reviews":"اراء العملاء",
+    "selectall":"تحديد كل العناصر",
+    "unselectall":"الغاء تحديد كل العناصر",
+    "MoreDetails":"مزيد من التفاصيل",
+    "colors":"الالوان",
+    "specification":"الخصائص",
+    "SellerRecommendations":"توصيات البائع"
   };
 }

@@ -14,12 +14,13 @@ import 'package:toast/toast.dart';
 class UserServices{
   String baseURL=GlobalVariable.URl;
 
-  Future<Map<String,dynamic>>login(String lang,String email,String password)async{
+  Future<Map<String,dynamic>>login(String lang,String email,String password,String deviceToken)async{
     String url=baseURL+"api/people/login";
     print(url);
     var body={
       "EMAIL" : email,
       "PASSWORD" : password,
+      "deviceToken":deviceToken
     };
     print(body);
     var header={
@@ -124,14 +125,15 @@ class UserServices{
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>registerServices(var lang,var name,var email,var password, var phone)async{
+  Future<Map<String,dynamic>>registerServices(var lang,var name,var email,var password, var phone,String deviceToken)async{
     String url=baseURL+"api/people/register";
     var body={
       "Email":email,
       "Name":name,
       "Phone":phone,
       "Password":password,
-      "confirmPassword":password
+      "confirmPassword":password,
+      "deviceToken":deviceToken
     };
 /*    var body2={
       "Email":email,
