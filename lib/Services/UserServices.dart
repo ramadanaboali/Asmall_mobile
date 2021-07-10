@@ -29,7 +29,7 @@ class UserServices{
     };
     print(header);
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
       if(responce.body.isNotEmpty)
@@ -55,7 +55,7 @@ class UserServices{
       "lang":lang
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
       if(responce.body.isNotEmpty)
@@ -86,7 +86,7 @@ class UserServices{
       "lang":"en"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
       if(responce.body.isNotEmpty)
@@ -111,7 +111,7 @@ class UserServices{
     };
     print(header);
     try{
-      final responce=await http.get(url,headers: header);
+      final responce=await http.get(Uri.parse(url),headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
       if(responce.body.isNotEmpty)
@@ -148,7 +148,7 @@ class UserServices{
     print(header);
     print(url);
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       print(responce.body);
       print("00000000000000000000000000000000000000000000000");
       if(responce.statusCode==200 && responce.body.isNotEmpty){
@@ -176,7 +176,7 @@ class UserServices{
     };
     // print('$header,,,,sssssssssssss,,,headeeeeeeeeeeer');
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         print(responce.body);
@@ -201,7 +201,7 @@ class UserServices{
       "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         // print(responce.body);
@@ -225,7 +225,7 @@ class UserServices{
       "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         // print(responce.body);
@@ -253,7 +253,7 @@ class UserServices{
       "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         print(responce.body);
@@ -280,7 +280,7 @@ class UserServices{
       "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         print(responce.body);
@@ -304,7 +304,7 @@ class UserServices{
       "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         // print(json.decode(responce.body)["Message"]);
@@ -331,7 +331,7 @@ class UserServices{
       "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         // print(responce.body);
@@ -377,12 +377,11 @@ class UserServices{
         Dio dio = Dio();
         ///we used uri.encode to enable upload  image with arabic name
         // var url =Uri.encodeFull(createPath('user/editProfileImage'));
-        var url = "${GlobalVariable.URl}/api/home/edit-profile-photo";
+        var url = "${GlobalVariable.URl}api/home/edit-profile-photo";
         print(url);
         String fileName = basename(fileImage.path);
         // print('${fileName},,,,fileName');
         //print('${pathImage.path},,,,imagePath.path');
-
         FormData formData = FormData.fromMap({
           "File": await MultipartFile.fromFile(
               fileImage.path, filename: fileName
@@ -395,7 +394,7 @@ class UserServices{
         print("ssssssssssssssssss");
         Response response = await dio.post(url, data: formData);
         print('${response.data},,,,,,,,fields');
-        print("ddddddddddddddddd");
+        print("dddddddddddddddddddddddddddddddddddddddddddddddddddddd");
         if (response.statusCode == 200) {
           Toast.show(
               "  تم تغير صورة الملف الشخصي ", context,
@@ -419,7 +418,7 @@ class UserServices{
     print(url);
     try
     {
-      final response = await http.get(url);
+      final response = await http.get(Uri.parse(url));
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {

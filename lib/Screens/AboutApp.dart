@@ -35,7 +35,9 @@ class _state extends State<AboutApp>{
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: data==null?Container(
+            height: MediaQuery.of(context).size.height*.9,
+            child: Center(child: CircularProgressIndicator(),)):Container(
           child: Column(
             children: [
               CustomAppBar("عن التطبيق"),

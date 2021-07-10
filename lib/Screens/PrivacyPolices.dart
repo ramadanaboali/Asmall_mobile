@@ -1,4 +1,5 @@
 import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,7 @@ class _state extends State<PrivacyPolices>{
       body: Container(
         child: Column(
           children: [
-            CustomAppBar("سياسة الخصوصية"),
+            CustomAppBar(DemoLocalizations.of(context).title["privacyPolices"]),
             SizedBox(height: MediaQuery.of(context).size.height*.02,),
             Image.asset("images/logo.png",
             width: MediaQuery.of(context).size.width*.55,

@@ -464,6 +464,7 @@ class _state extends State<Profile>{
                      SharedPreferences pref=await SharedPreferences.getInstance();
                      userServices.editProfile(user_id, name.text, email.text, phone.text,gender,null);
                      pref.setString("date", finaldate);
+                     Navigator.pop(context);
                    },
                    child: Container(
                      width: MediaQuery.of(context).size.width*.9,
@@ -498,12 +499,12 @@ class _state extends State<Profile>{
   }
   File selectedImage;
   pickImage(BuildContext context ) async {
-    var profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    ImagePicker picker =new ImagePicker();
+    var profileImage = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      selectedImage = profileImage;
+     // selectedImage = profileImage;
     });
   UserServices.updateAvatar(selectedImage, context, user_id);
-
   }
 
   setData(var key,var value) async {

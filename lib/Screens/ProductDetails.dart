@@ -906,7 +906,7 @@ class  _state extends State<ProductDetails>{
                            );
                          }),
                        ),
-                       questions.length==0? SizedBox():GestureDetector(
+                       GestureDetector(
                          onTap: (){
                            Navigator.push(context, GlobalFunction.route(ProductQuestion(data["id"],this.name)));
                          },
@@ -916,8 +916,8 @@ class  _state extends State<ProductDetails>{
                            child: Row(
                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                              children: [
-                               Text(DemoLocalizations.of(context).title["question"],style: TextStyle(color: Colors.black54,fontSize: 16,fontWeight: FontWeight.bold),),
-                               Text(DemoLocalizations.of(context).title["seeAll"],style: TextStyle(color: Colors.black54,fontSize: 13,fontWeight: FontWeight.bold),)
+                               Text(DemoLocalizations.of(context).title["question"],style: TextStyle(color: Color(h.mainColor),fontSize: 16,fontWeight: FontWeight.bold),),
+                               Text(questions.length==0?DemoLocalizations.of(context).title["addQuestion"]:DemoLocalizations.of(context).title["seeAll"],style: TextStyle(color: Colors.black54,fontSize: 13,fontWeight: FontWeight.bold),)
                              ],
                            ),
                          ),
@@ -2338,9 +2338,10 @@ class  _state extends State<ProductDetails>{
   }
   File selectedImage;
   pickImage(BuildContext context ) async {
-    var profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    ImagePicker picker =new ImagePicker();
+    var profileImage = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      selectedImage = profileImage;
+   //   selectedImage = profileImage;
     });
 
   }

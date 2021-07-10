@@ -116,7 +116,8 @@ class EN {
     "MoreDetails":"More Details",
     "colors":"Colors",
     "specification":"Specification",
-    "SellerRecommendations":"Seller Recommendations"
+    "SellerRecommendations":"Seller Recommendations",
+    "addQuestion":"Add Question"
 
   };
 }

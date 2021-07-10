@@ -116,6 +116,7 @@ class AR {
     "MoreDetails":"مزيد من التفاصيل",
     "colors":"الالوان",
     "specification":"الخصائص",
-    "SellerRecommendations":"توصيات البائع"
+    "SellerRecommendations":"توصيات البائع",
+    "addQuestion":"اضف سؤال"
   };
 }

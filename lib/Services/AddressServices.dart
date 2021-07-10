@@ -18,7 +18,7 @@ class AddressServices{
     print(header);
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
@@ -48,7 +48,7 @@ class AddressServices{
       "lang":lang
     };
     try{
-      final responce=await http.post(url,body:json.encode(body),headers: header);
+      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
       if(responce.body.isNotEmpty)
@@ -70,7 +70,7 @@ class AddressServices{
     };
     print(header);
     try{
-      final responce=await http.delete(url,headers: header);
+      final responce=await http.delete(Uri.parse(url),headers: header);
       print(responce.body);
       print("*********************************************");
       if(responce.body.isNotEmpty)
@@ -91,7 +91,7 @@ class AddressServices{
       "lang":lang
     };
     try{
-      final responce=await http.get(url,headers: header);
+      final responce=await http.get(Uri.parse(url),headers: header);
       if(responce.body.isNotEmpty)
       {
         print(responce.body);
@@ -109,7 +109,7 @@ class AddressServices{
     print(url);
     try
     {
-      final response = await http.get(url);
+      final response = await http.get(Uri.parse(url));
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {
@@ -128,7 +128,7 @@ class AddressServices{
     print(url);
     try
     {
-      final response = await http.get(url);
+      final response = await http.get(Uri.parse(url));
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {

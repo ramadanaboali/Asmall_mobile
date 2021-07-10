@@ -36,7 +36,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
@@ -58,7 +58,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["orders"];
@@ -81,7 +81,7 @@ class ProductServices{
     print(header);
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
@@ -103,7 +103,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
@@ -125,7 +125,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
@@ -147,7 +147,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         return json.decode(utf8.decode(response.bodyBytes))["product"];
@@ -168,7 +168,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["colorDtos"];
@@ -190,7 +190,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["sidesDtos"];
@@ -212,7 +212,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["product"]["productSizeDtos"];
@@ -245,7 +245,7 @@ class ProductServices{
     try
     {
       print("kkkk22");
-      final response = await http.post(url,body:json.encode(body),headers: header);
+      final response = await http.post(Uri.parse(url),body:json.encode(body),headers: header);
 
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
@@ -269,7 +269,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
@@ -291,7 +291,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
@@ -313,7 +313,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
@@ -334,7 +334,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["products"];
@@ -355,7 +355,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["searchResult"];
@@ -378,7 +378,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {
@@ -402,7 +402,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {
@@ -426,7 +426,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {
@@ -456,7 +456,7 @@ class ProductServices{
     try
     {
       print("kkkk22");
-      final response = await http.post(url,body:json.encode(body),headers: header);
+      final response = await http.post(Uri.parse(url),body:json.encode(body),headers: header);
 
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
@@ -488,7 +488,7 @@ class ProductServices{
     try
     {
       print("kkkk22");
-      final response = await http.post(url,body:json.encode(body),headers: header);
+      final response = await http.post(Uri.parse(url),body:json.encode(body),headers: header);
 
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
@@ -519,7 +519,7 @@ class ProductServices{
     try
     {
       print("kkkk22");
-      final response = await http.post(url,body:json.encode(body),headers: header);
+      final response = await http.post(Uri.parse(url),body:json.encode(body),headers: header);
 
       print(response.body);
       print("88888888888888888888888888888888888888888");
@@ -541,7 +541,7 @@ class ProductServices{
       "lang":lang
     };
     try{
-      final responce=await http.get(url,headers: header);
+      final responce=await http.get(Uri.parse(url),headers: header);
       if(responce.body.isNotEmpty)
       {
         print(responce.body);
@@ -560,7 +560,7 @@ class ProductServices{
       "lang":lang
     };
     try{
-      final responce=await http.get(url,headers: header);
+      final responce=await http.get(Uri.parse(url),headers: header);
       if(responce.body.isNotEmpty)
       {
         print(responce.body);
@@ -581,7 +581,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["allProducts"];
@@ -602,7 +602,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["lastAdded"];
@@ -624,7 +624,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       if(response.statusCode==200 && response.body!=null)
       {
@@ -646,7 +646,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["vendorGallaryDtos"];
@@ -667,7 +667,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"]["subCategoryVMs"];
@@ -688,7 +688,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
       if(response.statusCode==200 && response.body!=null)
@@ -711,7 +711,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
       if(response.statusCode==200 && response.body!=null)
@@ -733,7 +733,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
       if(response.statusCode==200 && response.body!=null)
@@ -763,7 +763,7 @@ class ProductServices{
     print(body);
     try
     {
-      final response = await http.post(url,body:json.encode(body),headers: header);
+      final response = await http.post(Uri.parse(url),body:json.encode(body),headers: header);
       print(response.body);
       if(response.body!=null)
       {
@@ -786,7 +786,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       print(response.body);
       if(response.body!=null)
       {
@@ -808,7 +808,7 @@ class ProductServices{
     };
     try
     {
-      final response = await http.delete(url,headers: header);
+      final response = await http.delete(Uri.parse(url),headers: header);
       print(response.body);
       if(response.body!=null)
       {
@@ -840,7 +840,7 @@ class ProductServices{
     try
     {
       print("kkkk22");
-      final response = await http.post(url,body:json.encode(body),headers: header);
+      final response = await http.post(Uri.parse(url),body:json.encode(body),headers: header);
 
       print(response.body);
       if(response.body!=null)

@@ -2,6 +2,7 @@ import 'package:ashmall/Screens/ChooseAddress.dart';
 import 'package:ashmall/Screens/ConfirmOrder.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Screens/Orders.dart';
+import 'package:ashmall/Screens/ProductDetails.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/Services/ProductServices.dart';
 import 'package:ashmall/utils/app_Localization.dart';
@@ -104,6 +105,10 @@ class _state extends State<Cart> {
                 GestureDetector(
                   onTap: ()async{
                      SharedPreferences pref=await SharedPreferences.getInstance();
+                     dataLocal=await db.allProduct();
+                     dataLocal1=await db.allProduct2(1);
+                     setState(() {
+                     });
                      if(dataLocal.length==dataLocal1.length){
                        for(int i=0;i<dataLocal.length;i++){
                         CartMedelLocal c=new CartMedelLocal.fromMap(dataLocal[i]);
@@ -116,6 +121,8 @@ class _state extends State<Cart> {
                           'quantity': c.quantity,
                           "selectItem":0
                         });
+                        print(c.quantity);
+                        print("00000000000000000000000000000000000000000000000000000000000000");
                         setState(() {
                           db.updateCourse(cartLDBModel);
                           ParentPage.quantity=ParentPage.quantity-c.quantity;
@@ -138,7 +145,7 @@ class _state extends State<Cart> {
                            'quantity': c.quantity,
                            "selectItem":1
                          });
-                         setState(() {
+                         setState((){
                            db.updateCourse(cartLDBModel);
                            ParentPage.quantity=ParentPage.quantity+c.quantity;
                            ParentPage.total=ParentPage.total+(c.price*c.quantity);
@@ -153,25 +160,26 @@ class _state extends State<Cart> {
                       height: MediaQuery.of(context).size.height*.05,
                       width: MediaQuery.of(context).size.width*.9,
                       decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10))
                       ),
                       padding: EdgeInsets.only(
-                        left:MediaQuery.of(context).size.width*.05,
-                        right: MediaQuery.of(context).size.width*.05,
+                        //left:MediaQuery.of(context).size.width*.05,
+                      //  right: MediaQuery.of(context).size.width*.05,
                       ),
                       child:Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(dataLocal.length==dataLocal1.length?DemoLocalizations.of(context).title["unselectall"]:DemoLocalizations.of(context).title["selectall"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
+                          Text(dataLocal.length==dataLocal1.length?DemoLocalizations.of(context).title["unselectall"]:DemoLocalizations.of(context).title["selectall"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
                           dataLocal.length==dataLocal1.length?
                           Container(
                             height: 25,width: 25,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(100)),
-                                color: Colors.white
+                                color: Colors.white,
+                              border: Border.all(color: Colors.red,width: 1)
                             ),
-                          ):Icon(Icons.check_circle,color: Colors.white)
+                          ):Icon(Icons.check_circle,color: Colors.red)
                         ],
                       )
                   ),
@@ -235,6 +243,7 @@ class _state extends State<Cart> {
                                 else{
                                  // Navigator.push(context, GlobalFunction.route(Login("buy")));
                                 }
+                                Navigator.push(context, GlobalFunction.route(ProductDetails(c.id,c.name)));
                               },
                               child: Container(
                                 padding: EdgeInsets.only(

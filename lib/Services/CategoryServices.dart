@@ -17,7 +17,7 @@ class CategoryServices{
     print(header);
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["categories"];
@@ -39,7 +39,7 @@ class CategoryServices{
     print(header);
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["subCategories"];
@@ -60,7 +60,7 @@ class CategoryServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["subCategories"];
@@ -81,7 +81,7 @@ class CategoryServices{
     };
     try
     {
-      final response = await http.get(url,headers: header);
+      final response = await http.get(Uri.parse(url),headers: header);
       if(response.statusCode==200 && response.body!=null)
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["brands"];
