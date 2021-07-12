@@ -329,7 +329,7 @@ class _state extends State<MainPage>{
                   ],
                 ),
                 adv?Container(
-                  height: MediaQuery.of(context).size.height*.15,
+                  height: MediaQuery.of(context).size.height*.18,
                   width: MediaQuery.of(context).size.width*.9 ,
                   color: Colors.white,
                   child:  new Swiper(

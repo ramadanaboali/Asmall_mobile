@@ -42,14 +42,15 @@ class UserServices{
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>resetPassword(String lang,String email,String password)async{
+  Future<Map<String,dynamic>>resetPassword(String lang,String email,String password,var confirmPassword)async{
     String url=baseURL+"api/people/reset";
     print(url);
     var body={
       "newPassword" : password,
-      "confirmPassword" : password,
+      "confirmPassword" : confirmPassword,
       "Email":email
     };
+    print(body);
     var header={
       "Content-Type":"application/json",
       "lang":lang
@@ -189,19 +190,21 @@ class UserServices{
       print(e.toString());
     }
   }
-
-  Future<Map<String,dynamic>>forgetPassword(var user)async{
-    String url="$baseURL/API/en/userForgetPassword/sendCode";
+  Future<Map<String,dynamic>>forgetPassword(var user,var lang)async{
+    String url=baseURL+"API/people/forgot?lang=$lang";
+    print(url);
     var body={
-      "username":user
+      "Email":user
     };
     //print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
+
     var header={
       "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
       final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
+      print(responce.body);
+      print("00000000000000000000000000000000000000000000000000000000000000000000000000000");
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         // print(responce.body);
@@ -213,24 +216,28 @@ class UserServices{
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>checkCodeForgetPassword(var phone,var code)async{
-    String url="$baseURL/API/en/userForgetPassword/checkCode";
+  Future<Map<String,dynamic>>checkCodeForgetPassword(var email,var code,var lang)async{
+    String url=baseURL+"API/people/confirm-verification-code?lang=$lang";
+    print(url);
     var body={
-      "phone":phone,
-      "activecode":code
+      "Email":email,
+      "Code":code
     };
+    print(body);
     // print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
     var header={
       "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
     };
     try{
       final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
+      print(responce.body);
+      print("00000000000000000000000000000000000000000000000000000000000000000000000000000000");
       if(responce.statusCode==200 && responce.body.isNotEmpty)
       {
         // print(responce.body);
         return json.decode(responce.body);
       }
+      return json.decode(responce.body);
 
     }
     catch(e) {

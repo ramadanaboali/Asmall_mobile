@@ -86,7 +86,7 @@ loadData()async{
        _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
        _chewieController = ChewieController(
            videoPlayerController: _videoPlayerController1,
-           autoPlay: true,
+           autoPlay: false,
            aspectRatio: 3.8 / 3,
            allowPlaybackSpeedChanging: false,
            autoInitialize: true,
@@ -261,7 +261,7 @@ loadData()async{
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText.CustomText10(data[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
-                                  SizedBox(width: 7,),
+                                  SizedBox(width: 4,),
                                   Container(
                                     height: 7,
                                     padding: EdgeInsets.only(
@@ -371,7 +371,7 @@ loadData()async{
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   CustomText.CustomText10(lastAdded[index].offerPrice.toString()+"  "+DemoLocalizations.of(context).title["le"]),
-                                  SizedBox(width: 7,),
+                                  SizedBox(width: 4,),
                                   Container(
                                     height: 7,
                                     padding: EdgeInsets.only(
@@ -553,8 +553,8 @@ loadData()async{
                      ),
                      GestureDetector(
                        onTap: (){
-                         // _chewieController.dispose();
-                        // _videoPlayerController1.dispose();
+                          _chewieController.dispose();
+                         _videoPlayerController1.dispose();
                          setState(() {
                            indexContent=1;
                          });
@@ -576,8 +576,8 @@ loadData()async{
                      ),
                      GestureDetector(
                        onTap: (){
-                        // _chewieController.dispose();
-                        // _videoPlayerController1.dispose();
+                        _chewieController.dispose();
+                         _videoPlayerController1.dispose();
                          setState(() {
                            indexContent=2;
                          });

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ashmall/Screens/CustomAppBar.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,19 +17,29 @@ class _state extends State<VerificationDone>{
   home h=new home();
   @override
   Widget build(BuildContext context) {
-/*    Timer(Duration(seconds: 5), (){
+    Timer(Duration(seconds: 5), (){
       Navigator.of(context)
-          .pushNamedAndRemoveUntil('/login',
+          .pushNamedAndRemoveUntil('/loginHome',
               (Route<dynamic> route) => false);
       // Phoenix.rebirth(context);
-    });*/
+    });
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black26,
+          title: Text(DemoLocalizations.of(context).title["verification"],style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.bold),),
+          elevation: 0,
+          leading: GestureDetector(child: Icon(Icons.arrow_back),onTap: (){Navigator.pop(context);},),
+          //  actions: [Icon(Icons.arrow_back)],
+          iconTheme: IconThemeData(
+              color: Colors.black
+          ),
+        ),
         body: Container(
           height:MediaQuery.of(context).size.height,
           child: Column(
             children: [
-              CustomAppBar("Verification"),
+              //CustomAppBar("Verification"),
               Expanded(child: Center(
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.center,

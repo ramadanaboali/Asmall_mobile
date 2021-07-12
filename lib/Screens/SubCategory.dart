@@ -25,7 +25,7 @@ class _state extends State<SubCategory>{
   CategoryServices categoryServices=new CategoryServices();
   loadData()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
-    subCategories=await categoryServices.getAllSubCategory("en");
+    subCategories=await categoryServices.getAllSubCategory(prefs.getString("lang"));
     setState(() {
 
     });

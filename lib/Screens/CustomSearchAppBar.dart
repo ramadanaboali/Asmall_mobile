@@ -25,12 +25,13 @@ class CustomSearchAppBar extends StatelessWidget{
              mainAxisAlignment: MainAxisAlignment.spaceBetween,
              children: [
                GestureDetector(child: Icon(Icons.arrow_back),onTap: (){Navigator.pop(context);},),
+               SizedBox(width: MediaQuery.of(context).size.width*.01,),
                GestureDetector(
                    onTap: (){
                      Navigator.pushNamed(context, "/Search");
                    },
                  child: Container(
-                   width: MediaQuery.of(context).size.width*.65,
+                   width: MediaQuery.of(context).size.width*.6,
                    height: MediaQuery.of(context).size.height*.05,
                    decoration: BoxDecoration(
                      borderRadius:BorderRadius.all(Radius.circular(30)),
@@ -84,7 +85,7 @@ class CustomSearchAppBar extends StatelessWidget{
                    ),
                  ),
                ),
-               SizedBox(width: MediaQuery.of(context).size.width*.0,),
+               Expanded(child: Container(),),
                GestureDetector(
                  onTap: (){
                    Navigator.push(context, GlobalFunction.routeBottom(HomePage(2)));
@@ -111,7 +112,8 @@ class CustomSearchAppBar extends StatelessWidget{
                    menu(context);
                  },
                  child: Container(
-                   padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+                   padding: EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 15),
+                   //color: Colors.red,
                    child: Column(
                      children: [
                        Container(

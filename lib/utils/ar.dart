@@ -16,7 +16,7 @@ class AR {
     "NoItemsInYourCart":"لا يوجد عناصر في سلة المشتريات لديك",
     "ShppingNow":"تسوق الان",
     "login":"تسجيل الدخول",
-    "EnterYourEmail":"ادخل الايميل ",
+    "EnterYourEmail":"ادخل البريد الاليكتروني ",
     "Email":"الايميل",
     "EnterYourPassword":"ادخل كلمة المرور",
     "Password":"كلمة المرور",
@@ -117,6 +117,10 @@ class AR {
     "colors":"الالوان",
     "specification":"الخصائص",
     "SellerRecommendations":"توصيات البائع",
-    "addQuestion":"اضف سؤال"
+    "addQuestion":"اضف سؤال",
+    "forgetPassword":"نسيت كلمة المرور",
+    "verification":"كود التفعيل",
+    "resetPassword":"اعادة تعين كلمة المرور",
+    "entercode":"ادخل الكود الذي تم ارساله الي :"
   };
 }

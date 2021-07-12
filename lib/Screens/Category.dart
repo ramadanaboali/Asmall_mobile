@@ -68,6 +68,10 @@ getSubCat(String id)async{
                       color: Colors.white,
                       child: ListView.builder(
                         itemCount: Category.length,
+                          padding: EdgeInsets.only(
+                            bottom: 20,
+                            top: 10
+                          ),
                           itemBuilder: (context,index){
                             return GestureDetector(
                               onTap: (){
@@ -92,7 +96,7 @@ getSubCat(String id)async{
                                           topLeft: Radius.circular(5),
                                           topRight: Radius.circular(5)
                                         ),
-                                        child: Image.network(GlobalVariable.URl+Category[index].photo,fit: BoxFit.cover,height: MediaQuery.of(context).size.height*.065,
+                                        child: Image.network(GlobalVariable.URl+Category[index].photo,fit: BoxFit.fill,height: MediaQuery.of(context).size.height*.065,
                                             width: MediaQuery.of(context).size.width*.25
                                         )),
                                     SizedBox(height: 1,),

@@ -514,11 +514,9 @@ class _state extends State<Profile>{
 }
 
 class CustomText{
-
   static Widget text12(String text){
     return Text(text,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold,color: Colors.black54),);
   }
-
   static Widget text12Bold(String text,Color color){
     return Text(text,style: TextStyle(height: 1.3,fontSize: 12,fontWeight: FontWeight.bold,color: color));
   }
@@ -528,6 +526,5 @@ class CustomText{
   static Widget titleTextColor(String text,Color color){
     return Text(text,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: color),);
   }
-
   }
 

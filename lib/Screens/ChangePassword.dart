@@ -209,7 +209,7 @@ class _state extends State<ChangePassword>{
                        onTap: ()async{
                          if(formKey.currentState.validate()){
                            SharedPreferences prefs=await SharedPreferences.getInstance();
-                           Map<String,dynamic>data=await userServices.resetPassword(prefs.getString("lang"), this.email, password.text);
+                           Map<String,dynamic>data=await userServices.resetPassword(prefs.getString("lang"), this.email, password.text,newPassword2);
                            print(data);
                            print("sssssssssssssssssssss");
                   /*         Map<String,dynamic>data =await userServices.registerServices("en", name.text.trim(), email.text.trim(), password.text.trim(), phone.text.trim(), address.text.trim());

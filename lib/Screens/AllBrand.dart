@@ -25,7 +25,7 @@ class _state extends State<Bran>{
   CategoryServices categoryServices=new CategoryServices();
   loadData()async{
     SharedPreferences prefs=await SharedPreferences.getInstance();
-    subCategories=await categoryServices.getAllBrand("en");
+    subCategories=await categoryServices.getAllBrand(prefs.getString("lang"));
     setState(() {
 
     });

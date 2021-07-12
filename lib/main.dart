@@ -74,7 +74,9 @@ class home extends StatelessWidget {
         '/Orders':(BuildContext context)=>new Orders(),
         '/notification':(BuildContext context)=>new HomePage(1),
         '/Cart':(BuildContext context)=>new HomePage(2),
+        '/loginHome':(BuildContext context)=>new HomePage(3),
         '/MainProfile':(BuildContext context)=>new MainProfile(),
+        '/verificationDone':(BuildContext context)=>new VerificationDone(),
       },
       home: Splash(),
 

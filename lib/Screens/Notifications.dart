@@ -87,10 +87,16 @@ class _state extends State <Notifications>{
                                 color: Colors.white,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
+                                    color: Colors.grey.withOpacity(0.05),
                                     spreadRadius: 3,
                                     blurRadius: 3,
                                     offset: Offset(0, 3), // changes position of shadow
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.05),
+                                    spreadRadius: 3,
+                                    blurRadius: 3,
+                                    offset: Offset(3, 0), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -119,7 +125,7 @@ class _state extends State <Notifications>{
                                             color: Color(h.mainColor)
                                         ),
                                         padding: EdgeInsets.all(5),
-                                        child: Icon(Icons.notifications_none_outlined,color: Colors.white,size: 18,),
+                                        child: Icon(Icons.notifications_none_outlined,color: Colors.white,size: 30,),
                                       ),
                                       SizedBox(width: 10,),
                                       Column(

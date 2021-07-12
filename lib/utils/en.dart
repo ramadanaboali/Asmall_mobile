@@ -117,7 +117,11 @@ class EN {
     "colors":"Colors",
     "specification":"Specification",
     "SellerRecommendations":"Seller Recommendations",
-    "addQuestion":"Add Question"
+    "addQuestion":"Add Question",
+    "forgetPassword":"Forget Password",
+    "verification":"Verification",
+    "resetPassword":"Reset Password",
+    "entercode":"Enter Verification Code That Send To :"
 
   };
 }

@@ -55,7 +55,7 @@ class _state extends State<CustomAppBar>{
               onTap: (){
                 Navigator.pop(context);
               },
-              child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+              child: Icon(lang=="en"?Icons.arrow_back_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
           Text(this.Title,style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
           GestureDetector(
               onTap: (){
