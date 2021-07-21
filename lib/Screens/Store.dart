@@ -66,9 +66,9 @@ loadData()async{
 }
   VideoPlayerController _videoPlayerController1;
   ChewieController _chewieController;
+  int vedio;
 @override
-  void initState() {
-    // TODO: implement initState
+  void initState(){
     super.initState();
     loadData();
   }
@@ -81,23 +81,32 @@ loadData()async{
   }
   @override
   Widget build(BuildContext context) {
-   if(responce!=null){
-     if(responce["data"]["video"]!=null){
-       _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
-       _chewieController = ChewieController(
-           videoPlayerController: _videoPlayerController1,
-           autoPlay: false,
-           aspectRatio: 3.8 / 3,
-           allowPlaybackSpeedChanging: false,
-           autoInitialize: true,
-           isLive: false,
-           looping: false,
-           allowedScreenSleep: true
-       );
-     }
-   }
+    if(responce!=null){
+      if(responce["data"]["video"]!=null&&vedio!=1){
+        setState(() {
+          vedio=1;
+        });
+        _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
+        _chewieController = ChewieController(
+            videoPlayerController: _videoPlayerController1,
+            autoPlay: false,
+            aspectRatio: 3.8 / 3,
+            allowPlaybackSpeedChanging: false,
+            autoInitialize: true,
+            looping: false,
+            errorBuilder: (context, errorMessage){
+              return Center(
+                child: Text(errorMessage,
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            },
+            allowedScreenSleep: true
+        );
+      }
+    }
   List content=[
-    gallary==null?SizedBox(): Expanded(
+    gallary==null?SizedBox():Expanded(
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -174,7 +183,7 @@ loadData()async{
         ),
       ),
     ),
-    data==null?Expanded(child:Center(child: CircularProgressIndicator()),):
+    data==null?Expanded(child:Center(child: CircularProgressIndicator())):
     Expanded(child: GridView.builder(
       padding: EdgeInsets.only(
           left: MediaQuery.of(context).size.width*.05,
@@ -286,7 +295,7 @@ loadData()async{
           ),
         );
       },
-    ),),
+    )),
     lastAdded==null?Expanded(child:Center(child: CircularProgressIndicator()),):
     Expanded(child: GridView.builder(
       padding: EdgeInsets.only(
@@ -535,6 +544,19 @@ loadData()async{
                          setState(() {
                            indexContent=0;
                          });
+                         /*if(responce["data"]["video"]!=null){
+                           _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URL2+responce["data"]["video"]);
+                           _chewieController = ChewieController(
+                               videoPlayerController: _videoPlayerController1,
+                               autoPlay: false,
+                               aspectRatio: 3.8 / 3,
+                               allowPlaybackSpeedChanging: false,
+                               autoInitialize: true,
+                               isLive: false,
+                               looping: false,
+                               allowedScreenSleep: true
+                           );
+                         }*/
                        },
                        child: Container(
                          height: MediaQuery.of(context).size.height*.04,
@@ -553,8 +575,8 @@ loadData()async{
                      ),
                      GestureDetector(
                        onTap: (){
-                          _chewieController.dispose();
-                         _videoPlayerController1.dispose();
+                        //  _chewieController.dispose();
+                       //  _videoPlayerController1.dispose();
                          setState(() {
                            indexContent=1;
                          });
@@ -576,8 +598,8 @@ loadData()async{
                      ),
                      GestureDetector(
                        onTap: (){
-                        _chewieController.dispose();
-                         _videoPlayerController1.dispose();
+                    // _chewieController.dispose();
+                       //  _videoPlayerController1.dispose();
                          setState(() {
                            indexContent=2;
                          });

@@ -138,6 +138,7 @@ class _state extends State<OrderSuccess>{
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*.03,),
                 Text(DemoLocalizations.of(context).title["total"]+  " ${this.total}",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+                Text("+"+DemoLocalizations.of(context).title["ShippingExpenses"],style:TextStyle(fontSize: 25,fontWeight: FontWeight.bold) ,),
                 SizedBox(height: MediaQuery.of(context).size.height*.03,),
                 Container(
                   width: MediaQuery.of(context).size.width*.9,

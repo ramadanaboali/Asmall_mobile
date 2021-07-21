@@ -2189,7 +2189,7 @@ class  _state extends State<ProductDetails>{
                                     Navigator.push(context, GlobalFunction.route(BuyNow(data["name"], data["coverPhoto"], data["price"].toString(), data["id"], SelectedColor, SizeValue,counter)));
                                   },
                                 ),
-                                SizedBox(height: 20,)
+                                SizedBox(height: 10,)
                               ],
                             ),
                           ),
@@ -2394,7 +2394,6 @@ class  _state extends State<ProductDetails>{
                 ),
               ],
             )
-
           ),
         ));
   }

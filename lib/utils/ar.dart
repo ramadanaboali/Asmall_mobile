@@ -121,6 +121,8 @@ class AR {
     "forgetPassword":"نسيت كلمة المرور",
     "verification":"كود التفعيل",
     "resetPassword":"اعادة تعين كلمة المرور",
-    "entercode":"ادخل الكود الذي تم ارساله الي :"
+    "entercode":"ادخل الكود الذي تم ارساله الي :",
+    "ShippingExpenses":"مصاريف الشحن",
+    "nonotification":"لا يوجد اشعارات لك"
   };
 }

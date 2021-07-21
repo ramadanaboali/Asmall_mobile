@@ -121,7 +121,9 @@ class EN {
     "forgetPassword":"Forget Password",
     "verification":"Verification",
     "resetPassword":"Reset Password",
-    "entercode":"Enter Verification Code That Send To :"
+    "entercode":"Enter Verification Code That Send To :",
+    "ShippingExpenses":"Shipping expenses",
+    "nonotification":"No Notification For You"
 
   };
 }

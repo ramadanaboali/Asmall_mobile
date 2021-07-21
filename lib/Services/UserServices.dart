@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:ashmall/Model/CityModel.dart';
 import 'package:ashmall/Model/FollowerModel.dart';
+import 'package:ashmall/Model/NotificationModel.dart';
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -431,6 +432,25 @@ class UserServices{
       {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
         return slideritems.map((e) => FollowerDetail.fromJson(e)).toList();
+      }
+    }
+    catch(e)
+    {
+      print('$e,,,,error search doctors');
+    }
+  }
+  Future<List<NotificationDetail>>GetNotification(var id)async
+  {
+    var url="${baseURL}api/notifications/get-all-notifications?userId=$id";
+    print(url);
+    try
+    {
+      final response = await http.get(Uri.parse(url));
+      print(response.body);
+      if(response.statusCode==200 && response.body!=null)
+      {
+        List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
+        return slideritems.map((e) => NotificationDetail.fromJson(e)).toList();
       }
     }
     catch(e)

@@ -1,3 +1,5 @@
+import 'package:ashmall/Model/NotificationModel.dart';
+import 'package:ashmall/Services/UserServices.dart';
 import 'package:ashmall/utils/app_Localization.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'CustomAppBar.dart';
 import '../main.dart';
-
-
 class Notifications extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -15,15 +15,28 @@ class Notifications extends StatefulWidget{
 }
 class _state extends State <Notifications>{
   home h=new home();
+  List<NotificationDetail>data;
+  UserServices userServices=new UserServices();
   var lang;
   loadData()async{
+
     SharedPreferences prefs=await SharedPreferences.getInstance();
-    setState(() {
-      lang=prefs.getString("lang");
-    });
+    if(prefs.getString("id")==null){
+      setState(() {
+        data=[];
+      });
+    }else{
+      data=await userServices.GetNotification(prefs.getString("id"));
+      setState(() {
+        lang=prefs.getString("lang");
+      });
+    }
+
+    print(data.length);
+    print("00000000000000000000000000000000000000000000000000000000000000000000000000000000");
   }
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     loadData();
@@ -66,7 +79,18 @@ class _state extends State <Notifications>{
                   ),
                 ),
 
-                Expanded(
+               data==null?Expanded(child: Center(child: CircularProgressIndicator(),),):data.length==0?Expanded(
+                 child: Center(
+                   child: Column(
+                     children: [
+                       SizedBox(height: MediaQuery.of(context).size.height*.2,),
+                       Icon(Icons.notifications_off,color: Colors.black54,size: 170,),
+                       SizedBox(height: 5,),
+                       Text(DemoLocalizations.of(context).title["nonotification"],style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold,fontSize: 20),)
+                     ],
+                   ),
+                 ),
+               ): Expanded(
                   child: Container(
                       padding: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width*.035,
@@ -75,7 +99,7 @@ class _state extends State <Notifications>{
                       ),
                       //height: MediaQuery.of(context).size.height*.8,
                       child: ListView.builder(
-                          itemCount: 20,
+                          itemCount: data.length,
                           itemBuilder: (context,index){
                             return Container(
                               margin: EdgeInsets.only(
@@ -113,7 +137,7 @@ class _state extends State <Notifications>{
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
-                                        Text("20-10-2020   02:50 AM",style: TextStyle(color: Colors.black45,height: .99,fontSize: 9),),
+                                        Text("${data[index].createdAt.toString().substring(0,16)}",style: TextStyle(color: Colors.black45,height: .99,fontSize: 9),),
                                       ],
                                     )
                                   ),
@@ -131,8 +155,8 @@ class _state extends State <Notifications>{
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("Notification Title",style: TextStyle(fontSize: 12,color: Colors.black54),),
-                                          Text("one line description of notifiction",style: TextStyle(fontSize: 10,color: Colors.black54),),
+                                          Text(data[index].title,style: TextStyle(fontSize: 12,color: Colors.black54),),
+                                          //Text("one line description of notifiction",style: TextStyle(fontSize: 10,color: Colors.black54),),
                                         ],
                                       )
                                     ],

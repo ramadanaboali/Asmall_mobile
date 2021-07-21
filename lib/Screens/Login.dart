@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ashmall/Services/GlobalVarible.dart';
 import 'package:ashmall/Services/ProductServices.dart';
 import 'package:ashmall/Services/UserServices.dart';
@@ -28,6 +30,7 @@ class _state extends State<Login> {
     this.type = type;
   }
   bool loader=true;
+  bool vendorloader=true;
   home h = new home();
   UserServices userServices = new UserServices();
   ProductServices productServices=new ProductServices();
@@ -263,13 +266,16 @@ class _state extends State<Login> {
                             GestureDetector(
                               onTap: (){
                                 launchURL(link);
+                                setState(() {
+                                  vendorloader=false;
+                                });
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height*.065,
                                 decoration:BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Color(h.mainColor),
+                                  color: vendorloader?Color(h.mainColor):Colors.black12,
                                 ),
                                 padding: EdgeInsets.all(5),
                                 alignment: Alignment.center,
@@ -286,7 +292,7 @@ class _state extends State<Login> {
                              ],),
                            ),
                           SizedBox(height: 10,),
-                          Container(
+                        /*  Container(
                             width: MediaQuery.of(context).size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -326,7 +332,7 @@ class _state extends State<Login> {
                                     ))
                               ],
                             ),
-                          )
+                          )*/
                           ],
                         ),
                       ),
@@ -361,7 +367,14 @@ class _state extends State<Login> {
       await launch(url);
     } else {
       throw 'Could not launch $url';
-    }}
+    }
+    Timer(Duration(seconds: 3), (){
+      setState(() {
+        vendorloader=true;
+      });
+    });
+
+  }
 // AccessToken _accessToken;
   bool _checking = true;
  /* Future<void> _login() async {

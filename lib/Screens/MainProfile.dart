@@ -78,37 +78,42 @@ class _state extends State<MainProfile>{
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height*.015,),
-              Container(
-                width: MediaQuery.of(context).size.width*.94,
-                padding: EdgeInsets.only(top: 3,bottom: 3),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(color: Colors.black12,width: 1),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 10,),
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(200)),
-                      child:FadeInImage.assetNetwork(
-                        placeholder: "images/user.jpg",
-                        image:"http://"+data["data"]["photo"],
-                        width: MediaQuery.of(context).size.width*.2,
-                        height: MediaQuery.of(context).size.width*.2,
-                        fit: BoxFit.cover,
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, "/Profile");
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width*.94,
+                  padding: EdgeInsets.only(top: 3,bottom: 3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(color: Colors.black12,width: 1),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 10,),
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(200)),
+                        child:FadeInImage.assetNetwork(
+                          placeholder: "images/user.jpg",
+                          image:"http://"+data["data"]["photo"],
+                          width: MediaQuery.of(context).size.width*.2,
+                          height: MediaQuery.of(context).size.width*.2,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText.TitleText(data["data"]["name"]==null?"":data["data"]["name"]),
-                        CustomText.SubTitleText(data["data"]["email"]==null?"":data["data"]["email"]),
-                        CustomText.SubTitleText(data["data"]["phone"]==null?"":data["data"]["phone"])
-                      ],
-                    )
-                  ],
+                      SizedBox(width: 10,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText.TitleText(data["data"]["name"]==null?"":data["data"]["name"]),
+                          CustomText.SubTitleText(data["data"]["email"]==null?"":data["data"]["email"]),
+                          CustomText.SubTitleText(data["data"]["phone"]==null?"":data["data"]["phone"])
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height*.015,),
