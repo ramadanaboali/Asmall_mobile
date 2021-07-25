@@ -230,7 +230,7 @@ class  _state extends State<ProductDetails>{
                                Navigator.pushNamed(context, "/Search");
                              },
                              child: Container(
-                               width: MediaQuery.of(context).size.width*.57,
+                               width: MediaQuery.of(context).size.width*.45,
                                height: MediaQuery.of(context).size.height*.05,
                                decoration: BoxDecoration(
                                  borderRadius:BorderRadius.all(Radius.circular(30)),
@@ -284,7 +284,6 @@ class  _state extends State<ProductDetails>{
                                ),
                              ),
                            ),
-                           SizedBox(width: MediaQuery.of(context).size.width*.0,),
                            GestureDetector(
                              onTap: (){
                                Navigator.push(context, GlobalFunction.routeBottom(HomePage(2)));
@@ -292,7 +291,8 @@ class  _state extends State<ProductDetails>{
                              child:Stack(
                                children: [
                                  Container(
-                                     padding: EdgeInsets.only(left: 4,right: 4,top: 7,bottom: 7),
+                                     width: MediaQuery.of(context).size.width*.11,
+                                     padding: EdgeInsets.only(left: 0,right: 0,top: 7,bottom: 7),
                                      child: Icon(Icons.shopping_cart,size: 25,)),
                                  Positioned(
                                    left: 17,
@@ -313,18 +313,20 @@ class  _state extends State<ProductDetails>{
                                share("http://"+data["shareLink"]);
                              },
                              child: Container(
-                               padding: EdgeInsets.all(5),
+                               width: MediaQuery.of(context).size.width*.1,
+                               padding: EdgeInsets.only(left:0,right: 0,top: 5,bottom:5 ),
                                child: Icon(Icons.share_rounded),
                              ),
                            ),
-                           GestureDetector(
+                           InkWell(
                              onTap: (){
                                CustomSearchAppBar.menu(context);
                              },
                              child: Row(
                                children: [
                                  Container(
-                                   padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 10),
+                                   width: MediaQuery.of(context).size.width*.15,
+                                   padding: EdgeInsets.only(top: 15,bottom: 15),
                                    child: Column(
                                      children: [
                                        Container(

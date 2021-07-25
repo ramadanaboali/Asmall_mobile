@@ -93,7 +93,7 @@ class _state extends State<MainPage>{
     // TODO: implement initState
     super.initState();
     loadData();
-    endload();
+    //endload();
   }
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,6 @@ class _state extends State <Notifications>{
   UserServices userServices=new UserServices();
   var lang;
   loadData()async{
-
     SharedPreferences prefs=await SharedPreferences.getInstance();
     if(prefs.getString("id")==null){
       setState(() {
@@ -155,7 +154,9 @@ class _state extends State <Notifications>{
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(data[index].title,style: TextStyle(fontSize: 12,color: Colors.black54),),
+                                          Container(
+                                              width: MediaQuery.of(context).size.width*.7,
+                                              child: Text(data[index].title,textAlign: TextAlign.start,style: TextStyle(fontSize: 12,color: Colors.black54),)),
                                           //Text("one line description of notifiction",style: TextStyle(fontSize: 10,color: Colors.black54),),
                                         ],
                                       )

@@ -31,7 +31,7 @@ class CustomSearchAppBar extends StatelessWidget{
                      Navigator.pushNamed(context, "/Search");
                    },
                  child: Container(
-                   width: MediaQuery.of(context).size.width*.6,
+                   width: MediaQuery.of(context).size.width*.55,
                    height: MediaQuery.of(context).size.height*.05,
                    decoration: BoxDecoration(
                      borderRadius:BorderRadius.all(Radius.circular(30)),
@@ -107,12 +107,12 @@ class CustomSearchAppBar extends StatelessWidget{
                    ],
                  ),
                ),
-               GestureDetector(
+               InkWell(
                  onTap: (){
                    menu(context);
                  },
                  child: Container(
-                   padding: EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 15),
+                   padding: EdgeInsets.only(left: 20+MediaQuery.of(context).size.width*.025,right: 20+MediaQuery.of(context).size.width*.025,top: 15,bottom: 15),
                    //color: Colors.red,
                    child: Column(
                      children: [
@@ -176,7 +176,7 @@ class CustomSearchAppBar extends StatelessWidget{
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height*.075,
-                        bottom: MediaQuery.of(context).size.height*.69,
+                        bottom: MediaQuery.of(context).size.height*.73,
                     ),
                     color: Colors.transparent,
                     child: Row(
