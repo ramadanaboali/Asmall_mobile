@@ -1,4 +1,4 @@
 class GlobalVariable{
-  static String URl="http://173.212.195.143:9090/";
-  static String URL2="http://173.212.195.143:9090";
+  static String URl="https://www.ashmall.net/";
+  static String URL2="https://www.ashmall.net";
 }

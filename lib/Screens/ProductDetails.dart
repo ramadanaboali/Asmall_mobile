@@ -310,7 +310,7 @@ class  _state extends State<ProductDetails>{
                              onTap: (){
                                print("http://"+data["shareLink"]);
                                print("******************************************************8");
-                               share("http://"+data["shareLink"]);
+                               share(data["shareLink"]);
                              },
                              child: Container(
                                width: MediaQuery.of(context).size.width*.1,

@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'CustomText.dart';
 import 'ProductDetails.dart';
+import 'Store.dart';
 
 class Follower extends StatefulWidget{
   @override
@@ -63,61 +64,66 @@ List<FollowerDetail>data;
                     child: ListView.builder(itemCount: data.length,itemBuilder: (context,index){
                       return Column(
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width*.05,
-                              right: MediaQuery.of(context).size.width*.05,
-                            ),
-                            child: Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                  child: Image.network(GlobalVariable.URl+data[index].photo,
-                                    height: MediaQuery.of(context).size.width*.2,
-                                    width: MediaQuery.of(context).size.width*.2,
-                                    fit: BoxFit.fill,
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, GlobalFunction.route(Store(data[index].id)));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width*.05,
+                                right: MediaQuery.of(context).size.width*.05,
+                              ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    child: Image.network(GlobalVariable.URl+data[index].photo,
+                                      height: MediaQuery.of(context).size.width*.2,
+                                      width: MediaQuery.of(context).size.width*.2,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 10,),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*.7-10,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(data[index].name,style: TextStyle(fontSize: 13,height: 1.3),),
-                                        ],
+                                  SizedBox(width: 10,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*.7-10,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(data[index].name,style: TextStyle(fontSize: 13,height: 1.3),),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*.7-10,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              width: MediaQuery.of(context).size.width*.44,
-                                              child: Text(data[index].email,maxLines: 1,style: TextStyle(fontSize: 10,height: 1.3),)),
-                                          /*Text(data[index].gender,style: TextStyle(fontSize: 12,height: 1.5),),*/
-                                        ],
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*.7-10,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                                width: MediaQuery.of(context).size.width*.44,
+                                                child: Text(data[index].email,maxLines: 1,style: TextStyle(fontSize: 10,height: 1.3),)),
+                                            /*Text(data[index].gender,style: TextStyle(fontSize: 12,height: 1.5),),*/
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width*.7-10,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                              width: MediaQuery.of(context).size.width*.4  ,
-                                              child: Text(data[index].phone,style: TextStyle(fontSize: 10,height: 1.3),)),
-                                          /* CustomRate(int.parse(data[index]..toString()), 15),*/
-                                        ],
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*.7-10,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                                width: MediaQuery.of(context).size.width*.4  ,
+                                                child: Text(data[index].phone,style: TextStyle(fontSize: 10,height: 1.3),)),
+                                            /* CustomRate(int.parse(data[index]..toString()), 15),*/
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 8,),
