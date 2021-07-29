@@ -210,6 +210,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+<<<<<<< HEAD
   html:
     dependency: transitive
     description:
@@ -217,6 +218,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.0+4"
+=======
+>>>>>>> 1a339f5177fc373f2437bd827e6b018c40233aa4
   http:
     dependency: "direct main"
     description:
@@ -336,6 +339,23 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+<<<<<<< HEAD
+=======
+  process:
+    dependency: transitive
+    description:
+      name: process
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.2"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0"
+>>>>>>> 1a339f5177fc373f2437bd827e6b018c40233aa4
   scoped_model:
     dependency: "direct main"
     description:
@@ -522,7 +542,11 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "1.0.1"
+=======
+    version: "2.1.12"
+>>>>>>> 1a339f5177fc373f2437bd827e6b018c40233aa4
   video_player_platform_interface:
     dependency: transitive
     description:
