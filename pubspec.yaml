@@ -26,7 +26,7 @@ dependencies:
   shared_preferences:
   dotted_line:
   scoped_model: ^1.0.1
-  firebase_messaging: ^6.0.13
+  # firebase_messaging: ^6.0.13
   flutter_local_notifications: ^1.4.2
   flutter_phoenix: "^0.1.0"
   get_it: ^1.0.3
