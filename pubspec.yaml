@@ -30,8 +30,9 @@ dependencies:
   flutter_local_notifications: ^1.4.2
   flutter_phoenix: "^0.1.0"
   get_it: ^1.0.3
+  in_app_update: ^2.0.0
   # flutter_facebook_auth:
-  # google_sign_in:
+  google_sign_in: ^5.0.7
   toast: ^0.1.5
   dotted_border: ^1.0.7
   http:

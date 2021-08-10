@@ -8,7 +8,7 @@ import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,8 +31,8 @@ class _state extends State<Login> {
   _state(var type) {
     this.type = type;
   }
-  bool loader=true;
-  bool vendorloader=true;
+  bool loader = true;
+  bool vendorloader = true;
   home h = new home();
   UserServices userServices = new UserServices();
   ProductServices productServices = new ProductServices();
@@ -44,6 +44,54 @@ class _state extends State<Login> {
   var lang;
   var link;
   Map<String, dynamic> setting;
+  // AccessToken _accessToken;
+  bool _checking = true;
+  /* Future<void> _login() async {
+    final LoginResult result = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
+
+    // loginBehavior is only supported for Android devices, for ios it will be ignored
+    // final result = await FacebookAuth.instance.login(
+    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
+    //   loginBehavior: LoginBehavior
+    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
+    // );
+
+    if (result.status == LoginStatus.success) {
+      _accessToken = result.accessToken;
+      // get the user data
+      // by default we get the userId, email,name and picture
+      final userData = await FacebookAuth.instance.getUserData();
+      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
+      _userData = userData;
+      print(_userData);
+      print("000000000000000000000000000000000000000000000000000000000");
+    } else {
+      print(result.status);
+      print(result.message);
+    }
+
+    setState(() {
+      _checking = false;
+    });
+  }*/
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    // clientId:"499289536123-qtrm23ag828tp2486ihgkdnd8svhb84d.apps.googleusercontent.com",
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+  Future<void> _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+      print('''name:${_googleSignIn.currentUser.email}''');
+      print("0000000000000000000000000000000000000000000000000000000000000000");
+    } catch (error) {
+      print(error);
+      print("111111111111111111111111111111111111111111111111111111111111");
+    }
+  }
+
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setting = await productServices.getSetting(prefs.getString("lang"));
@@ -307,49 +355,86 @@ class _state extends State<Login> {
                                       duration: Toast.LENGTH_SHORT,
                                       gravity: Toast.BOTTOM);
                                 }
-                              }},
-                              child: Container(
-                                decoration:BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: loader?Color(h.mainColor):Colors.black12,
-                                ),
-                                height: MediaQuery.of(context).size.height*.065,
-                                width: MediaQuery.of(context).size.width*.9,
-                                alignment: Alignment.center,
-                                child:   Text(DemoLocalizations.of(context).title["login"],style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
-                              ),),
-                            SizedBox(height: 15,),
-                            link==null?  SizedBox():
-                            GestureDetector(
-                              onTap: (){
-                                launchURL(link);
-                                setState(() {
-                                  vendorloader=false;
-                                });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height*.065,
-                                decoration:BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: vendorloader?Color(h.mainColor):Colors.black12,
-                                ),
-                                padding: EdgeInsets.all(5),
-                                alignment: Alignment.center,
-                                child:  Text(DemoLocalizations.of(context).title['vendorLogin'],style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700)),
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: loader
+                                    ? Color(h.mainColor)
+                                    : Colors.black12,
+                              ),
+                              height: MediaQuery.of(context).size.height * .065,
+                              width: MediaQuery.of(context).size.width * .9,
+                              alignment: Alignment.center,
+                              child: Text(
+                                DemoLocalizations.of(context).title["login"],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700),
                               ),
                             ),
-                            SizedBox(height: 15,),
-                           Container(
-                             width: MediaQuery.of(context).size.width*.9,
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.start,
-                               children: [
-                               GestureDetector(onTap: (){Navigator.pushNamed(context, "/ForgetPassword");},child: Text(DemoLocalizations.of(context).title["ForgetPassword"],style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54)))
-                             ],),
-                           ),
-                          SizedBox(height: 10,),
-                        /*  Container(
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          link == null
+                              ? SizedBox()
+                              : GestureDetector(
+                                  onTap: () {
+                                    launchURL(link);
+                                    setState(() {
+                                      vendorloader = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        .065,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: vendorloader
+                                          ? Color(h.mainColor)
+                                          : Colors.black12,
+                                    ),
+                                    padding: EdgeInsets.all(5),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                        DemoLocalizations.of(context)
+                                            .title['vendorLogin'],
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700)),
+                                  ),
+                                ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * .9,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, "/ForgetPassword");
+                                    },
+                                    child: Text(
+                                        DemoLocalizations.of(context)
+                                            .title["ForgetPassword"],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black54)))
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
                             width: MediaQuery.of(context).size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -376,7 +461,7 @@ class _state extends State<Login> {
                                 ),
                                 GestureDetector(
                                     onTap: () {
-                                      // _handleSignIn();
+                                      _handleSignIn();
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -399,14 +484,13 @@ class _state extends State<Login> {
                                     ))
                               ],
                             ),
-                          )*/
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ),
-              
+              ),
               SizedBox(
                 height: 5,
               ),
@@ -450,55 +534,10 @@ class _state extends State<Login> {
     } else {
       throw 'Could not launch $url';
     }
-    Timer(Duration(seconds: 3), (){
+    Timer(Duration(seconds: 3), () {
       setState(() {
-        vendorloader=true;
+        vendorloader = true;
       });
     });
-
   }
-// AccessToken _accessToken;
-  bool _checking = true;
-  /* Future<void> _login() async {
-    final LoginResult result = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
-
-    // loginBehavior is only supported for Android devices, for ios it will be ignored
-    // final result = await FacebookAuth.instance.login(
-    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
-    //   loginBehavior: LoginBehavior
-    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
-    // );
-
-    if (result.status == LoginStatus.success) {
-      _accessToken = result.accessToken;
-      // get the user data
-      // by default we get the userId, email,name and picture
-      final userData = await FacebookAuth.instance.getUserData();
-      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
-      _userData = userData;
-      print(_userData);
-      print("000000000000000000000000000000000000000000000000000000000");
-    } else {
-      print(result.status);
-      print(result.message);
-    }
-
-    setState(() {
-      _checking = false;
-    });
-  }*/
-  // GoogleSignIn _googleSignIn = GoogleSignIn(
-  //   clientId:"499289536123-qtrm23ag828tp2486ihgkdnd8svhb84d.apps.googleusercontent.com",
-  // );
-  // Future<void> _handleSignIn() async {
-  //   try {
-  //     await _googleSignIn.signIn();
-  //     print('''name:${_googleSignIn.currentUser.email}''');
-  //     print("0000000000000000000000000000000000000000000000000000000000000000");
-
-  //   } catch (error) {
-  //     print(error);
-  //     print("111111111111111111111111111111111111111111111111111111111111");
-  //   }
-  // }
 }
