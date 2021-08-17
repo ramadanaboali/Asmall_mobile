@@ -33,8 +33,6 @@ class _state extends State<MainProfile>{
       data=await userServices.getUserInfo(prefs.getString("lang"), prefs.getString("id"), prefs.getString("token"));
       setState(() {
       });
-      print(data);
-      print("ssssssssssss");
   }
   @override
   void initState() {

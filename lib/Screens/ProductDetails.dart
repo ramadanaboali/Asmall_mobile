@@ -104,7 +104,8 @@ class  _state extends State<ProductDetails>{
        Map<String,dynamic>responce=await productServices.addWatch(lang, this.id, prefs.getString("id"));
        print(responce.toString()+"rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
      }
-     print(gallary.length);
+     print(colorList.length);
+    print(sizeList.length);
      print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
   }
   home h=new home();
@@ -375,52 +376,52 @@ class  _state extends State<ProductDetails>{
                  child:SingleChildScrollView(
                    child: Column(
                      children: [
-                       Container(
-                         height: MediaQuery.of(context).size.height*.3,
-                         width: MediaQuery.of(context).size.width*.9,
-                         child:ListView.builder(
-                             scrollDirection: Axis.horizontal,
-                             itemCount: gallary.length,itemBuilder: (context,index){
+                      gallary.length==0? SizedBox():Container(
+                           height: MediaQuery.of(context).size.height*.3,
+                           width: MediaQuery.of(context).size.width*.9,
+                           child:ListView.builder(
+                               scrollDirection: Axis.horizontal,
+                               itemCount: gallary.length,itemBuilder: (context,index){
 
-                           if(gallary[index].type=="Video"){
-                             _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URl+gallary[index].attachment);
-                             _chewieController = ChewieController(
-                               videoPlayerController: _videoPlayerController1,
-                               autoPlay: false,
-                               aspectRatio: 6.5 / 4,
-                               looping: false,
-                               allowPlaybackSpeedChanging: false,
-                               autoInitialize: true,
-                               isLive: false,
-                               placeholder: Container(
-                                 height: MediaQuery.of(context).size.height*.3,
-                                 width: MediaQuery.of(context).size.width*.9,
-                                 color: Colors.red,
-                                 child: Center(
-                                   child: Icon(Icons.play_arrow),
+                             if(gallary[index].type=="Video"){
+                               _videoPlayerController1 = VideoPlayerController.network(GlobalVariable.URl+gallary[index].attachment);
+                               _chewieController = ChewieController(
+                                   videoPlayerController: _videoPlayerController1,
+                                   autoPlay: false,
+                                   aspectRatio: 6.5 / 4,
+                                   looping: false,
+                                   allowPlaybackSpeedChanging: false,
+                                   autoInitialize: true,
+                                   isLive: false,
+                                   placeholder: Container(
+                                     height: MediaQuery.of(context).size.height*.3,
+                                     width: MediaQuery.of(context).size.width*.9,
+                                     color: Colors.red,
+                                     child: Center(
+                                       child: Icon(Icons.play_arrow),
+                                     ),
+                                   ),
+                                   allowedScreenSleep: true
+                               );
+                             }
+
+                             return gallary[index].type=="Video"?Container(
+                               height: MediaQuery.of(context).size.height * 0.4,
+                               width: MediaQuery.of(context).size.width*.9,
+                               child: Chewie(
+                                 controller: _chewieController,
+                               ),
+                             ):Container(
+                               height: MediaQuery.of(context).size.height*.3,
+                               width: MediaQuery.of(context).size.width*.9 ,
+                               child:   ClipRRect(
+                                 borderRadius: BorderRadius.all(Radius.circular(5)),
+                                 child: Image.network(GlobalVariable.URl+gallary[index].attachment,fit: BoxFit.fill,height: MediaQuery.of(context).size.height*.27 ,
+                                   width: MediaQuery.of(context).size.width,
                                  ),
                                ),
-                               allowedScreenSleep: true
                              );
-                           }
-
-                           return gallary[index].type=="Video"?Container(
-                             height: MediaQuery.of(context).size.height * 0.4,
-                             width: MediaQuery.of(context).size.width*.9,
-                             child: Chewie(
-                               controller: _chewieController,
-                             ),
-                           ):Container(
-                             height: MediaQuery.of(context).size.height*.3,
-                             width: MediaQuery.of(context).size.width*.9 ,
-                             child:   ClipRRect(
-                               borderRadius: BorderRadius.all(Radius.circular(5)),
-                               child: Image.network(GlobalVariable.URl+gallary[index].attachment,fit: BoxFit.fill,height: MediaQuery.of(context).size.height*.27 ,
-                                 width: MediaQuery.of(context).size.width,
-                               ),
-                             ),
-                           );
-                         })
+                           })
                        ),
                        /*Container(
                          height: MediaQuery.of(context).size.height*.3,
@@ -475,7 +476,7 @@ class  _state extends State<ProductDetails>{
                              SizedBox(height: 7,),
                              Container(
                                  width: MediaQuery.of(context).size.width*.9 ,
-                                 child: Text(data["description"],maxLines: 2,
+                                 child: Text(data["description"]==null?"":data["description"],maxLines: 2,
                                    style: TextStyle(fontSize: 12),)),
                              SizedBox(height: 7,),
                              Container(
@@ -750,8 +751,8 @@ class  _state extends State<ProductDetails>{
                                    Row(
                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                      children: [
-                                       Text(Specification[index].speceficationName),
-                                       Text(Specification[index].value)
+                                       Text(Specification[index].speceficationName==null?"":Specification[index].speceficationName),
+                                       Text(Specification[index].value==null?"":Specification[index].value)
                                      ],
                                    ),
                                    /* SizedBox(height: 5,),
@@ -1314,7 +1315,7 @@ class  _state extends State<ProductDetails>{
                                                 Row(
                                                   children: [
                                                     SizedBox(width:10),
-                                                    Text(sidesList[index].title,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 15),),
+                                                    Text(sidesList[index].title==null?"":sidesList[index].title,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 15),),
                                                   ],
                                                 ),
                                                  SizedBox(height:5),
@@ -1349,7 +1350,7 @@ class  _state extends State<ProductDetails>{
                 padding: EdgeInsets.only(top: 1),
                 child: Row(
                   children: [
-                    GestureDetector(
+                    InkWell(
                       onTap: (){
                         Navigator.push(context, GlobalFunction.route(Store(data["vendorId"])));
                       },
@@ -1362,7 +1363,7 @@ class  _state extends State<ProductDetails>{
                         child:Text(DemoLocalizations.of(context).title["store"],style: TextStyle(color: Colors.white),),
                       ),
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: ()async{
                         if(sizeList.length==0&&colorList.length==0){
                           CartMedelLocal p1=new CartMedelLocal({
@@ -1408,8 +1409,10 @@ class  _state extends State<ProductDetails>{
                               // Phoenix.rebirth(context);
                             });
                           }
-                        }else{
-                          ProductDetail(colorList, sizeList, data["imagesPaths"][0], data["name"],data["offerPrice"].toString(),data["description"]);
+                        }
+                        else{
+                          print("00000000000000000000000000000000000000");
+                          ProductDetail(colorList, sizeList, data["coverPhoto"], data["name"],data["offerPrice"].toString(),data["description"]);
                         }
                       },
                       child: Container(
@@ -1421,16 +1424,18 @@ class  _state extends State<ProductDetails>{
                         child:Text(DemoLocalizations.of(context).title["addtocart"],style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: ()async{
                         SharedPreferences prefs=await SharedPreferences.getInstance();
                         //  loadData();
                         if(ParentPage.user_id!=null){
+                          print(sidesList.length);
+                          print("000000000000000000000000000000");
                           if(colorList.length==0&&sidesList.length==0){
                             Navigator.push(context, GlobalFunction.route(BuyNow(data["name"], data["coverPhoto"], data["price"].toString(), data["id"], null, null,1)));
                           }
                           else
-                            BuyProductDetail(colorList, sizeList, data["imagesPaths"][0], data["name"],data["offerPrice"].toString(),data["description"]);
+                            BuyProductDetail(colorList, sizeList, data["coverPhoto"], data["name"],data["offerPrice"].toString(),data["description"]);
                         }
                         else{
                           Navigator.push(context, GlobalFunction.route(Login("buy")));
@@ -1620,8 +1625,17 @@ class  _state extends State<ProductDetails>{
         ));
   }
   void ProductDetail(List<ProductColorModel>colors,List<ProductSizeModel>size,String image,String name,var price,var description) {
-    var SizeValue=sizeList[0].id;
-    var SelectedColor=colors[0].id;
+    var SizeValue;
+    var SelectedColor;
+    print(sizeList.length);
+    print(colors.length);
+    print("0000000000000000000000000000000");
+     if(sizeList.length>0){
+       SizeValue=sizeList[0].id;
+     }
+    if(colors.length>0){
+       SelectedColor=colors[0].id;
+    }
     int counter =1;
        showDialog(
         context: context,
@@ -1878,7 +1892,7 @@ class  _state extends State<ProductDetails>{
                                         CartMedelLocal p1=new CartMedelLocal({
                                           "id":data["id"],
                                           "name":data["name"],
-                                          "img":data["imagesPaths"][0],
+                                          "img":image,
                                           "description":data["description"],
                                           "price":double.parse(data["offerPrice"].toString()),
                                           "totalPrice":double.parse(data["offerPrice"].toString()),
@@ -1938,8 +1952,14 @@ class  _state extends State<ProductDetails>{
         });
   }
   void BuyProductDetail(List<ProductColorModel>colors,List<ProductSizeModel>size,String image,String name,var price,var description) {
-    var SizeValue=sizeList[0].id;
-    var SelectedColor=colors[0].id;
+    var SizeValue="";
+    var SelectedColor="";
+    if(sizeList.length>0){
+      SizeValue=sizeList[0].id==null?"0":sizeList[0].id;
+     }
+      if(colors.length>0){
+        SelectedColor=colors[0].id==null?"0":colors[0].id;
+      }
     int counter =1;
     showDialog(
         context: context,
@@ -2068,7 +2088,7 @@ class  _state extends State<ProductDetails>{
                                   children: [
                                     Container(
                                         width: MediaQuery.of(context).size.width*.7,
-                                        child:Text(description,style: TextStyle(fontSize: 10,color: Colors.black54),maxLines: 3,)
+                                        child:Text(description==null?"":description,style: TextStyle(fontSize: 10,color: Colors.black54),maxLines: 3,)
                                     ),
                                     Text(price+"  "+DemoLocalizations.of(context).title["le"],style: TextStyle(color: Color(h.mainColor)),)
                                   ],
@@ -2152,7 +2172,7 @@ class  _state extends State<ProductDetails>{
                                                       });
                                                     },),
                                                     SizedBox(width: 8,),
-                                                    Text(sizeList[index].sizeValue,style: TextStyle(color: Colors.black54,fontSize: 12),)
+                                                    Text(sizeList[index].sizeValue==null?"":sizeList[index].sizeValue,style: TextStyle(color: Colors.black54,fontSize: 12),)
                                                   ],
                                                 )
                                             ),
@@ -2188,6 +2208,18 @@ class  _state extends State<ProductDetails>{
                                       )
                                   ),
                                   onTap: () async {
+                                    if(SelectedColor=="")
+                                     {
+                                       setState((){
+                                         SelectedColor=null;
+                                       });
+                                     }
+                                    if(SizeValue=="")
+                                    {
+                                      setState((){
+                                        SizeValue=null;
+                                      });
+                                    }
                                     Navigator.push(context, GlobalFunction.route(BuyNow(data["name"], data["coverPhoto"], data["price"].toString(), data["id"], SelectedColor, SizeValue,counter)));
                                   },
                                 ),

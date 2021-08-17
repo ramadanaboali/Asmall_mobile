@@ -492,7 +492,7 @@ loadData()async{
                                Container(
                                    width: MediaQuery.of(context).size.width*.44,
                                    child: Text(responce["data"]["email"],maxLines: 1,style: TextStyle(fontSize: 10,height: 1.3),)),
-                             Text("Followers : ${responce["data"]["numbersOfFollowers"]}",style: TextStyle(fontSize: 12,height: 1.5),),
+                             Text("${DemoLocalizations.of(context).title["followers2"]} : ${responce["data"]["numbersOfFollowers"]}",style: TextStyle(fontSize: 12,height: 1.5),),
                              ],
                            ),
                          ),
@@ -570,7 +570,7 @@ loadData()async{
                              color: Colors.white
                          ),
                          alignment: Alignment.center,
-                         child: Text("Home",style: TextStyle(color: Colors.black)),
+                         child: Text(DemoLocalizations.of(context).title["home"],style: TextStyle(color: Colors.black)),
                        ),
                      ),
                      GestureDetector(
@@ -593,7 +593,7 @@ loadData()async{
                              color: Colors.white
                          ),
                          alignment: Alignment.center,
-                         child: Text("All Items",style: TextStyle(color: Colors.black)),
+                         child: Text(DemoLocalizations.of(context).title["allItmes"],style: TextStyle(color: Colors.black)),
                        ),
                      ),
                      GestureDetector(
@@ -616,7 +616,7 @@ loadData()async{
                              color: Colors.white
                          ),
                          alignment: Alignment.center,
-                         child: Text("New Arrival",style: TextStyle(color: Colors.black),),
+                         child: Text(DemoLocalizations.of(context).title["newArrival"],style: TextStyle(color: Colors.black),),
                        ),
                      )
                    ],

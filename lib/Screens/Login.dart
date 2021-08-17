@@ -8,7 +8,7 @@ import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -74,14 +74,14 @@ class _state extends State<Login> {
       _checking = false;
     });
   }*/
-  GoogleSignIn _googleSignIn = GoogleSignIn(
+/*  //GoogleSignIn _googleSignIn = GoogleSignIn(
     // clientId:"499289536123-qtrm23ag828tp2486ihgkdnd8svhb84d.apps.googleusercontent.com",
     scopes: <String>[
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
-  );
-  Future<void> _handleSignIn() async {
+  );*/
+/*  Future<void> _handleSignIn() async {
     try {
       await _googleSignIn.signIn();
       print('''name:${_googleSignIn.currentUser.email}''');
@@ -90,7 +90,7 @@ class _state extends State<Login> {
       print(error);
       print("111111111111111111111111111111111111111111111111111111111111");
     }
-  }
+  }*/
 
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -434,7 +434,7 @@ class _state extends State<Login> {
                           SizedBox(
                             height: 10,
                           ),
-                          Container(
+                          /*Container(
                             width: MediaQuery.of(context).size.width,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -484,7 +484,7 @@ class _state extends State<Login> {
                                     ))
                               ],
                             ),
-                          )
+                          )*/
                         ],
                       ),
                     ),

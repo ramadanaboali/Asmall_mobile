@@ -135,7 +135,7 @@ class _state extends State<Orders>{
                           onTap: (){
                           Navigator.pushNamedAndRemoveUntil(context, "/mainPage", (route) => false);
                           },
-                          child: Icon(ParentPage.language=="ar"?Icons.arrow_back_ios_rounded:Icons.arrow_forward_ios_rounded,color: Colors.white,size: 25,)),
+                          child: Icon(ParentPage.language=="ar"?Icons.arrow_back_ios_rounded:Icons.arrow_back_ios_rounded,color: Colors.white,size: 25,)),
                       Text(DemoLocalizations.of(context).title["Orders"],style: TextStyle(color: Colors.white,fontSize: 14,fontWeight: FontWeight.bold),),
                       GestureDetector(
                           onTap: (){

@@ -22,7 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../GlobalFunction.dart';
 import 'LangSetting.dart';
 import 'Orders.dart';
-import 'package:in_app_update/in_app_update.dart';
+//import 'package:in_app_update/in_app_update.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -38,15 +38,14 @@ class _state extends State<MainPage> {
   List<ProductDetail> OffersList = [];
   List<ProductDetail> LastList = [];
   ProductServices productServices = new ProductServices();
-  var user_id;
   bool adv = false;
   Map<String, dynamic> setting;
   List<BanarDetail> advList = [];
-  AppUpdateInfo _updateInfo;
+ // AppUpdateInfo _updateInfo;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   bool _flexibleUpdateAvailable = false;
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> checkForUpdate() async {
+  /*Future<void> checkForUpdate() async {
     InAppUpdate.checkForUpdate().then((info) {
       setState(() {
         _updateInfo = info;
@@ -67,7 +66,7 @@ class _state extends State<MainPage> {
     }).catchError((e) {
       showSnack(e.toString());
     });
-  }
+  }*/
 
   void showSnack(String text) {
     if (_scaffoldKey.currentContext != null) {
@@ -92,7 +91,6 @@ class _state extends State<MainPage> {
         ? Prefs.setString("dashboardLink", setting["data"]["dashboardLink"])
         : print("sharrrrrrrrrrrf");
     setState(() {
-      user_id = Prefs.getString("id");
     });
     if (advList.length > 0) {
       setState(() {
@@ -101,37 +99,12 @@ class _state extends State<MainPage> {
     }
   }
 
-  endload() {
-    Timer(Duration(seconds: 1), () {
-      setState(() {});
-      print("11111111111111111111111111111111111111111111");
-    });
-    Timer(Duration(seconds: 2), () {
-      setState(() {});
-      print("2222222222222222222222222222222222222222222222");
-    });
-    Timer(Duration(seconds: 3), () {
-      loadData();
-      setState(() {});
-      print("333333333333333333333333333333333333333333333333333");
-    });
-    Timer(Duration(seconds: 4), () {
-      loadData();
-      setState(() {});
-      print("4444444444444444444444444444444444444444444444444444");
-    });
-    Timer(Duration(seconds: 5), () {
-      loadData();
-      setState(() {});
-      print("55555555555555555555555555555555555555555555555555555555555");
-    });
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkForUpdate();
+    //checkForUpdate();
     loadData();
     //endload();
   }
@@ -367,7 +340,7 @@ class _state extends State<MainPage> {
                         SizedBox(
                           width: 5,
                         ),
-                        user_id != null
+                        ParentPage.user_id != null
                             ? Row(
                                 children: [
                                   GestureDetector(

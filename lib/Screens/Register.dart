@@ -2,6 +2,7 @@ import 'package:ashmall/Model/CityModel.dart';
 import 'package:ashmall/Screens/CustomAppBar.dart';
 import 'package:ashmall/Services/UserServices.dart';
 import 'package:ashmall/main.dart';
+import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,7 +42,7 @@ class _state extends State<Register>{
       body: Container(
         child: Column(
           children: [
-             CustomAppBar("Register"),
+             CustomAppBar(DemoLocalizations.of(context).title['register']),
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
@@ -75,14 +76,14 @@ class _state extends State<Register>{
                                   },
                                   validator: (value){
                                     if(value.isEmpty){
-                                      return 'Enter Name';
+                                      return DemoLocalizations.of(context).title['entername'];
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     errorStyle: TextStyle(fontSize: 12),
                                     contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                    hintText:'Name' ,
+                                    hintText:DemoLocalizations.of(context).title['name'] ,
                                     hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
                                   ),
                                   controller: name,
@@ -110,7 +111,7 @@ class _state extends State<Register>{
                                   },
                                   validator: (value){
                                     if(value.isEmpty){
-                                      return 'Enter Email';
+                                      return  DemoLocalizations.of(context).title['EnterYourEmail'];
                                     }
                                     return null;
                                   },
@@ -118,7 +119,7 @@ class _state extends State<Register>{
                                   //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                    hintText:'Email' ,
+                                    hintText:DemoLocalizations.of(context).title['Email'] ,
                                     hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
                                   ),
                                   controller: email,
@@ -147,7 +148,7 @@ class _state extends State<Register>{
                                   },
                                   validator: (value){
                                     if(value.isEmpty){
-                                      return null;
+                                      return DemoLocalizations.of(context).title['enterphone'];
                                     }
                                     return null;
                                   },
@@ -155,7 +156,7 @@ class _state extends State<Register>{
                                   //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                    hintText:'Phone' ,
+                                    hintText:DemoLocalizations.of(context).title['phone'] ,
                                     hintStyle: TextStyle(fontSize: 12,color: Colors.black38),
                                   ),
                                   controller: phone,
@@ -184,7 +185,7 @@ class _state extends State<Register>{
                                   },
                                   validator: (value){
                                     if(value.isEmpty){
-                                      return 'Enter Password';
+                                      return DemoLocalizations.of(context).title['EnterYourPassword'];
                                     }
                                     return null;
                                   },
@@ -193,7 +194,7 @@ class _state extends State<Register>{
                                   //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                    hintText:'Password' ,
+                                    hintText:DemoLocalizations.of(context).title['Password'],
                                     suffixIcon:InkWell(
                                       child: Icon(passVisibility?Icons.visibility:Icons.visibility_off,color: Colors.black38,),
                                       onTap: (){
@@ -236,10 +237,10 @@ class _state extends State<Register>{
                                   },
                                   validator: (value){
                                     if(value.isEmpty){
-                                      return 'Enter Confirm Password';
+                                      return DemoLocalizations.of(context).title['PasswordIdentical'];
                                     }
                                  if(value!=password.text){
-                                   return 'Password Dont Identical';
+                                   return DemoLocalizations.of(context).title['PasswordIdentical'];
                                  }
                                     return null;
                                   },
@@ -248,7 +249,7 @@ class _state extends State<Register>{
                                   //textDirection: lang=="ar"?TextDirection.rtl:TextDirection.ltr,
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.only(right: 15,left: 15,top: 0,bottom: 0),
-                                    hintText:'Confirm Password' ,
+                                    hintText:DemoLocalizations.of(context).title['confirmpassword'] ,
                                     suffixIcon:InkWell(
                                       child: Icon(passVisibility2?Icons.visibility:Icons.visibility_off,color: Colors.black38,),
                                       onTap: (){
@@ -299,7 +300,7 @@ class _state extends State<Register>{
                             height: MediaQuery.of(context).size.height*.065,
                             width: MediaQuery.of(context).size.width*.9,
                             alignment: Alignment.center,
-                            child:   Text("Register",style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
+                            child:   Text(DemoLocalizations.of(context).title['register'],style: TextStyle(color:Colors.white,fontSize: 15,fontWeight: FontWeight.w700),),
                           ),),
                         SizedBox(height: 25,)
                       ],
