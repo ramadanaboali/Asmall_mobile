@@ -8,7 +8,7 @@ import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -74,23 +74,28 @@ class _state extends State<Login> {
       _checking = false;
     });
   }*/
-/*  //GoogleSignIn _googleSignIn = GoogleSignIn(
-    // clientId:"499289536123-qtrm23ag828tp2486ihgkdnd8svhb84d.apps.googleusercontent.com",
-    scopes: <String>[
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ],
-  );*/
-/*  Future<void> _handleSignIn() async {
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+      // clientId:
+      //     "499289536123-3r47p9rg5dsu223mm4r86ognln7b1rlp.apps.googleusercontent.com",
+      // scopes: <String>[
+      //   'email',
+      //   'https://www.googleapis.com/auth/contacts.readonly',
+      // ],
+      );
+  Future<void> _handleSignIn() async {
     try {
       await _googleSignIn.signIn();
-      print('''name:${_googleSignIn.currentUser.email}''');
-      print("0000000000000000000000000000000000000000000000000000000000000000");
+      if (_googleSignIn.currentUser != null) {
+        print('''name:${_googleSignIn.currentUser.email}''');
+      } else {
+        Toast.show("sign in Failed", context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      }
     } catch (error) {
       print(error);
       print("111111111111111111111111111111111111111111111111111111111111");
     }
-  }*/
+  }
 
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -316,6 +321,8 @@ class _state extends State<Login> {
                           GestureDetector(
                             onTap: () async {
                               if (formKey.currentState.validate()) {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                                 setState(() {
                                   loader = false;
                                 });
@@ -434,57 +441,57 @@ class _state extends State<Login> {
                           SizedBox(
                             height: 10,
                           ),
-                          /*Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      //_login();
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                        color: Colors.blue,
-                                      ),
-                                      height: 55,
-                                      width: 55,
-                                      child: Image.asset(
-                                        "images/icon/face.png",
-                                        color: Colors.white,
-                                      ),
-                                    )),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                GestureDetector(
-                                    onTap: () {
-                                      _handleSignIn();
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                        color: Colors.white,
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                              color: Colors.black12,
-                                              blurRadius: 15.0,
-                                              offset: Offset(0.0, 0.75))
-                                        ],
-                                      ),
-                                      height: 55,
-                                      width: 55,
-                                      padding: EdgeInsets.all(7),
-                                      child: Image.asset(
-                                        "images/icon/google.png",
-                                      ),
-                                    ))
-                              ],
-                            ),
-                          )*/
+                          // Container(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.center,
+                          //     children: [
+                          //       GestureDetector(
+                          //           onTap: () {
+                          //             //_login();
+                          //           },
+                          //           child: Container(
+                          //             decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.all(
+                          //                   Radius.circular(100)),
+                          //               color: Colors.blue,
+                          //             ),
+                          //             height: 55,
+                          //             width: 55,
+                          //             child: Image.asset(
+                          //               "images/icon/face.png",
+                          //               color: Colors.white,
+                          //             ),
+                          //           )),
+                          //       SizedBox(
+                          //         width: 15,
+                          //       ),
+                          //       GestureDetector(
+                          //           onTap: () {
+                          //             _handleSignIn();
+                          //           },
+                          //           child: Container(
+                          //             decoration: BoxDecoration(
+                          //               borderRadius: BorderRadius.all(
+                          //                   Radius.circular(100)),
+                          //               color: Colors.white,
+                          //               boxShadow: <BoxShadow>[
+                          //                 BoxShadow(
+                          //                     color: Colors.black12,
+                          //                     blurRadius: 15.0,
+                          //                     offset: Offset(0.0, 0.75))
+                          //               ],
+                          //             ),
+                          //             height: 55,
+                          //             width: 55,
+                          //             padding: EdgeInsets.all(7),
+                          //             child: Image.asset(
+                          //               "images/icon/google.png",
+                          //             ),
+                          //           ))
+                          //     ],
+                          //   ),
+                          // )
                         ],
                       ),
                     ),

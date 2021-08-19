@@ -29,6 +29,14 @@
             {
               "client_id": "210519581111-3eucnnbvq7qbrm65ihc191ftq0inq803.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "210519581111-armg0so6oqpjq6146c3bflk4keuj1eu7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.ashmall",
+                "app_store_id": "1578179422"
+              }
             }
           ]
         }

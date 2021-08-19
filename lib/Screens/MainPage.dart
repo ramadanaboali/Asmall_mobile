@@ -22,7 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../GlobalFunction.dart';
 import 'LangSetting.dart';
 import 'Orders.dart';
-//import 'package:in_app_update/in_app_update.dart';
+import 'package:in_app_update/in_app_update.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -41,11 +41,11 @@ class _state extends State<MainPage> {
   bool adv = false;
   Map<String, dynamic> setting;
   List<BanarDetail> advList = [];
- // AppUpdateInfo _updateInfo;
+  AppUpdateInfo _updateInfo;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   bool _flexibleUpdateAvailable = false;
   // Platform messages are asynchronous, so we initialize in an async method.
-  /*Future<void> checkForUpdate() async {
+  Future<void> checkForUpdate() async {
     InAppUpdate.checkForUpdate().then((info) {
       setState(() {
         _updateInfo = info;
@@ -66,7 +66,7 @@ class _state extends State<MainPage> {
     }).catchError((e) {
       showSnack(e.toString());
     });
-  }*/
+  }
 
   void showSnack(String text) {
     if (_scaffoldKey.currentContext != null) {
@@ -90,8 +90,7 @@ class _state extends State<MainPage> {
     setting["data"]["dashboardLinkEnable"] == true
         ? Prefs.setString("dashboardLink", setting["data"]["dashboardLink"])
         : print("sharrrrrrrrrrrf");
-    setState(() {
-    });
+    setState(() {});
     if (advList.length > 0) {
       setState(() {
         adv = true;
@@ -99,12 +98,11 @@ class _state extends State<MainPage> {
     }
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //checkForUpdate();
+    checkForUpdate();
     loadData();
     //endload();
   }
