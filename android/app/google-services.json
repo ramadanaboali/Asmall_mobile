@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "210519581111-igd0tckrp60resbhfnnq7f9ick3i21kt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ashmall",
+            "certificate_hash": "4a7ad0f613031a4a103e0269a5bd140f357b23c6"
+          }
+        },
+        {
+          "client_id": "210519581111-lp49hinasqkqhmo7s74ruen7vvuknhur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ashmall",
+            "certificate_hash": "77bf05f03e305192aead4055363416e65a92f0cc"
+          }
+        },
+        {
           "client_id": "210519581111-3eucnnbvq7qbrm65ihc191ftq0inq803.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -7,7 +7,7 @@ import 'package:ashmall/main.dart';
 import 'package:ashmall/utils/app_Localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -44,36 +44,75 @@ class _state extends State<Login> {
   var lang;
   var link;
   Map<String, dynamic> setting;
-  // AccessToken _accessToken;
+  AccessToken _accessToken;
   bool _checking = true;
-  /* Future<void> _login() async {
-    final LoginResult result = await FacebookAuth.instance.login(); // by the fault we request the email and the public profile
-
-    // loginBehavior is only supported for Android devices, for ios it will be ignored
-    // final result = await FacebookAuth.instance.login(
-    //   permissions: ['email', 'public_profile', 'user_birthday', 'user_friends', 'user_gender', 'user_link'],
-    //   loginBehavior: LoginBehavior
-    //       .DIALOG_ONLY, // (only android) show an authentication dialog instead of redirecting to facebook app
-    // );
-
-    if (result.status == LoginStatus.success) {
-      _accessToken = result.accessToken;
+  Future<void> _login() async {
+    try {
+      // by default the login method has the next permissions ['email','public_profile']
+      AccessToken accessToken = await FacebookAuth.instance.login();
+      // print(accessToken.toJson());
       // get the user data
-      // by default we get the userId, email,name and picture
       final userData = await FacebookAuth.instance.getUserData();
-      // final userData = await FacebookAuth.instance.getUserData(fields: "email,birthday,friends,gender,link");
-      _userData = userData;
-      print(_userData);
-      print("000000000000000000000000000000000000000000000000000000000");
-    } else {
-      print(result.status);
-      print(result.message);
+      print(userData);
+      setState(() {
+        loader = false;
+      });
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      Map<String, dynamic> data = await userServices.social_login(
+          "en",
+          userData["name"],
+          userData["email"],
+          userData["id"],
+          userData["picture"]["data"]["url"],
+          pref.getString("device_token"));
+      if (data["status"] == 200) {
+        setData("token", data["user"]["token"]);
+        setData("id", data["user"]["id"]);
+        setData("username", data["user"]["name"]);
+        setData("email", data["user"]["email"]);
+        // setData("phone", data["user"]["phone"]);
+        setData("photo", data["user"]["photo"]);
+        setState(() {
+          ParentPage.user_id = data["user"]["id"];
+          ParentPage.username = data["user"]["name"];
+          ParentPage.email = data["user"]["email"];
+          ParentPage.phone = data["user"]["phone"];
+          ParentPage.userimage = data["user"]["photo"];
+        });
+        if (type == "first")
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/mainPage", (route) => false);
+        else
+          Navigator.pop(context);
+      } else {
+        setState(() {
+          loader = true;
+        });
+        Toast.show("${data["message"]}", context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      }
+    } on FacebookAuthException catch (e) {
+      switch (e.errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          Toast.show("You have a previous login operation in progress", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          break;
+        case FacebookAuthErrorCode.CANCELLED:
+          Toast.show("login cancelled", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          break;
+        case FacebookAuthErrorCode.FAILED:
+          Toast.show("login failed", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          break;
+      }
     }
 
-    setState(() {
-      _checking = false;
-    });
-  }*/
+    // setState(() {
+    //   _checking = false;
+    // });
+  }
+
   GoogleSignIn _googleSignIn = GoogleSignIn(
       // clientId:
       //     "499289536123-3r47p9rg5dsu223mm4r86ognln7b1rlp.apps.googleusercontent.com",
@@ -87,11 +126,50 @@ class _state extends State<Login> {
       await _googleSignIn.signIn();
       if (_googleSignIn.currentUser != null) {
         print('''name:${_googleSignIn.currentUser.email}''');
+        setState(() {
+          loader = false;
+        });
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        Map<String, dynamic> data = await userServices.social_login(
+            "en",
+            _googleSignIn.currentUser.displayName,
+            _googleSignIn.currentUser.email,
+            _googleSignIn.currentUser.id,
+            _googleSignIn.currentUser.photoUrl,
+            pref.getString("device_token"));
+        if (data["status"] == 200) {
+          setData("token", data["user"]["token"]);
+          setData("id", data["user"]["id"]);
+          setData("username", data["user"]["name"]);
+          setData("email", data["user"]["email"]);
+          // setData("phone", data["user"]["phone"]);
+          setData("photo", data["user"]["photo"]);
+          setState(() {
+            ParentPage.user_id = data["user"]["id"];
+            ParentPage.username = data["user"]["name"];
+            ParentPage.email = data["user"]["email"];
+            ParentPage.phone = data["user"]["phone"];
+            ParentPage.userimage = data["user"]["photo"];
+          });
+          if (type == "first")
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/mainPage", (route) => false);
+          else
+            Navigator.pop(context);
+        } else {
+          setState(() {
+            loader = true;
+          });
+          Toast.show("${data["message"]}", context,
+              duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+        }
       } else {
         Toast.show("sign in Failed", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       }
     } catch (error) {
+      Toast.show(error, context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       print(error);
       print("111111111111111111111111111111111111111111111111111111111111");
     }
@@ -441,57 +519,57 @@ class _state extends State<Login> {
                           SizedBox(
                             height: 10,
                           ),
-                          // Container(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       GestureDetector(
-                          //           onTap: () {
-                          //             //_login();
-                          //           },
-                          //           child: Container(
-                          //             decoration: BoxDecoration(
-                          //               borderRadius: BorderRadius.all(
-                          //                   Radius.circular(100)),
-                          //               color: Colors.blue,
-                          //             ),
-                          //             height: 55,
-                          //             width: 55,
-                          //             child: Image.asset(
-                          //               "images/icon/face.png",
-                          //               color: Colors.white,
-                          //             ),
-                          //           )),
-                          //       SizedBox(
-                          //         width: 15,
-                          //       ),
-                          //       GestureDetector(
-                          //           onTap: () {
-                          //             _handleSignIn();
-                          //           },
-                          //           child: Container(
-                          //             decoration: BoxDecoration(
-                          //               borderRadius: BorderRadius.all(
-                          //                   Radius.circular(100)),
-                          //               color: Colors.white,
-                          //               boxShadow: <BoxShadow>[
-                          //                 BoxShadow(
-                          //                     color: Colors.black12,
-                          //                     blurRadius: 15.0,
-                          //                     offset: Offset(0.0, 0.75))
-                          //               ],
-                          //             ),
-                          //             height: 55,
-                          //             width: 55,
-                          //             padding: EdgeInsets.all(7),
-                          //             child: Image.asset(
-                          //               "images/icon/google.png",
-                          //             ),
-                          //           ))
-                          //     ],
-                          //   ),
-                          // )
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      _login();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(100)),
+                                        color: Colors.blue,
+                                      ),
+                                      height: 55,
+                                      width: 55,
+                                      child: Image.asset(
+                                        "images/icon/face.png",
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      _handleSignIn();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(100)),
+                                        color: Colors.white,
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                              color: Colors.black12,
+                                              blurRadius: 15.0,
+                                              offset: Offset(0.0, 0.75))
+                                        ],
+                                      ),
+                                      height: 55,
+                                      width: 55,
+                                      padding: EdgeInsets.all(7),
+                                      child: Image.asset(
+                                        "images/icon/google.png",
+                                      ),
+                                    ))
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),

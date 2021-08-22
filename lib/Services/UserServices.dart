@@ -12,130 +12,149 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-class UserServices{
-  String baseURL=GlobalVariable.URl;
+class UserServices {
+  String baseURL = GlobalVariable.URl;
 
-  Future<Map<String,dynamic>>login(String lang,String email,String password,String deviceToken)async{
-    String url=baseURL+"api/people/login";
+  Future<Map<String, dynamic>> login(
+      String lang, String email, String password, String deviceToken) async {
+    String url = baseURL + "api/people/login";
     print(url);
-    var body={
-      "EMAIL" : email,
-      "PASSWORD" : password,
-      "deviceToken":deviceToken
+    var body = {
+      "EMAIL": email,
+      "PASSWORD": password,
+      "deviceToken": deviceToken
     };
     print(body);
-    var header={
-      "Content-Type":"application/json",
-      "lang":lang
+    var header = {"Content-Type": "application/json", "lang": lang};
+    print(header);
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if (responce.body.isNotEmpty) {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> social_login(String lang, String name,
+      String email, String socialId, String photo, String deviceToken) async {
+    String url = baseURL + "api/people/social-login";
+    print(url);
+    var body = {
+      "name": name,
+      "email": email,
+      "SocialId": socialId,
+      "photo": photo,
+      "deviceToken": deviceToken
+    };
+    print(body);
+    var header = {"Content-Type": "application/json", "lang": lang};
+    print(header);
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if (responce.body.isNotEmpty) {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> resetPassword(
+      String lang, String email, String password, var confirmPassword) async {
+    String url = baseURL + "api/people/reset";
+    print(url);
+    var body = {
+      "newPassword": password,
+      "confirmPassword": confirmPassword,
+      "Email": email
+    };
+    print(body);
+    var header = {"Content-Type": "application/json", "lang": lang};
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if (responce.body.isNotEmpty) {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> editProfile(
+      var id, var name, var email, var phone, var gender, var birthdate) async {
+    String url = baseURL + "api/home/edit-profile";
+    print(url);
+    var body = {
+      "Id": id,
+      "Name": name,
+      "Email": email,
+      "Phone": phone,
+      "Gender": gender,
+      "DateOfBirth": birthdate
+    };
+    print(body);
+    var header = {"Content-Type": "application/json", "lang": "en"};
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      print(responce.body);
+      print("000000000000000000000000000000000000000");
+      if (responce.body.isNotEmpty) {
+        print(responce.body);
+        return json.decode(responce.body);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> getUserInfo(
+      String lang, String id, String token) async {
+    String url = baseURL + "api/home/get-profile?id=$id";
+    print(url);
+    var header = {
+      "Content-Type": "application/json",
+      "lang": lang,
+      "Authorization": "Bearer $token"
     };
     print(header);
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
+    try {
+      final responce = await http.get(Uri.parse(url), headers: header);
       print(responce.body);
       print("000000000000000000000000000000000000000");
-      if(responce.body.isNotEmpty)
-      {
+      if (responce.body.isNotEmpty) {
         print(responce.body);
         return json.decode(responce.body);
       }
-    }
-    catch(e) {
-      print(e.toString());
-    }
-  }
-  Future<Map<String,dynamic>>resetPassword(String lang,String email,String password,var confirmPassword)async{
-    String url=baseURL+"api/people/reset";
-    print(url);
-    var body={
-      "newPassword" : password,
-      "confirmPassword" : confirmPassword,
-      "Email":email
-    };
-    print(body);
-    var header={
-      "Content-Type":"application/json",
-      "lang":lang
-    };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      print(responce.body);
-      print("000000000000000000000000000000000000000");
-      if(responce.body.isNotEmpty)
-      {
-        print(responce.body);
-        return json.decode(responce.body);
-      }
-
-    }
-    catch(e) {
-      print(e.toString());
-    }
-  }
-  Future<Map<String,dynamic>>editProfile(var id,var name,var email,var phone,var gender,var birthdate)async{
-    String url=baseURL+"api/home/edit-profile";
-    print(url);
-    var body={
-        "Id":id,
-        "Name":name,
-        "Email":email,
-        "Phone":phone,
-        "Gender":gender,
-        "DateOfBirth":birthdate
-    };
-    print(body);
-    var header={
-      "Content-Type":"application/json",
-      "lang":"en"
-    };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      print(responce.body);
-      print("000000000000000000000000000000000000000");
-      if(responce.body.isNotEmpty)
-      {
-        print(responce.body);
-        return json.decode(responce.body);
-      }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<Map<String,dynamic>>getUserInfo(String lang,String id,String token)async{
-    String url=baseURL+"api/home/get-profile?id=$id";
-    print(url);
-    var header={
-      "Content-Type":"application/json",
-      "lang":lang,
-      "Authorization":"Bearer $token"
-    };
-    print(header);
-    try{
-      final responce=await http.get(Uri.parse(url),headers: header);
-      print(responce.body);
-      print("000000000000000000000000000000000000000");
-      if(responce.body.isNotEmpty)
-      {
-        print(responce.body);
-        return json.decode(responce.body);
-      }
-
-    }
-    catch(e) {
-      print(e.toString());
-    }
-  }
-  Future<Map<String,dynamic>>registerServices(var lang,var name,var email,var password, var phone,String deviceToken)async{
-    String url=baseURL+"api/people/register";
-    var body={
-      "Email":email,
-      "Name":name,
-      "Phone":phone,
-      "Password":password,
-      "confirmPassword":password,
-      "deviceToken":deviceToken
+  Future<Map<String, dynamic>> registerServices(var lang, var name, var email,
+      var password, var phone, String deviceToken) async {
+    String url = baseURL + "api/people/register";
+    var body = {
+      "Email": email,
+      "Name": name,
+      "Phone": phone,
+      "Password": password,
+      "confirmPassword": password,
+      "deviceToken": deviceToken
     };
 /*    var body2={
       "Email":email,
@@ -143,214 +162,200 @@ class UserServices{
       "Password":password
     };
     var body=phone==null?body2:body1;*/
-    var header={
-      "Content-Type":"application/json",
-      "lang":"ar"
-    };
+    var header = {"Content-Type": "application/json", "lang": "ar"};
     print(header);
     print(url);
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
       print(responce.body);
       print("00000000000000000000000000000000000000000000000");
-      if(responce.statusCode==200 && responce.body.isNotEmpty){
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         print(responce.body);
         print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         return json.decode(responce.body);
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>checkCode(var phone,var code)async{
-    String url="$baseURL/API/en/user/mobileActivation";
-    var body={
-      "phone":phone,
-      "activecode":code
-    };
+
+  Future<Map<String, dynamic>> checkCode(var phone, var code) async {
+    String url = "$baseURL/API/en/user/mobileActivation";
+    var body = {"phone": phone, "activecode": code};
     print('${url},,,,sssssssssssss,,,url');
     print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
-    var header={
-      "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
+    var header = {
+      "Content-Type": "application/json",
+      "X-Auth-Token": "b9fe694397cfc048e0c93b67e0c856ac"
     };
     // print('$header,,,,sssssssssssss,,,headeeeeeeeeeeer');
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         print(responce.body);
         print("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         return json.decode(responce.body);
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>forgetPassword(var user,var lang)async{
-    String url=baseURL+"API/people/forgot?lang=$lang";
+
+  Future<Map<String, dynamic>> forgetPassword(var user, var lang) async {
+    String url = baseURL + "API/people/forgot?lang=$lang";
     print(url);
-    var body={
-      "Email":user
-    };
+    var body = {"Email": user};
     //print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
 
-    var header={
-      "Content-Type":"application/json",
+    var header = {
+      "Content-Type": "application/json",
     };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
       print(responce.body);
-      print("00000000000000000000000000000000000000000000000000000000000000000000000000000");
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+      print(
+          "00000000000000000000000000000000000000000000000000000000000000000000000000000");
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         // print(responce.body);
         return json.decode(responce.body);
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>checkCodeForgetPassword(var email,var code,var lang)async{
-    String url=baseURL+"API/people/confirm-verification-code?lang=$lang";
+
+  Future<Map<String, dynamic>> checkCodeForgetPassword(
+      var email, var code, var lang) async {
+    String url = baseURL + "API/people/confirm-verification-code?lang=$lang";
     print(url);
-    var body={
-      "Email":email,
-      "Code":code
-    };
+    var body = {"Email": email, "Code": code};
     print(body);
     // print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
-    var header={
-      "Content-Type":"application/json",
+    var header = {
+      "Content-Type": "application/json",
     };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
       print(responce.body);
-      print("00000000000000000000000000000000000000000000000000000000000000000000000000000000");
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+      print(
+          "00000000000000000000000000000000000000000000000000000000000000000000000000000000");
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         // print(responce.body);
         return json.decode(responce.body);
       }
       return json.decode(responce.body);
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<Map<String,dynamic>>resetForgetPassword(var lang,var phone,var code,var password,var confirmPassword)async{
-    String url="$baseURL/API/$lang/userForgetPassword/change";
-    var body={
-      "phone":phone,
-      "activecode":code,
-      "password":password,
-      "verifypassword":confirmPassword
+  Future<Map<String, dynamic>> resetForgetPassword(
+      var lang, var phone, var code, var password, var confirmPassword) async {
+    String url = "$baseURL/API/$lang/userForgetPassword/change";
+    var body = {
+      "phone": phone,
+      "activecode": code,
+      "password": password,
+      "verifypassword": confirmPassword
     };
     print(url);
     print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
-    var header={
-      "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
+    var header = {
+      "Content-Type": "application/json",
+      "X-Auth-Token": "b9fe694397cfc048e0c93b67e0c856ac"
     };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         print(responce.body);
         return json.decode(responce.body);
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>updateProfile(var id,var firstName,var lastName,var email,var phone)async{
-    String url="$baseURL/API/en/user/updateProfile";
-    var body={
-      "user_id":id,
-      "firstname":firstName,
-      "lastname":lastName,
-      "email":email,
-      "phone":phone
+
+  Future<Map<String, dynamic>> updateProfile(
+      var id, var firstName, var lastName, var email, var phone) async {
+    String url = "$baseURL/API/en/user/updateProfile";
+    var body = {
+      "user_id": id,
+      "firstname": firstName,
+      "lastname": lastName,
+      "email": email,
+      "phone": phone
     };
     //print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
-    var header={
-      "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
+    var header = {
+      "Content-Type": "application/json",
+      "X-Auth-Token": "b9fe694397cfc048e0c93b67e0c856ac"
     };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         print(responce.body);
-        print("8888888888888888888888888888888888888888888888888888888888888888");
+        print(
+            "8888888888888888888888888888888888888888888888888888888888888888");
         return json.decode(responce.body);
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>getProfile(var id)async{
-    String url="$baseURL/API/en/user/profile";
-    var body={
-      "user_id":id
-    };
+
+  Future<Map<String, dynamic>> getProfile(var id) async {
+    String url = "$baseURL/API/en/user/profile";
+    var body = {"user_id": id};
     //print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
-    var header={
-      "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
+    var header = {
+      "Content-Type": "application/json",
+      "X-Auth-Token": "b9fe694397cfc048e0c93b67e0c856ac"
     };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         // print(json.decode(responce.body)["Message"]);
         // print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         return json.decode(responce.body)["Message"];
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
-  Future<Map<String,dynamic>>changePassword(var id,var oldPssword,var Password,var verifyPassword)async{
-    String url="$baseURL/API/en/user/changePassword";
-    var body={
-      "user_id":id,
-      "old_password":oldPssword,
-      "password":Password,
-      "verify_password":verifyPassword
+
+  Future<Map<String, dynamic>> changePassword(
+      var id, var oldPssword, var Password, var verifyPassword) async {
+    String url = "$baseURL/API/en/user/changePassword";
+    var body = {
+      "user_id": id,
+      "old_password": oldPssword,
+      "password": Password,
+      "verify_password": verifyPassword
     };
     //print('${json.encode(body)},,,,sssssssssssss,,,bodyyyyy');
-    var header={
-      "Content-Type":"application/json",
-      "X-Auth-Token":"b9fe694397cfc048e0c93b67e0c856ac"
+    var header = {
+      "Content-Type": "application/json",
+      "X-Auth-Token": "b9fe694397cfc048e0c93b67e0c856ac"
     };
-    try{
-      final responce=await http.post(Uri.parse(url),body:json.encode(body),headers: header);
-      if(responce.statusCode==200 && responce.body.isNotEmpty)
-      {
+    try {
+      final responce = await http.post(Uri.parse(url),
+          body: json.encode(body), headers: header);
+      if (responce.statusCode == 200 && responce.body.isNotEmpty) {
         // print(responce.body);
         return json.decode(responce.body);
       }
-
-    }
-    catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
+
 /*Future<Map<String,dynamic>>changeAvatar(File image,var user_id)async{
     String url="$baseURL/API/en/user/changeAvatar";
     var body={
@@ -377,12 +382,13 @@ class UserServices{
       print(e.toString());
     }
   }*/
-  static updateAvatar(File fileImage,BuildContext context,var user_id)async
-  {
+  static updateAvatar(File fileImage, BuildContext context, var user_id) async {
     if (fileImage != null) {
       try {
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
         Dio dio = Dio();
+
         ///we used uri.encode to enable upload  image with arabic name
         // var url =Uri.encodeFull(createPath('user/editProfileImage'));
         var url = "${GlobalVariable.URl}api/home/edit-profile-photo";
@@ -391,11 +397,9 @@ class UserServices{
         // print('${fileName},,,,fileName');
         //print('${pathImage.path},,,,imagePath.path');
         FormData formData = FormData.fromMap({
-          "File": await MultipartFile.fromFile(
-              fileImage.path, filename: fileName
-              , contentType: MediaType('image', fileName
-              .split('.')
-              .last)),
+          "File": await MultipartFile.fromFile(fileImage.path,
+              filename: fileName,
+              contentType: MediaType('image', fileName.split('.').last)),
           "UserId": user_id,
         });
         print(formData.fields);
@@ -404,61 +408,46 @@ class UserServices{
         print('${response.data},,,,,,,,fields');
         print("dddddddddddddddddddddddddddddddddddddddddddddddddddddd");
         if (response.statusCode == 200) {
-          Toast.show(
-              "  تم تغير صورة الملف الشخصي ", context,
+          Toast.show("  تم تغير صورة الملف الشخصي ", context,
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-        }
-        else {
-          Toast.show(
-              " فشل في تغير صورة الملف الشخصي ", context,
+        } else {
+          Toast.show(" فشل في تغير صورة الملف الشخصي ", context,
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
           return null;
         }
-      }
-      catch (e) {
+      } catch (e) {
         print('${e}imageuploaderror');
       }
     }
   }
-  Future<List<FollowerDetail>>GetFolloers(var id)async
-  {
-    var url="${baseURL}api/follower/get-all-followers?userId=$id";
+
+  Future<List<FollowerDetail>> GetFolloers(var id) async {
+    var url = "${baseURL}api/follower/get-all-followers?userId=$id";
     print(url);
-    try
-    {
+    try {
       final response = await http.get(Uri.parse(url));
       print(response.body);
-      if(response.statusCode==200 && response.body!=null)
-      {
+      if (response.statusCode == 200 && response.body != null) {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
         return slideritems.map((e) => FollowerDetail.fromJson(e)).toList();
       }
-    }
-    catch(e)
-    {
+    } catch (e) {
       print('$e,,,,error search doctors');
     }
   }
-  Future<List<NotificationDetail>>GetNotification(var id)async
-  {
-    var url="${baseURL}api/notifications/get-all-notifications?userId=$id";
+
+  Future<List<NotificationDetail>> GetNotification(var id) async {
+    var url = "${baseURL}api/notifications/get-all-notifications?userId=$id";
     print(url);
-    try
-    {
+    try {
       final response = await http.get(Uri.parse(url));
       print(response.body);
-      if(response.statusCode==200 && response.body!=null)
-      {
+      if (response.statusCode == 200 && response.body != null) {
         List slideritems = json.decode(utf8.decode(response.bodyBytes))["data"];
         return slideritems.map((e) => NotificationDetail.fromJson(e)).toList();
       }
-    }
-    catch(e)
-    {
+    } catch (e) {
       print('$e,,,,error search doctors');
     }
   }
-
-
-
 }

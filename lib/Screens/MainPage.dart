@@ -90,7 +90,7 @@ class _state extends State<MainPage> {
     setting["data"]["dashboardLinkEnable"] == true
         ? Prefs.setString("dashboardLink", setting["data"]["dashboardLink"])
         : print("sharrrrrrrrrrrf");
-    setState(() {});
+    // setState(() {});
     if (advList.length > 0) {
       setState(() {
         adv = true;
