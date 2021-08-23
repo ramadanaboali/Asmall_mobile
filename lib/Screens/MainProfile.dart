@@ -31,13 +31,17 @@ class _state extends State<MainProfile> {
   Map<String, dynamic> data;
   bool loading = true;
   loadData() async {
+    print("romio in main profile page");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {});
-    data = await userServices.getUserInfo(prefs.getString("lang"),
-        prefs.getString("id"), prefs.getString("token"));
-    setState(() {
-      loading = false;
-    });
+    await userServices
+        .getUserInfo(prefs.getString("lang"), prefs.getString("id"),
+            prefs.getString("token"))
+        .then((value) => {
+              setState(() {
+                data = value;
+                loading = false;
+              })
+            });
   }
 
   @override
@@ -62,9 +66,8 @@ class _state extends State<MainProfile> {
                       child: CircularProgressIndicator(),
                     )
                   : data == null
-                      ? Center(
-                          child: Text("No Internt Connection"),
-                        )
+                      ? Navigator.pushNamedAndRemoveUntil(
+                          context, "/Login", (route) => false)
                       : Container(
                           child: Column(
                             children: [

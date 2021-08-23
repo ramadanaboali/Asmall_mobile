@@ -33,6 +33,7 @@ class _state extends State<Profile> {
   TextEditingController username = new TextEditingController();
   TextEditingController password = new TextEditingController();
   TextEditingController name = new TextEditingController();
+  TextEditingController birthDate = new TextEditingController();
   TextEditingController email = new TextEditingController();
   TextEditingController phone = new TextEditingController();
   FocusNode emailNode = new FocusNode();
@@ -57,6 +58,7 @@ class _state extends State<Profile> {
         phone.text = data["data"]["phone"];
         image = "https://" + data["data"]["photo"];
         gender = data["data"]["gender"];
+        birthDate.text = data["data"]["dateOfBirth"];
       });
       setState(() {});
     }
@@ -68,6 +70,7 @@ class _state extends State<Profile> {
     var order = await getDate(context);
     setState(() {
       finaldate = DateFormat('yyyy-MM-dd').format(order);
+      birthDate.text = finaldate;
     });
     print(finaldate);
   }
@@ -480,7 +483,11 @@ class _state extends State<Profile> {
                             padding: EdgeInsets.only(
                                 left: 15, right: 15, top: 15, bottom: 15),
                             child: CustomText.text12Bold(
-                                finaldate == null ? "Select Date" : finaldate,
+                                finaldate == null
+                                    ? (birthDate.text == null
+                                        ? "Select Date"
+                                        : birthDate.text)
+                                    : finaldate,
                                 Colors.black),
                           ),
                         ),
@@ -547,7 +554,7 @@ class _state extends State<Profile> {
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                             await userServices.editProfile(user_id, name.text,
-                                email.text, phone.text, gender, null);
+                                email.text, phone.text, gender, birthDate.text);
                             pref.setString("date", finaldate);
                             Navigator.pushNamedAndRemoveUntil(
                                 context, "/MainProfile", (route) => false);

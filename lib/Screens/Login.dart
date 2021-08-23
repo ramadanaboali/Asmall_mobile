@@ -79,6 +79,7 @@ class _state extends State<Login> {
           ParentPage.phone = data["user"]["phone"];
           ParentPage.userimage = data["user"]["photo"];
         });
+        await FacebookAuth.instance.logOut();
         if (type == "first")
           Navigator.pushNamedAndRemoveUntil(
               context, "/mainPage", (route) => false);
@@ -137,6 +138,7 @@ class _state extends State<Login> {
             _googleSignIn.currentUser.id,
             _googleSignIn.currentUser.photoUrl,
             pref.getString("device_token"));
+        await _googleSignIn.signOut();
         if (data["status"] == 200) {
           setData("token", data["user"]["token"]);
           setData("id", data["user"]["id"]);
@@ -151,6 +153,7 @@ class _state extends State<Login> {
             ParentPage.phone = data["user"]["phone"];
             ParentPage.userimage = data["user"]["photo"];
           });
+
           if (type == "first")
             Navigator.pushNamedAndRemoveUntil(
                 context, "/mainPage", (route) => false);
@@ -176,6 +179,7 @@ class _state extends State<Login> {
   }
 
   loadData() async {
+    print("romio in login page");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setting = await productServices.getSetting(prefs.getString("lang"));
     setting["data"]["dashboardLinkEnable"] == true

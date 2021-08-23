@@ -134,10 +134,9 @@ class UserServices {
     print(header);
     try {
       final responce = await http.get(Uri.parse(url), headers: header);
-      print(responce.body);
+      print("data is " + responce.body);
       print("000000000000000000000000000000000000000");
       if (responce.body.isNotEmpty) {
-        print(responce.body);
         return json.decode(responce.body);
       }
     } catch (e) {
@@ -403,7 +402,6 @@ class UserServices {
           "UserId": user_id,
         });
         print(formData.fields);
-        print("ssssssssssssssssss");
         Response response = await dio.post(url, data: formData);
         print('${response.data},,,,,,,,fields');
         print("dddddddddddddddddddddddddddddddddddddddddddddddddddddd");
