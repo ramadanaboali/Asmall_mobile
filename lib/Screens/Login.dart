@@ -9,11 +9,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
 
 class Login extends StatefulWidget {
   var type;
@@ -46,6 +48,62 @@ class _state extends State<Login> {
   Map<String, dynamic> setting;
   AccessToken _accessToken;
   bool _checking = true;
+  Future<void> _appleLogin() async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      print(credential);
+
+      setState(() {
+        loader = false;
+      });
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      Map<String, dynamic> data = await userServices.social_login(
+          "en",
+          credential.givenName,
+          credential.email,
+          credential.userIdentifier,
+          "",
+          pref.getString("device_token"));
+      if (data["status"] == 200) {
+        setData("token", data["user"]["token"]);
+        setData("id", data["user"]["id"]);
+        setData("username", data["user"]["name"]);
+        setData("email", data["user"]["email"]);
+        // setData("phone", data["user"]["phone"]);
+        setData("photo", data["user"]["photo"]);
+        setState(() {
+          ParentPage.user_id = data["user"]["id"];
+          ParentPage.username = data["user"]["name"];
+          ParentPage.email = data["user"]["email"];
+          ParentPage.phone = data["user"]["phone"];
+          ParentPage.userimage = data["user"]["photo"];
+        });
+        await FacebookAuth.instance.logOut();
+        if (type == "first")
+          Navigator.pushNamedAndRemoveUntil(
+              context, "/mainPage", (route) => false);
+        else
+          Navigator.pop(context);
+      } else {
+        setState(() {
+          loader = true;
+        });
+        Toast.show("${data["message"]}", context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      }
+    } on FacebookAuthException catch (e) {
+      Toast.show(e.errorCode + " : " + e.message, context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+      print("111111111111111111111111111111111111111111111111111111111111");
+    }
+  }
+
   Future<void> _login() async {
     try {
       // by default the login method has the next permissions ['email','public_profile']
@@ -543,6 +601,26 @@ class _state extends State<Login> {
                                       child: Image.asset(
                                         "images/icon/face.png",
                                         color: Colors.white,
+                                      ),
+                                    )),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      _appleLogin();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(100)),
+                                        color: Colors.white,
+                                      ),
+                                      height: 55,
+                                      width: 55,
+                                      child: Image.asset(
+                                        "images/icon/apple.png",
+                                        color: Colors.black,
                                       ),
                                     )),
                                 SizedBox(

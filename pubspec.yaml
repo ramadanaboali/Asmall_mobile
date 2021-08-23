@@ -32,6 +32,7 @@ dependencies:
   get_it: ^1.0.3
   in_app_update: ^2.0.0
   flutter_facebook_auth: ^2.0.2
+  sign_in_with_apple: ^3.0.0
   google_sign_in: ^5.0.7
   toast: ^0.1.5
   dotted_border: ^1.0.7
