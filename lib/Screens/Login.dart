@@ -84,7 +84,6 @@ class _state extends State<Login> {
           ParentPage.phone = data["user"]["phone"];
           ParentPage.userimage = data["user"]["photo"];
         });
-        await FacebookAuth.instance.logOut();
         if (type == "first")
           Navigator.pushNamedAndRemoveUntil(
               context, "/mainPage", (route) => false);

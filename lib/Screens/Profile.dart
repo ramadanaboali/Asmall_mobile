@@ -56,7 +56,8 @@ class _state extends State<Profile> {
         name.text = data["data"]["name"];
         email.text = data["data"]["email"];
         phone.text = data["data"]["phone"];
-        image = "https://" + data["data"]["photo"];
+        // image = "https://" + data["data"]["photo"];
+        image = data["data"]["photo"];
         gender = data["data"]["gender"];
         birthDate.text = data["data"]["dateOfBirth"];
       });
@@ -613,7 +614,8 @@ class _state extends State<Profile> {
     name.text = data["data"]["name"];
     email.text = data["data"]["email"];
     phone.text = data["data"]["phone"];
-    image = "https://" + data["data"]["photo"];
+    image = data["data"]["photo"];
+    // image = "https://" + data["data"]["photo"];
     gender = data["data"]["gender"];
     ParentPage.username = data["data"]["name"];
     ParentPage.email = data["data"]["email"];

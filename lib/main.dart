@@ -129,35 +129,35 @@ class _State extends State<ParentPage> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
 
-   final FirebaseMessaging _firebaseMessaging =new  FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
   _register() async {
-     await _firebaseMessaging.getToken().then((token) {
-       SharedPreferences.getInstance().then((shared) {
-         shared.setString('device_token', token);
-       });
+    await _firebaseMessaging.getToken().then((token) {
+      SharedPreferences.getInstance().then((shared) {
+        shared.setString('device_token', token);
+      });
 
-       print(
-           '${token},,,,,,toookkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-     });
+      print(
+          '${token},,,,,,toookkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+    });
     print(
-         "_____________________________________________________________________________________________________________");
-   }
+        "_____________________________________________________________________________________________________________");
+  }
 
-   void getMessage() async {
-     _firebaseMessaging.configure(
-         onMessage: (Map<String, dynamic> message) async {
-       showNotificationsFunc(message);
-       print('on message $message');
-       setState(() => _message = message["notification"]["title"]);
-     }, onResume: (Map<String, dynamic> message) async {
-       print('on resume $message');
-       setState(() => _message = message["notification"]["title"]);
-     }, onLaunch: (Map<String, dynamic> message) async {
-       print('on launch $message');
-       setState(() => _message = message["notification"]["title"]);
-     });
-   }
+  void getMessage() async {
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      showNotificationsFunc(message);
+      print('on message $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onResume: (Map<String, dynamic> message) async {
+      print('on resume $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print('on launch $message');
+      setState(() => _message = message["notification"]["title"]);
+    });
+  }
 
   showNotificationsFunc(Map<String, dynamic> message) async {
     var android = AndroidNotificationDetails(
@@ -180,8 +180,8 @@ class _State extends State<ParentPage> {
     var ios = IOSInitializationSettings();
     var platform = InitializationSettings(android, ios);
     flutterLocalNotificationsPlugin.initialize(platform);
-    //  getMessage();
-    //  _register();
+    _register();
+    getMessage();
     loadData();
   }
 

@@ -142,8 +142,7 @@ class _state extends State<MainProfile> {
                                             Radius.circular(200)),
                                         child: FadeInImage.assetNetwork(
                                           placeholder: "images/user.jpg",
-                                          image:
-                                              "http://" + data["data"]["photo"],
+                                          image: data["data"]["photo"],
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
