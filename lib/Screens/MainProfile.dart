@@ -1,3 +1,4 @@
+import 'package:ashmall/DbHelper.dart';
 import 'package:ashmall/Model/Product1Model.dart';
 import 'package:ashmall/Model/ProductModel.dart';
 import 'package:ashmall/Screens/CustomText.dart';
@@ -29,6 +30,7 @@ class _state extends State<MainProfile> {
   UserServices userServices = new UserServices();
   ProductServices productServices = new ProductServices();
   Map<String, dynamic> data;
+  DbHelper db = new DbHelper();
   bool loading = true;
   loadData() async {
     print("romio in main profile page");
@@ -397,6 +399,7 @@ class _state extends State<MainProfile> {
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  db.deleteCart();
                                   logout();
                                   Navigator.pushNamedAndRemoveUntil(
                                       context, "/mainPage", (route) => false);

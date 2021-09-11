@@ -16,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+import 'dart:io' show Platform;
 
 class Login extends StatefulWidget {
   var type;
@@ -96,8 +97,8 @@ class _state extends State<Login> {
         Toast.show("${data["message"]}", context,
             duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       }
-    } on FacebookAuthException catch (e) {
-      Toast.show(e.errorCode + " : " + e.message, context,
+    } on Exception catch (e) {
+      Toast.show(e.toString(), context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
       print("111111111111111111111111111111111111111111111111111111111111");
     }
@@ -107,7 +108,7 @@ class _state extends State<Login> {
     try {
       // by default the login method has the next permissions ['email','public_profile']
       AccessToken accessToken = await FacebookAuth.instance.login();
-      // print(accessToken.toJson());
+      print(accessToken.toJson());
       // get the user data
       final userData = await FacebookAuth.instance.getUserData();
       print(userData);
@@ -602,26 +603,30 @@ class _state extends State<Login> {
                                         color: Colors.white,
                                       ),
                                     )),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                GestureDetector(
-                                    onTap: () {
-                                      _appleLogin();
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(100)),
-                                        color: Colors.white,
-                                      ),
-                                      height: 55,
-                                      width: 55,
-                                      child: Image.asset(
-                                        "images/icon/apple.png",
-                                        color: Colors.black,
-                                      ),
-                                    )),
+                                Platform.isIOS
+                                    ? SizedBox(
+                                        width: 15,
+                                      )
+                                    : Center(),
+                                Platform.isIOS
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          _appleLogin();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(100)),
+                                            color: Colors.white,
+                                          ),
+                                          height: 55,
+                                          width: 55,
+                                          child: Image.asset(
+                                            "images/icon/apple.png",
+                                            color: Colors.black,
+                                          ),
+                                        ))
+                                    : Center(),
                                 SizedBox(
                                   width: 15,
                                 ),

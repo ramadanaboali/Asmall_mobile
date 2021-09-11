@@ -721,18 +721,19 @@ class ProductServices {
     }
   }
 
-  static SetRateServices(File fileImage, BuildContext context, var user_id,
-      var Comment, var RateNum, var ProductId) async {
-    if (fileImage != null) {
-      try {
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
+  static SetRateServices(String token, File fileImage, BuildContext context,
+      var user_id, var Comment, var RateNum, var ProductId) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      var url = "${GlobalVariable.URl}api/products/set-product-rate";
+      print(url);
+      if (fileImage != null) {
         Dio dio = Dio();
 
         ///we used uri.encode to enable upload  image with arabic name
         // var url =Uri.encodeFull(createPath('user/editProfileImage'));
-        var url = "${GlobalVariable.URl}/api/products/set-product-rate";
-        print(url);
+
         String fileName = basename(fileImage.path);
         // print('${fileName},,,,fileName');
         //print('${pathImage.path},,,,imagePath.path');
@@ -751,6 +752,7 @@ class ProductServices {
         Response response = await dio.post(url, data: formData);
         print('${response.data},,,,,,,,fields');
         print("ddddddddddddddddd");
+
         if (response.statusCode == 200) {
           Toast.show("  تم اضافة التقيم الخاص بك ", context,
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -759,9 +761,38 @@ class ProductServices {
               duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
           return null;
         }
-      } catch (e) {
-        print('${e}imageuploaderror');
+      } else {
+        var header = {
+          // "Content-Type": "application/json",
+          "lang": "en",
+          // "token": "Bearer " + token
+        };
+        print(header);
+        var body = {
+          "Comment": Comment,
+          "RateNum": RateNum,
+          "ProductId": ProductId,
+          "UserId": user_id
+        };
+        print(body);
+
+        final response = await http.post(Uri.parse(url),
+            body: json.encode(body), headers: header);
+
+        print(response.body);
+        if (response.body != null) {
+          if (response.statusCode == 200) {
+            Toast.show("  تم اضافة التقيم الخاص بك ", context,
+                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+          } else {
+            Toast.show(" تم اضافة التقيم من قبل ", context,
+                duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            return null;
+          }
+        }
       }
+    } catch (e) {
+      print('${e}imageuploaderror');
     }
   }
 }

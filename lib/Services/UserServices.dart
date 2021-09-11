@@ -45,6 +45,7 @@ class UserServices {
       String email, String socialId, String photo, String deviceToken) async {
     String url = baseURL + "api/people/social-login";
     print(url);
+    // print(socialId+" . . "+email+" . . "+name+" . . "+deviceToken);
     var body = {
       "name": name,
       "email": email,

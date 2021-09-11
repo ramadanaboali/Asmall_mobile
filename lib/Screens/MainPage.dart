@@ -186,7 +186,7 @@ class _state extends State<MainPage> {
                     width: MediaQuery.of(context).size.width * .05,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * .13,
+                    height: MediaQuery.of(context).size.height * .12,
                     width: MediaQuery.of(context).size.width * .95,
                     child: ListView(
                       shrinkWrap: true,
@@ -428,7 +428,7 @@ class _state extends State<MainPage> {
               ),
               adv
                   ? Container(
-                      height: MediaQuery.of(context).size.height * .18,
+                      height: MediaQuery.of(context).size.height * .25,
                       width: MediaQuery.of(context).size.width * .9,
                       color: Colors.white,
                       child: new Swiper(
@@ -522,7 +522,13 @@ class _state extends State<MainPage> {
                       height: MediaQuery.of(context).size.height * .17,
                       width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey),
+                        ),
                       ),
                     )
                   : Container(
@@ -685,7 +691,18 @@ class _state extends State<MainPage> {
                       height: MediaQuery.of(context).size.height * .18,
                       width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey),
+                            ),
+                          ),
+                        ),
                       ),
                     )
                   : Container(
@@ -883,7 +900,13 @@ class _state extends State<MainPage> {
                       height: MediaQuery.of(context).size.height * .17,
                       width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey),
+                        ),
                       ),
                     )
                   : Container(

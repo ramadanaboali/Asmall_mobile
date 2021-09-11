@@ -466,7 +466,28 @@ class _state extends State<ProductDetails> {
                         child: Column(
                           children: [
                             gallary.length == 0
-                                ? SizedBox()
+                                ? Container(
+                                    height:
+                                        MediaQuery.of(context).size.height * .3,
+                                    width:
+                                        MediaQuery.of(context).size.width * .9,
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                      child: Image.network(
+                                        data["imagesPaths"].length > 0
+                                            ? data["imagesPaths"][0]
+                                            : GlobalVariable.URl +
+                                                data["coverPhoto"],
+                                        fit: BoxFit.fill,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .27,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                      ),
+                                    ),
+                                  )
                                 : Container(
                                     height:
                                         MediaQuery.of(context).size.height * .3,
@@ -743,8 +764,11 @@ class _state extends State<ProductDetails> {
                                                 'title': data["name"],
                                                 "description":
                                                     data["description"],
-                                                "img": data["imagesPaths"].length > 0 ? data["imagesPaths"][0]:""
-                                                    .toString(),
+                                                "img":
+                                                    data["imagesPaths"].length >
+                                                            0
+                                                        ? data["imagesPaths"][0]
+                                                        : "".toString(),
                                                 'price': double.parse(
                                                     data["offerPrice"]
                                                         .toString()),
@@ -836,7 +860,11 @@ class _state extends State<ProductDetails> {
                                       GestureDetector(
                                           onTap: () {
                                             user_id == null
-                                                ? print("0000")
+                                                ? Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        "/Login",
+                                                        (route) => false)
                                                 : SetRate(context, data["id"]);
                                           },
                                           child: CustomRate(
@@ -1091,7 +1119,7 @@ class _state extends State<ProductDetails> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "Cusstomer Reviews",
+                                                    "Customer Reviews",
                                                     style: TextStyle(
                                                         color: Colors.black54,
                                                         fontSize: 16,
@@ -1630,189 +1658,214 @@ class _state extends State<ProductDetails> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    child: GridView.builder(
-                                      padding: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .05,
-                                          bottom: 30),
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      itemCount: SimillarProducts.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing: 10,
-                                              childAspectRatio: 1 / 1.4),
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            print("sssssssss");
-                                            Navigator.push(
-                                                context,
-                                                GlobalFunction.route(
-                                                    ProductDetails(
-                                                        SimillarProducts[index]
-                                                            .id,
-                                                        SimillarProducts[index]
-                                                            .name)));
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.black12,
-                                                    width: 1),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5))),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    child: ClipRRect(
+                                  SimillarProducts.length > 0
+                                      ? Container(
+                                          child: GridView.builder(
+                                            padding: EdgeInsets.only(
+                                                left: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .05,
+                                                right: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .05,
+                                                bottom: 30),
+                                            primary: false,
+                                            shrinkWrap: true,
+                                            itemCount: SimillarProducts.length,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3,
+                                                    mainAxisSpacing: 10,
+                                                    crossAxisSpacing: 10,
+                                                    childAspectRatio: 1 / 1.4),
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  print("sssssssss");
+                                                  Navigator.push(
+                                                      context,
+                                                      GlobalFunction.route(
+                                                          ProductDetails(
+                                                              SimillarProducts[
+                                                                      index]
+                                                                  .id,
+                                                              SimillarProducts[
+                                                                      index]
+                                                                  .name)));
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(),
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.black12,
+                                                          width: 1),
                                                       borderRadius:
-                                                          BorderRadius.only(
-                                                              topLeft: Radius
-                                                                  .circular(5),
-                                                              topRight: Radius
-                                                                  .circular(5)),
-                                                      child: Image.network(
-                                                        GlobalVariable.URl +
-                                                            SimillarProducts[
-                                                                    index]
-                                                                .coverPhoto,
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 3,
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 5, right: 5),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Container(
-                                                          child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Container(
-                                                              width: MediaQuery.of(
+                                                      Expanded(
+                                                        child: Container(
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        5),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        5)),
+                                                            child:
+                                                                Image.network(
+                                                              GlobalVariable
+                                                                      .URl +
+                                                                  SimillarProducts[
+                                                                          index]
+                                                                      .coverPhoto,
+                                                              width:
+                                                                  MediaQuery.of(
                                                                           context)
                                                                       .size
-                                                                      .width *
-                                                                  .18,
-                                                              child: Text(
-                                                                SimillarProducts[
-                                                                        index]
-                                                                    .name,
-                                                                maxLines: 1,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              )),
-                                                          Icon(
-                                                            Icons
-                                                                .add_shopping_cart,
-                                                            size: 18,
-                                                          )
-                                                        ],
-                                                      )),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 3, right: 3),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Container(
-
-                                                          // padding: EdgeInsets.only(left: 5,right: 5),
-                                                          child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              CustomText.CustomText10(SimillarProducts[
-                                                                          index]
-                                                                      .offerPrice
-                                                                      .toString() +
-                                                                  "  " +
-                                                                  DemoLocalizations.of(
-                                                                          context)
-                                                                      .title["le"]),
-                                                              SizedBox(
-                                                                width: 3,
-                                                              ),
-                                                              Container(
-                                                                height: 7,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        //left: 5,right: 5
-                                                                        ),
-                                                                child: CustomRate(
-                                                                    SimillarProducts[
-                                                                            index]
-                                                                        .rate
-                                                                        .round(),
-                                                                    9),
-                                                              ),
-                                                            ],
+                                                                      .width,
+                                                              fit: BoxFit.fill,
+                                                            ),
                                                           ),
-                                                        ],
-                                                      )),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5,
+                                                                right: 5),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Container(
+                                                                child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        .18,
+                                                                    child: Text(
+                                                                      SimillarProducts[
+                                                                              index]
+                                                                          .name,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )),
+                                                                Icon(
+                                                                  Icons
+                                                                      .add_shopping_cart,
+                                                                  size: 18,
+                                                                )
+                                                              ],
+                                                            )),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 2,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 3,
+                                                                right: 3),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Container(
+
+                                                                // padding: EdgeInsets.only(left: 5,right: 5),
+                                                                child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    CustomText.CustomText10(SimillarProducts[index]
+                                                                            .offerPrice
+                                                                            .toString() +
+                                                                        "  " +
+                                                                        DemoLocalizations.of(context)
+                                                                            .title["le"]),
+                                                                    SizedBox(
+                                                                      width: 3,
+                                                                    ),
+                                                                    Container(
+                                                                      height: 7,
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              //left: 5,right: 5
+                                                                              ),
+                                                                      child: CustomRate(
+                                                                          SimillarProducts[index]
+                                                                              .rate
+                                                                              .round(),
+                                                                          9),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            )),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 2,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  height: 2,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                )
-                                              ],
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Center(
+                                              child: Text(
+                                                "Empty",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.grey),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  )
+                                        ),
                                 ],
                               ),
                             ),
@@ -1845,191 +1898,215 @@ class _state extends State<ProductDetails> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    child: GridView.builder(
-                                      padding: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .05,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              .05,
-                                          bottom: 30),
-                                      primary: false,
-                                      shrinkWrap: true,
-                                      itemCount: RecomendationProducts.length,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              mainAxisSpacing: 10,
-                                              crossAxisSpacing: 10,
-                                              childAspectRatio: 1 / 1.4),
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            print("sssssssss");
-                                            Navigator.push(
-                                                context,
-                                                GlobalFunction.route(
-                                                    ProductDetails(
-                                                        RecomendationProducts[
-                                                                index]
-                                                            .id,
-                                                        RecomendationProducts[
-                                                                index]
-                                                            .name)));
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.black12,
-                                                    width: 1),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5))),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    child: ClipRRect(
+                                  RecomendationProducts.length > 0
+                                      ? Container(
+                                          child: GridView.builder(
+                                            padding: EdgeInsets.only(
+                                                left: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .05,
+                                                right: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    .05,
+                                                bottom: 30),
+                                            primary: false,
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                RecomendationProducts.length,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                    crossAxisCount: 3,
+                                                    mainAxisSpacing: 10,
+                                                    crossAxisSpacing: 10,
+                                                    childAspectRatio: 1 / 1.4),
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  print("sssssssss");
+                                                  Navigator.push(
+                                                      context,
+                                                      GlobalFunction.route(
+                                                          ProductDetails(
+                                                              RecomendationProducts[
+                                                                      index]
+                                                                  .id,
+                                                              RecomendationProducts[
+                                                                      index]
+                                                                  .name)));
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(),
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.black12,
+                                                          width: 1),
                                                       borderRadius:
-                                                          BorderRadius.only(
-                                                              topLeft: Radius
-                                                                  .circular(5),
-                                                              topRight: Radius
-                                                                  .circular(5)),
-                                                      child: Image.network(
-                                                        GlobalVariable.URl +
-                                                            RecomendationProducts[
-                                                                    index]
-                                                                .coverPhoto,
-                                                        width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width,
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 3,
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 5, right: 5),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5))),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Container(
-                                                          child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Container(
-                                                              width: MediaQuery.of(
+                                                      Expanded(
+                                                        child: Container(
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        5),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        5)),
+                                                            child:
+                                                                Image.network(
+                                                              GlobalVariable
+                                                                      .URl +
+                                                                  RecomendationProducts[
+                                                                          index]
+                                                                      .coverPhoto,
+                                                              width:
+                                                                  MediaQuery.of(
                                                                           context)
                                                                       .size
-                                                                      .width *
-                                                                  .18,
-                                                              child: Text(
-                                                                RecomendationProducts[
-                                                                        index]
-                                                                    .name,
-                                                                maxLines: 1,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              )),
-                                                          Icon(
-                                                            Icons
-                                                                .add_shopping_cart,
-                                                            size: 18,
-                                                          )
-                                                        ],
-                                                      )),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 3, right: 3),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Container(
-
-                                                          // padding: EdgeInsets.only(left: 5,right: 5),
-                                                          child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              CustomText.CustomText10(RecomendationProducts[
-                                                                          index]
-                                                                      .offerPrice
-                                                                      .toString() +
-                                                                  "  " +
-                                                                  DemoLocalizations.of(
-                                                                          context)
-                                                                      .title["le"]),
-                                                              SizedBox(
-                                                                width: 3,
-                                                              ),
-                                                              Container(
-                                                                height: 7,
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        //left: 5,right: 5
-                                                                        ),
-                                                                child: CustomRate(
-                                                                    RecomendationProducts[
-                                                                            index]
-                                                                        .rate
-                                                                        .round(),
-                                                                    9),
-                                                              ),
-                                                            ],
+                                                                      .width,
+                                                              fit: BoxFit.fill,
+                                                            ),
                                                           ),
-                                                        ],
-                                                      )),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 5,
+                                                                right: 5),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Container(
+                                                                child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        .18,
+                                                                    child: Text(
+                                                                      RecomendationProducts[
+                                                                              index]
+                                                                          .name,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )),
+                                                                Icon(
+                                                                  Icons
+                                                                      .add_shopping_cart,
+                                                                  size: 18,
+                                                                )
+                                                              ],
+                                                            )),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 2,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 3,
+                                                                right: 3),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Container(
+
+                                                                // padding: EdgeInsets.only(left: 5,right: 5),
+                                                                child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    CustomText.CustomText10(RecomendationProducts[index]
+                                                                            .offerPrice
+                                                                            .toString() +
+                                                                        "  " +
+                                                                        DemoLocalizations.of(context)
+                                                                            .title["le"]),
+                                                                    SizedBox(
+                                                                      width: 3,
+                                                                    ),
+                                                                    Container(
+                                                                      height: 7,
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              //left: 5,right: 5
+                                                                              ),
+                                                                      child: CustomRate(
+                                                                          RecomendationProducts[index]
+                                                                              .rate
+                                                                              .round(),
+                                                                          9),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            )),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 2,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      )
                                                     ],
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  height: 2,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                )
-                                              ],
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Center(
+                                              child: Text(
+                                                "Empty",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Colors.grey),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  )
+                                        ),
                                 ],
                               ),
                             ),
@@ -2221,7 +2298,10 @@ class _state extends State<ProductDetails> {
                                   CartMedelLocal p1 = new CartMedelLocal({
                                     "id": data["id"].toString(),
                                     "name": data["name"],
-                                    "img": data["imagesPaths"][0],
+                                    "img": data["imagesPaths"].length > 0
+                                        ? data["imagesPaths"][0]
+                                        : GlobalVariable.URl +
+                                            data["coverPhoto"],
                                     "description": data["description"],
                                     "price": double.parse(
                                         data["offerPrice"].toString()),
@@ -2514,14 +2594,21 @@ class _state extends State<ProductDetails> {
                             ),
                           ),
                           onTap: () async {
-                            if (formKey.currentState.validate()) {
-                              ProductServices.SetRateServices(
+                            if (comment.text != null || comment.text != "") {
+                              await ProductServices.SetRateServices(
+                                  token,
                                   selectedImage,
                                   context,
                                   user_id,
                                   comment.text,
                                   int.parse(rate.floor().toString()),
                                   ProductId);
+                              Navigator.pop(context);
+                              comment.text = "";
+                            } else {
+                              Toast.show("Please enter comment", context,
+                                  duration: Toast.LENGTH_SHORT,
+                                  gravity: Toast.BOTTOM);
                             }
                             /*if(formKey.currentState.validate()){
                         Map<String,dynamic>responce=await productServices.SetRate(lang, token, comment.text, int.parse(rate.floor().toString()), ProductId, user_id);
